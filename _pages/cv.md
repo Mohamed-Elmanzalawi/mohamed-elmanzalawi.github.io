@@ -48,7 +48,7 @@ redirect_from:
     </td>
   </tr>
   <tr>
-    <td style="border: none; width: 20%; vertical-align: top;">2021/09 – 2023/02</td>
+    <td style="border: none; width: 20%; vertical-align: top;">2021/10 – 2023/03</td>
     <td style="border: none;">
       <b>Research student</b><br>
       <a href="https://nu.edu.eg/" style="color: blue;">Nile University</a>, Giza, Egypt<br>
