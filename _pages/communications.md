@@ -7,7 +7,6 @@ author_profile: true
 <style> body {text-align: justify} </style> <!-- Justify text. -->
 
 ------
-
 ## <span style="font-variant:small-caps;"><span style="color:#440154">**Oral presentations**</span></span>
 
 **2025**
