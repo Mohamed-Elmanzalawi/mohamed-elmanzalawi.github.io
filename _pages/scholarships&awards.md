@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "Scholarships and Awards"
-permalink: /scholarships&awards/
+permalink: scholarships&awards/
 author_profile: true
 ---
 <style> body {text-align: justify} </style> <!-- Justify text. -->
