@@ -18,7 +18,11 @@ redirect_from:
     <td style="border: none;">
       <b>M.Sc. in Genetics</b>, <a href="https://www.nig.ac.jp/nig/" style="color: blue;">ROIS-National Institute of Genetics</a>, Mishima, Japan<br>
       Advisor: <span style="color:teal;">Dr. Nakamura Yasukazu</span><br>
-      My research spans two pivotal areas: uncovering genomic mutations linked to rare diseases, with a focus on complex intron mutations, and developing DFAST_QC—a critical tool for prokaryotic genome quality check and taxonomic identification.<br>
+      <b>Thesis Title: User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis<b>
+      I developed:
+      1- <b>DFAST_QC<b> – a high-speed, accurate tool for prokaryotic genome quality assessment and taxonomic identification, designed for both web-based and command-line use. 
+      2- <b>SAPP<b> – a short-read analysis pipeline that identifies known pathogenic variants and assists in the detection of novel.
+      <br>
     </td>
   </tr>
   <tr>
