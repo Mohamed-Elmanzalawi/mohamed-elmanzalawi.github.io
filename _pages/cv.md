@@ -20,7 +20,7 @@ redirect_from:
       Advisor: <span style="color:teal;">Dr. Nakamura Yasukazu</span><br>
       Thesis Title: <b>User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis</b><br>
       I developed:<br>
-      1- <b>DFAST_QC</b> – a high-speed, accurate tool for prokaryotic genome quality assessment and taxonomic identification, designed for both web-based and command-line use.<br>
+      1- <b>DFAST_QC</b> – a high-speed, accurate tool for prokaryotic genome quality assessment and taxonomic identification, designed for both web-based and command-line use.<br><br>
       2- <b>SAPP</b> – a short-read analysis pipeline that identifies known pathogenic variants and assists in the detection of novel ones.<br>
     </td>
   </tr>
