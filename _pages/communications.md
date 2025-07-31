@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "PRESENTATIONS"
-permalink: /presentations/
+permalink: presentations/
 author_profile: true
 ---
 <style> body {text-align: justify} </style> <!-- Justify text. -->
