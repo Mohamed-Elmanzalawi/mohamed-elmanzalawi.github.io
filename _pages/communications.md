@@ -1,4 +1,4 @@
----
+<img width="1184" height="74" alt="image" src="https://github.com/user-attachments/assets/af912e00-18bd-4d91-a811-0a5e3531e47a" />---
 layout: archive
 title: "PRESENTATIONS"
 permalink: /presentations/
@@ -10,6 +10,12 @@ author_profile: true
 
 ## <span style="font-variant:small-caps;"><span style="color:#440154">**Oral presentations**</span></span>
 
+**2025**
+
+<span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Tomoo Ogi, Yasukazu Nakamura<img width="1184" height="74" alt="image" src="https://github.com/user-attachments/assets/94989640-9479-4846-864f-5c30ce2b628b" /> ; "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis".<span style="color:#3B528B">National Institute of Genetics Master's defence (D2) Progress presentation</span>, Mishima, Japan. 30 July 2025. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://www.nig.ac.jp/nig/research/seminer?id=1718){:target="_blank"}<br>
+
+<span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Yanagisawa Toshiki, Tomoo Ogi, Yasukazu Nakamura<img width="1184" height="74" alt="image" src="https://github.com/user-attachments/assets/94989640-9479-4846-864f-5c30ce2b628b" /> ; "Identification of rare pathogenic variants in patients with primary immune deficiency".<span style="color:#3B528B">National Institute of Genetics Progress presentation</span>, Mishima, Japan. 27 Feb 2025. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster){:target="_blank"}<br>
+
 **2024**
 
 <span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Takatomo Fujisawa, Hiroshi Mori, Yasukazu Nakamura, Yasuhiro Tanizawa; "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes".<span style="color:#3B528B">National Institute of Genetics Progress presentation</span>, Mishima, Japan. 28 August 2024. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster){:target="_blank"}<br>
@@ -19,6 +25,10 @@ author_profile: true
 ## <span style="font-variant:small-caps;"><span style="color:#440154">**Poster presentations**</span></span>
 
 **2025**
+
+<span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Yanagisawa Toshiki, Tomoo Ogi, Yasukazu Nakamura<img width="1184" height="74" alt="image" src="https://github.com/user-attachments/assets/94989640-9479-4846-864f-5c30ce2b628b" /> ; "Identification of rare pathogenic variants in patients with primary immune deficiency".<span style="color:#3B528B">National Institute of Genetics life science retreat</span>, Shizuoka, Japan. 3-4 July 2025. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://drive.google.com/file/d/1BjaKj5kg9OJLgUNAKFotRBVxzWLYNJVM/view?usp=sharing){:target="_blank"}<br>
+
+<span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Yanagisawa Toshiki, Tomoo Ogi, Yasukazu Nakamura<img width="1184" height="74" alt="image" src="https://github.com/user-attachments/assets/94989640-9479-4846-864f-5c30ce2b628b" /> ; "Identification of rare pathogenic variants in patients with primary immune deficiency".<span style="color:#3B528B">National Institute of Genetics Progress presentation</span>, Mishima, Japan. 27 Feb 2025. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster){:target="_blank"}<br>
 
 <span style="color:#3B528B">**Mohamed Elmanzalawi**</span>, Takatomo Fujisawa, Hiroshi Mori, Yasukazu Nakamura, Yasuhiro Tanizawa; "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes".<span style="color:#3B528B">National Institute of Genetics life science retreat</span>, Minamitsuru, Japan. 16-17 January 2025. [![or5](https://img.shields.io/badge/Link-Website-21908C.svg)](https://drive.google.com/file/d/1qXbASxGIhWvta9gAlpvBmn5_mOpIQoco/view?usp=sharing){:target="_blank"}<br>
 
