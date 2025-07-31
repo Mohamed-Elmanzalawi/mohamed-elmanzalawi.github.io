@@ -13,16 +13,16 @@ main:
 #    url: /research/
     
   - title: "Publications"
-    url: /publications/
+    url: publications/
 
   - title: "Presentations"
-    url: /presentations/
+    url: presentations/
 
   - title: "Scholarships and Awards"
-    url: /scholarships&awards/
+    url: scholarships&awards/
 
   # - title: "News"
     # url: /news/
   
   - title: "Links"
-    url: /links/
+    url: links/
