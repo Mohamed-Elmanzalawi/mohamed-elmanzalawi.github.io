@@ -16,6 +16,13 @@ redirect_from:
   <tr>
     <td style="border: none; width: 20%; vertical-align: top;">2023/10 – 2025/10</td>
     <td style="border: none;">
+      <b>PhD in Genetics</b>, <a href="https://www.nig.ac.jp/nig/" style="color: blue;">ROIS-National Institute of Genetics</a>, Mishima, Japan<br>
+      Advisor: <span style="color:teal;">Dr. Nakamura Yasukazu</span><br>
+    </td>
+  </tr>
+  <tr>
+    <td style="border: none; width: 20%; vertical-align: top;">2023/10 – 2025/10</td>
+    <td style="border: none;">
       <b>M.Sc. in Genetics</b>, <a href="https://www.nig.ac.jp/nig/" style="color: blue;">ROIS-National Institute of Genetics</a>, Mishima, Japan<br>
       Advisor: <span style="color:teal;">Dr. Nakamura Yasukazu</span><br>
       Thesis Title: <b>User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis</b><br><br>
@@ -73,3 +80,4 @@ redirect_from:
   </tr>
 </table>
 ------
+
