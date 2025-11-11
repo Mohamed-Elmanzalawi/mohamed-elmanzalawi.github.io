@@ -14,7 +14,7 @@ redirect_from:
 
 <table style="border: none; width: 100%; font-size: 16px;">
   <tr>
-    <td style="border: none; width: 20%; vertical-align: top;">2023/10 – 2025/10</td>
+    <td style="border: none; width: 20%; vertical-align: top;">2025/10 – 2028/10</td>
     <td style="border: none;">
       <b>PhD in Genetics</b>, <a href="https://www.nig.ac.jp/nig/" style="color: blue;">ROIS-National Institute of Genetics</a>, Mishima, Japan<br>
       Advisor: <span style="color:teal;">Dr. Nakamura Yasukazu</span><br>
@@ -80,4 +80,5 @@ redirect_from:
   </tr>
 </table>
 ------
+
 
