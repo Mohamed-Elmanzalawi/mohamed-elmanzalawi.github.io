@@ -6,11 +6,14 @@ import path from "node:path";
 // active under `vite dev` (configureServer never runs during `vite build`),
 // so none of this reaches the deployed site.
 const ALLOWED_FILES = new Set([
+  "projects.json",
   "publications.json",
   "presentations.json",
   "cv-timeline.json",
   "scholarships.json",
   "awards.json",
+  "affiliations.json",
+  "affiliation-card.json",
 ]);
 
 export function contentApiPlugin() {
@@ -37,7 +40,7 @@ export function contentApiPlugin() {
         req.on("end", async () => {
           try {
             const data = JSON.parse(body);
-            if (!Array.isArray(data)) throw new Error("Expected a JSON array");
+            if (typeof data !== "object" || data === null) throw new Error("Expected a JSON array or object");
             const filePath = path.resolve(process.cwd(), "content", file);
             await fs.writeFile(filePath, JSON.stringify(data, null, 2) + "\n", "utf-8");
             res.setHeader("Content-Type", "application/json");

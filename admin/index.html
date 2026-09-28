@@ -124,6 +124,16 @@
   .card .actions { display: flex; gap: 6px; flex-shrink: 0; }
 
   .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .toolbar select {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 14px;
+  }
+  .toolbar select:hover { border-color: var(--primary); }
 
   .field { margin-bottom: 14px; }
   .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 5px; color: var(--muted); }
@@ -193,9 +203,57 @@
 "use strict";
 
 const COLLECTIONS = {
+  projects: {
+    file: "projects.json",
+    label: "Projects",
+    sortOptions: [
+      { key: "year", label: "Year", type: "year" },
+      { key: "name", label: "Alphabetical", type: "text" },
+    ],
+    empty: {
+      id: "",
+      name: "",
+      title: "",
+      year: "",
+      category: "",
+      categoryLabel: "",
+      summary: "",
+      problem: "",
+      approach: "",
+      outcome: "",
+      capabilities: [],
+      tech: [],
+      workflow: [],
+      links: [],
+      context: "",
+    },
+    fields: [
+      { key: "id", label: "ID (URL anchor — lowercase, no spaces, e.g. dfast-qc)", type: "text" },
+      { key: "name", label: "Name (short)", type: "text" },
+      { key: "title", label: "Title (full)", type: "text" },
+      { key: "year", label: "Year (for sorting, e.g. 2025)", type: "text" },
+      { key: "category", label: "Category", type: "category" },
+      { key: "categoryLabel", label: "Category label (shown on the card)", type: "text" },
+      { key: "summary", label: "Summary", type: "textarea" },
+      { key: "problem", label: "Problem", type: "textarea" },
+      { key: "approach", label: "Approach", type: "textarea" },
+      { key: "outcome", label: "Outcome & significance", type: "textarea" },
+      { key: "capabilities", label: "Key capabilities (one per line)", type: "lines" },
+      { key: "tech", label: "Technology (one per line)", type: "lines" },
+      { key: "workflow", label: "Workflow steps (one per line, optional)", type: "lines" },
+      { key: "links", label: "Links", type: "linklist" },
+      { key: "context", label: "Context note (optional, small italic line)", type: "text" },
+    ],
+    summary: (e) =>
+      `<strong>${esc(e.name || "(untitled)")}</strong><span class="meta">${esc(e.year || "")} · ${esc(e.categoryLabel || "")}</span>`,
+  },
   publications: {
     file: "publications.json",
     label: "Publications",
+    sortOptions: [
+      { key: "year", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
     empty: { year: "", authors: "", highlight: "", title: "", venue: "", links: [] },
     fields: [
       { key: "year", label: "Year", type: "text" },
@@ -211,6 +269,10 @@ const COLLECTIONS = {
   presentations: {
     file: "presentations.json",
     label: "Presentations & Conferences",
+    sortOptions: [
+      { key: "year", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
     empty: { type: "Oral", year: "", title: "", event: "", location: "", date: "", link: undefined },
     fields: [
       { key: "type", label: "Type", type: "select", options: ["Oral", "Poster"] },
@@ -227,6 +289,10 @@ const COLLECTIONS = {
   "cv-timeline": {
     file: "cv-timeline.json",
     label: "CV Timeline",
+    sortOptions: [
+      { key: "period", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
     empty: { period: "", title: "", body: "", points: [] },
     fields: [
       { key: "period", label: "Period (e.g. 2023–2025)", type: "text" },
@@ -239,6 +305,10 @@ const COLLECTIONS = {
   scholarships: {
     file: "scholarships.json",
     label: "Scholarships",
+    sortOptions: [
+      { key: "date", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
     empty: { title: "", date: "", body: "", url: "" },
     fields: [
       { key: "title", label: "Title", type: "text" },
@@ -251,6 +321,10 @@ const COLLECTIONS = {
   awards: {
     file: "awards.json",
     label: "Awards",
+    sortOptions: [
+      { key: "date", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
     empty: { title: "", date: "", body: "", url: "" },
     fields: [
       { key: "title", label: "Title", type: "text" },
@@ -260,6 +334,28 @@ const COLLECTIONS = {
     ],
     summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
   },
+  affiliations: {
+    file: "affiliations.json",
+    label: "Affiliations",
+    empty: { label: "", url: "" },
+    fields: [
+      { key: "label", label: "Label (e.g. Nile University)", type: "text" },
+      { key: "url", label: "Link", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.label || "(untitled)")}</strong><span class="meta">${esc(e.url || "")}</span>`,
+  },
+  "affiliation-card": {
+    file: "affiliation-card.json",
+    label: "Affiliation Card",
+    isSingleton: true,
+    fields: [
+      { key: "university", label: "University", type: "text" },
+      { key: "degree", label: "Degree", type: "text" },
+      { key: "period", label: "Period (e.g. 2025–2028)", type: "text" },
+      { key: "institute", label: "Institute", type: "text" },
+      { key: "location", label: "Location", type: "text" },
+    ],
+  },
 };
 
 const state = {
@@ -267,6 +363,8 @@ const state = {
   dirty: {},
   activeTab: "publications",
   editing: null, // { index: number|"new" }
+  sortDir: {}, // per-collection: "asc" | "desc"
+  sortType: {}, // per-collection: the selected sortOptions key
 };
 
 function esc(s) {
@@ -360,7 +458,8 @@ function renderTabs() {
   for (const key of Object.keys(COLLECTIONS)) {
     const btn = document.createElement("button");
     btn.className = "tab" + (key === state.activeTab ? " active" : "") + (state.dirty[key] ? " dirty" : "");
-    btn.innerHTML = `<span>${esc(COLLECTIONS[key].label)}</span><span class="count">${state.data[key].length}</span>`;
+    const count = Array.isArray(state.data[key]) ? `<span class="count">${state.data[key].length}</span>` : "";
+    btn.innerHTML = `<span>${esc(COLLECTIONS[key].label)}</span>${count}`;
     btn.addEventListener("click", () => {
       state.activeTab = key;
       state.editing = null;
@@ -382,6 +481,11 @@ function renderMain() {
   h2.textContent = config.label;
   main.appendChild(h2);
 
+  if (config.isSingleton) {
+    renderSingletonForm(main, key, config);
+    return;
+  }
+
   if (state.editing !== null) {
     renderForm(main, key, config);
     return;
@@ -397,6 +501,39 @@ function renderMain() {
     renderMain();
   });
   toolbar.appendChild(addBtn);
+
+  if (config.sortOptions && config.sortOptions.length > 0) {
+    if (!state.sortType[key]) state.sortType[key] = config.sortOptions[0].key;
+    if (!state.sortDir[key]) state.sortDir[key] = "asc";
+
+    const sortSelect = document.createElement("select");
+    for (const opt of config.sortOptions) {
+      const o = document.createElement("option");
+      o.value = opt.key;
+      o.textContent = opt.label;
+      if (opt.key === state.sortType[key]) o.selected = true;
+      sortSelect.appendChild(o);
+    }
+    sortSelect.addEventListener("change", () => {
+      state.sortType[key] = sortSelect.value;
+      sortList(key);
+    });
+
+    const dirBtn = document.createElement("button");
+    const renderDirLabel = () => {
+      dirBtn.textContent = state.sortDir[key] === "asc" ? "↑ Ascending" : "↓ Descending";
+    };
+    renderDirLabel();
+    dirBtn.title = "Toggle sort direction";
+    dirBtn.addEventListener("click", () => {
+      state.sortDir[key] = state.sortDir[key] === "asc" ? "desc" : "asc";
+      renderDirLabel();
+      sortList(key);
+    });
+
+    toolbar.append(sortSelect, dirBtn);
+  }
+
   main.appendChild(toolbar);
 
   const list = state.data[key];
@@ -461,11 +598,37 @@ function moveEntry(key, i, dir) {
   renderMain();
 }
 
-function renderForm(main, key, config) {
-  const list = state.data[key];
-  const isNew = state.editing.index === "new";
-  const entry = isNew ? JSON.parse(JSON.stringify(config.empty)) : JSON.parse(JSON.stringify(list[state.editing.index]));
+function extractYear(value) {
+  const m = String(value ?? "").match(/\d{4}/);
+  return m ? parseInt(m[0], 10) : null;
+}
 
+function sortList(key) {
+  const config = COLLECTIONS[key];
+  const optKey = state.sortType[key];
+  const option = config.sortOptions.find((o) => o.key === optKey) || config.sortOptions[0];
+  const dir = state.sortDir[key];
+  const list = state.data[key];
+
+  list.sort((a, b) => {
+    if (option.type === "year") {
+      const ya = extractYear(a[option.key]);
+      const yb = extractYear(b[option.key]);
+      const va = ya === null ? -Infinity : ya;
+      const vb = yb === null ? -Infinity : yb;
+      return dir === "asc" ? va - vb : vb - va;
+    }
+    const ta = String(a[option.key] ?? "");
+    const tb = String(b[option.key] ?? "");
+    return dir === "asc" ? ta.localeCompare(tb) : tb.localeCompare(ta);
+  });
+
+  state.dirty[key] = true;
+  renderTabs();
+  renderMain();
+}
+
+function buildFieldsForm(config, entry) {
   const form = document.createElement("div");
   const fieldRefs = {};
 
@@ -499,6 +662,46 @@ function renderForm(main, key, config) {
       }
       wrap.appendChild(sel);
       fieldRefs[f.key] = () => sel.value;
+    } else if (f.type === "category") {
+      const existing = Array.from(
+        new Set((state.data.projects || []).map((p) => p.category).filter(Boolean)),
+      ).sort();
+      const currentValue = entry[f.key] || "";
+      const isCustom = currentValue && !existing.includes(currentValue);
+
+      const sel = document.createElement("select");
+      for (const opt of existing) {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt;
+        sel.appendChild(o);
+      }
+      const newOpt = document.createElement("option");
+      newOpt.value = "__new__";
+      newOpt.textContent = "+ Add new category…";
+      sel.appendChild(newOpt);
+
+      const customInput = document.createElement("input");
+      customInput.type = "text";
+      customInput.placeholder = "New category name";
+      customInput.style.marginTop = "8px";
+
+      if (isCustom || existing.length === 0) {
+        sel.value = "__new__";
+        customInput.value = currentValue;
+        customInput.style.display = "block";
+      } else {
+        sel.value = currentValue || existing[0];
+        customInput.style.display = "none";
+      }
+
+      sel.addEventListener("change", () => {
+        customInput.style.display = sel.value === "__new__" ? "block" : "none";
+        if (sel.value === "__new__") customInput.focus();
+      });
+
+      wrap.append(sel, customInput);
+      fieldRefs[f.key] = () => (sel.value === "__new__" ? customInput.value.trim() : sel.value);
     } else if (f.type === "lines") {
       const ta = document.createElement("textarea");
       ta.rows = 4;
@@ -583,6 +786,16 @@ function renderForm(main, key, config) {
     form.appendChild(wrap);
   }
 
+  return { form, fieldRefs };
+}
+
+function renderForm(main, key, config) {
+  const list = state.data[key];
+  const isNew = state.editing.index === "new";
+  const entry = isNew ? JSON.parse(JSON.stringify(config.empty)) : JSON.parse(JSON.stringify(list[state.editing.index]));
+
+  const { form, fieldRefs } = buildFieldsForm(config, entry);
+
   const actions = document.createElement("div");
   actions.className = "form-actions";
   const saveBtn = document.createElement("button");
@@ -605,6 +818,28 @@ function renderForm(main, key, config) {
     renderMain();
   });
   actions.append(saveBtn, cancelBtn);
+  form.appendChild(actions);
+  main.appendChild(form);
+}
+
+function renderSingletonForm(main, key, config) {
+  const entry = JSON.parse(JSON.stringify(state.data[key]));
+  const { form, fieldRefs } = buildFieldsForm(config, entry);
+
+  const actions = document.createElement("div");
+  actions.className = "form-actions";
+  const saveBtn = document.createElement("button");
+  saveBtn.className = "primary";
+  saveBtn.textContent = "Save";
+  saveBtn.addEventListener("click", () => {
+    const updated = {};
+    for (const f of config.fields) updated[f.key] = fieldRefs[f.key]();
+    state.data[key] = updated;
+    state.dirty[key] = true;
+    renderTabs();
+    showToast("Updated — click “Save all changes” to write it to disk.");
+  });
+  actions.append(saveBtn);
   form.appendChild(actions);
   main.appendChild(form);
 }

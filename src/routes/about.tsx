@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { scholarships, awards, affiliationLinks, cvTimeline } from "@/lib/site-data";
+import { scholarships, awards, affiliationLinks, affiliationCard, cvTimeline } from "@/lib/site-data";
 
 const title = "About — Mohamed Elmanzalawi | PhD Researcher in Bioinformatics";
 const description =
@@ -80,16 +80,12 @@ function About() {
         <Reveal delay={120}>
           <aside className="rounded-xl border border-border bg-surface p-6">
             <p className="eyebrow">Affiliation</p>
-            <p className="mt-3 font-display text-base font-semibold">
-              The Graduate University for Advanced Studies (SOKENDAI)
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">PhD in Genetics (Bioinformatics)</p>
-            <p className="mt-1 font-mono text-xs text-teal">2025–2028</p>
+            <p className="mt-3 font-display text-base font-semibold">{affiliationCard.university}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{affiliationCard.degree}</p>
+            <p className="mt-1 font-mono text-xs text-teal">{affiliationCard.period}</p>
             <div className="mt-5 border-t border-border pt-5">
-              <p className="font-display text-sm font-semibold">
-                National Institute of Genetics (NIG)
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">Mishima, Japan</p>
+              <p className="font-display text-sm font-semibold">{affiliationCard.institute}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{affiliationCard.location}</p>
             </div>
           </aside>
         </Reveal>

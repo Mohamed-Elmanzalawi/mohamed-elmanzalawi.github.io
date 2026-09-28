@@ -1,22 +1,36 @@
 [
   {
+    "year": "2024",
+    "authors": "Adele Mazzoleni, Wireko Andrew Awuah, Vivek Sanker, Hareesha Rishab Bharadwaj, Nicholas Aderinto, Joecelyn Kirani Tan, Helen Ye Rim Huang, Jeisun Poornaselvan, Muhammad Hamza Shah, Oday Atallah, Aya Tawfik, Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi, Sama Hesham Ghozlan, Toufik Abdul-Rahman, Jeremiah Adepoju Moyondafoluwa, Athanasios Alexiou, Marios Papadakis",
+    "highlight": "Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi",
+    "title": "Chromosomal instability: a key driver in glioma pathogenesis and progression",
+    "venue": "European Journal of Medical Research, Article number: 451 (2024)",
+    "links": [
+      {
+        "label": "Research article",
+        "url": "https://doi.org/10.1186/s40001-024-02043-8"
+      }
+    ]
+  },
+  {
     "year": "2025",
     "authors": "Mohamed Elmanzalawi, Takatomo Fujisawa, Hiroshi Mori, Yasukazu Nakamura, Yasuhiro Tanizawa",
     "highlight": "Mohamed Elmanzalawi",
     "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
     "venue": "BMC Bioinformatics 26, 3 (2025)",
     "links": [
-      { "label": "Research article", "url": "https://doi.org/10.1186/s12859-024-06030-y" },
-      { "label": "Code", "url": "https://github.com/nigyta/dfast_qc" },
-      { "label": "Website", "url": "https://dfast.ddbj.nig.ac.jp/dqc/submit/" }
+      {
+        "label": "Research article",
+        "url": "https://doi.org/10.1186/s12859-024-06030-y"
+      },
+      {
+        "label": "Code",
+        "url": "https://github.com/nigyta/dfast_qc"
+      },
+      {
+        "label": "Website",
+        "url": "https://dfast.ddbj.nig.ac.jp/dqc/submit/"
+      }
     ]
-  },
-  {
-    "year": "2024",
-    "authors": "Adele Mazzoleni, Wireko Andrew Awuah, Vivek Sanker, Hareesha Rishab Bharadwaj, Nicholas Aderinto, Joecelyn Kirani Tan, Helen Ye Rim Huang, Jeisun Poornaselvan, Muhammad Hamza Shah, Oday Atallah, Aya Tawfik, Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi, Sama Hesham Ghozlan, Toufik Abdul-Rahman, Jeremiah Adepoju Moyondafoluwa, Athanasios Alexiou, Marios Papadakis",
-    "highlight": "Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi",
-    "title": "Chromosomal instability: a key driver in glioma pathogenesis and progression",
-    "venue": "European Journal of Medical Research, Article number: 451 (2024)",
-    "links": [{ "label": "Research article", "url": "https://doi.org/10.1186/s40001-024-02043-8" }]
   }
 ]

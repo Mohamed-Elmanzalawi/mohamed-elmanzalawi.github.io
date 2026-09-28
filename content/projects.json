@@ -1,0 +1,199 @@
+[
+  {
+    "id": "dfast-qc",
+    "name": "DFAST_QC",
+    "title": "Quality Assessment and Taxonomic Identification of Prokaryotic Genomes",
+    "year": "",
+    "category": "Microbial Genomics",
+    "categoryLabel": "Microbial Genomics / Bioinformatics",
+    "summary": "A high-speed tool for evaluating prokaryotic genome quality and taxonomic identity, querying genomic data against more than 20,000 reference genomes from type strains.",
+    "problem": "Assessing whether a newly assembled prokaryotic genome is complete, uncontaminated and correctly labelled taxonomically usually requires stitching together several slow, separate tools.",
+    "approach": "A single automated workflow that runs completeness and contamination checks and compares the query genome against a curated type-strain reference collection, exposed through both a command-line interface and a web interface.",
+    "outcome": "Genome assessment and taxonomic identification happen in one reproducible step, making routine quality control practical for large batches of microbial genomes.",
+    "capabilities": [
+      "Genome quality assessment",
+      "Taxonomic identification",
+      "Large-scale reference genome comparison",
+      "Automated bioinformatics analysis",
+      "Web and command-line usability"
+    ],
+    "tech": [
+      "Python",
+      "Bioinformatics",
+      "Microbial genomics",
+      "Genome databases"
+    ],
+    "workflow": [
+      "Genome",
+      "Quality assessment",
+      "Reference comparison",
+      "Taxonomic identification"
+    ],
+    "links": [
+      {
+        "label": "Code",
+        "url": "https://github.com/nigyta/dfast_qc"
+      }
+    ],
+    "context": "Developed as a major project during my master's research at SOKENDAI."
+  },
+  {
+    "id": "sapp",
+    "name": "SAPP",
+    "title": "Short-read Analysis Pipeline for Pathogenic Variants",
+    "year": "",
+    "category": "Human Genetics",
+    "categoryLabel": "Human Genetics / Variant Analysis",
+    "summary": "A high-performance, HPC-compatible pipeline designed for short-read sequencing analysis and pathogenic variant identification.",
+    "problem": "Short-read variant analysis involves many chained tools whose behaviour and scheduling differ between compute clusters, which makes runs hard to reproduce.",
+    "approach": "An end-to-end pipeline covering QC through annotation, written to run identically under different HPC schedulers with reproducible configuration.",
+    "outcome": "Validated and optimised for both Sun Grid Engine (SGE) and Slurm environments, so the same analysis scales from a single sample to cluster-scale cohorts.",
+    "capabilities": [
+      "Short-read sequencing analysis",
+      "Variant detection",
+      "Pathogenic variant identification",
+      "HPC execution",
+      "Reproducible workflows",
+      "Scalable analysis"
+    ],
+    "tech": [
+      "Python",
+      "Bash",
+      "HPC",
+      "Genomic variant analysis",
+      "SGE",
+      "Slurm"
+    ],
+    "workflow": [
+      "FASTQ",
+      "QC",
+      "Alignment",
+      "Variant calling",
+      "Annotation",
+      "Candidate variants"
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/Mohamed-Elmanzalawi/SAPP"
+      }
+    ],
+    "context": ""
+  },
+  {
+    "id": "polar-fungi",
+    "name": "Polar Fungi Database",
+    "title": "Polar Fungi Genome Database",
+    "year": "",
+    "category": "Genomics",
+    "categoryLabel": "Genomic Databases / Comparative Genomics",
+    "summary": "A specialised database and comparative platform for exploring fungal genomes from polar environments.",
+    "problem": "Genomic resources for polar fungi are fragmented across sources, which makes systematic exploration and cross-genome comparison difficult.",
+    "approach": "An integrated database with a comparison interface that places genomes side by side and surfaces shared genomic features and annotations.",
+    "outcome": "A single environment for genome exploration and comparative genomics of polar fungal genomes.",
+    "capabilities": [
+      "Polar fungal genomes",
+      "Genome exploration",
+      "Comparative genomics",
+      "Shared genomic features",
+      "Biological data visualization"
+    ],
+    "tech": [
+      "Genomic databases",
+      "Comparative genomics",
+      "Python",
+      "Data visualization"
+    ],
+    "workflow": [],
+    "links": [],
+    "context": ""
+  },
+  {
+    "id": "parkinsons-metagenomics",
+    "name": "Parkinson's Metagenomics",
+    "title": "Metagenomic Analysis of Parkinson's Disease",
+    "year": "",
+    "category": "Metagenomics",
+    "categoryLabel": "Metagenomics / Statistical Analysis / Machine Learning",
+    "summary": "Analysis of metagenomic relative-abundance data from Parkinson's disease and healthy-control cohorts using R and Python-based statistical approaches.",
+    "problem": "Relative-abundance metagenomic data is compositional, sparse and high-dimensional, which makes naive comparisons between cohorts unreliable.",
+    "approach": "Statistical modelling of microbial abundance profiles combined with machine-learning approaches and dedicated visualisations of cohort differences.",
+    "outcome": "A reproducible analysis framework for comparing microbial community profiles between disease and control cohorts.",
+    "capabilities": [
+      "Microbial abundance analysis",
+      "Disease-associated microbial patterns",
+      "Statistical modeling",
+      "Data visualization",
+      "Machine learning"
+    ],
+    "tech": [
+      "R",
+      "Python",
+      "Statistical analysis",
+      "Machine learning",
+      "Metagenomics"
+    ],
+    "workflow": [],
+    "links": [],
+    "context": ""
+  },
+  {
+    "id": "organ-age-proteomics",
+    "name": "Organ Age & Proteomics",
+    "title": "Proteomic Analysis of Organ Age Associations",
+    "year": "",
+    "category": "Data Science",
+    "categoryLabel": "Proteomics / Data Science / Biological Aging",
+    "summary": "Analysis of high-dimensional proteomic data to investigate associations between organ-age estimates and biological phenotypes.",
+    "problem": "Proteomic datasets carry thousands of correlated measurements per sample, so linking organ-age estimates to phenotypes requires careful statistical handling.",
+    "approach": "Statistical modelling and computational analysis of high-dimensional proteomic measurements alongside organ-age estimates.",
+    "outcome": "A structured analytical workflow for exploring organ-age and phenotype relationships in proteomic data.",
+    "capabilities": [
+      "High-dimensional data analysis",
+      "Statistical modeling",
+      "Proteomic data processing",
+      "Machine learning"
+    ],
+    "tech": [
+      "Python",
+      "R",
+      "Statistical modeling",
+      "Proteomics",
+      "Machine learning"
+    ],
+    "workflow": [],
+    "links": [],
+    "context": ""
+  },
+  {
+    "id": "genomic-pipelines",
+    "name": "Genomic Data Analysis",
+    "title": "Genomic Data Analysis & Research Pipelines",
+    "year": "",
+    "category": "Genomics",
+    "categoryLabel": "Genomics / Research Engineering",
+    "summary": "A broader body of work covering the analysis pipelines and data engineering behind large-scale biological datasets.",
+    "problem": "Research questions across genomics repeatedly need the same foundations: clean data handling, scalable execution and reproducible analysis.",
+    "approach": "Reusable pipeline components for sequencing analysis, variant workflows, phylogenetics and clustering, applied across microbial and human datasets.",
+    "outcome": "A consistent computational toolkit that shortens the path from raw sequencing data to interpretable results.",
+    "capabilities": [
+      "High-throughput sequencing",
+      "Variant analysis",
+      "Microbial genomics",
+      "Genomic databases",
+      "Phylogenetics",
+      "Clustering",
+      "Large-scale biological datasets"
+    ],
+    "tech": [
+      "Python",
+      "R",
+      "Bash",
+      "Linux",
+      "HPC"
+    ],
+    "workflow": [],
+    "links": [],
+    "context": ""
+  }
+]

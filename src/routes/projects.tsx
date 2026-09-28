@@ -145,9 +145,11 @@ function Projects() {
                 <button
                   onClick={() => setOpenId(open ? null : p.id)}
                   aria-expanded={open}
-                  className="flex w-full items-start gap-5 p-6 text-left sm:p-8"
+                  className={cn("flex w-full items-start gap-5 p-6 text-left sm:p-8", p.links.length > 0 && "pb-0")}
                 >
-                  <span className="mt-1 font-mono text-xs text-teal">{p.index}</span>
+                  <span className="mt-1 w-6 shrink-0 font-mono text-xs text-teal">
+                    {String(projects.indexOf(p) + 1).padStart(2, "0")}
+                  </span>
                   <span className="flex-1">
                     <span className="block font-display text-xl font-semibold sm:text-2xl">
                       {p.name}
@@ -167,6 +169,26 @@ function Projects() {
                     )}
                   />
                 </button>
+
+                {p.links.length > 0 && (
+                  <div className="flex gap-5 px-6 pb-6 pt-4 sm:px-8 sm:pb-8">
+                    <span className="w-6 shrink-0" aria-hidden="true" />
+                    <div className="flex flex-1 flex-wrap gap-2.5">
+                      {p.links.map((l) => (
+                        <a
+                          key={l.url}
+                          href={l.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium transition-smooth hover:-translate-y-0.5 hover:border-teal/60 hover:bg-card hover:shadow-soft"
+                        >
+                          {l.label}
+                          <ExternalLink className="size-3.5 text-muted-foreground transition-smooth group-hover:text-teal" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {open && (
                   <div className="border-t border-border px-6 pb-8 pt-6 sm:px-8">
@@ -220,17 +242,6 @@ function Projects() {
                         </ul>
                       </div>
                     </div>
-
-                    {p.link && (
-                      <a
-                        href={p.link.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-7 inline-flex items-center gap-2 text-sm text-primary transition-smooth hover:gap-3"
-                      >
-                        {p.link.label} <ExternalLink className="size-3.5" />
-                      </a>
-                    )}
                   </div>
                 )}
               </div>

@@ -54,16 +54,17 @@ function Publications() {
                 <AuthorList authors={p.authors} highlight={p.highlight} />
               </div>
               <p className="mt-2 text-sm italic text-muted-foreground">{p.venue}</p>
-              <div className="mt-4 flex flex-wrap gap-4">
+              <div className="mt-4 flex flex-wrap gap-2.5">
                 {p.links.map((l) => (
                   <a
                     key={l.url}
                     href={l.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-primary transition-smooth hover:gap-2.5"
+                    className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium transition-smooth hover:-translate-y-0.5 hover:border-teal/60 hover:bg-card hover:shadow-soft"
                   >
-                    {l.label} <ExternalLink className="size-3.5" />
+                    {l.label}
+                    <ExternalLink className="size-3.5 text-muted-foreground transition-smooth group-hover:text-teal" />
                   </a>
                 ))}
               </div>
