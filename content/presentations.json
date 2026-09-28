@@ -1,0 +1,104 @@
+[
+  {
+    "type": "Oral",
+    "year": "2025",
+    "title": "Ultrafast Identification of Species from Their Genomes",
+    "event": "The 22nd CJK Bioinformatics Conference",
+    "location": "Shanghai, China",
+    "date": "6–9 Nov 2025",
+    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" }
+  },
+  {
+    "type": "Oral",
+    "year": "2025",
+    "title": "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis",
+    "event": "National Institute of Genetics — Master's defence (D2) progress presentation",
+    "location": "Mishima, Japan",
+    "date": "30 Jul 2025",
+    "link": { "label": "Website", "url": "https://www.nig.ac.jp/nig/research/seminer?id=1718" }
+  },
+  {
+    "type": "Oral",
+    "year": "2025",
+    "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
+    "event": "National Institute of Genetics — progress presentation",
+    "location": "Mishima, Japan",
+    "date": "27 Feb 2025",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  },
+  {
+    "type": "Oral",
+    "year": "2024",
+    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
+    "event": "National Institute of Genetics — progress presentation",
+    "location": "Mishima, Japan",
+    "date": "28 Aug 2024",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  },
+  {
+    "type": "Poster",
+    "year": "2025",
+    "title": "SAPP: a flexible, scalable and reproducible pipeline for pathogenic variants detection",
+    "event": "The 22nd CJK Bioinformatics Conference",
+    "location": "Shanghai, China",
+    "date": "6–9 Nov 2025",
+    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" }
+  },
+  {
+    "type": "Poster",
+    "year": "2025",
+    "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
+    "event": "National Institute of Genetics — life science retreat",
+    "location": "Shizuoka, Japan",
+    "date": "3–4 Jul 2025",
+    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1BjaKj5kg9OJLgUNAKFotRBVxzWLYNJVM/view?usp=sharing" }
+  },
+  {
+    "type": "Poster",
+    "year": "2025",
+    "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
+    "event": "National Institute of Genetics — progress presentation",
+    "location": "Mishima, Japan",
+    "date": "27 Feb 2025",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  },
+  {
+    "type": "Poster",
+    "year": "2025",
+    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
+    "event": "National Institute of Genetics — life science retreat",
+    "location": "Minamitsuru, Japan",
+    "date": "16–17 Jan 2025",
+    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qXbASxGIhWvta9gAlpvBmn5_mOpIQoco/view?usp=sharing" }
+  },
+  {
+    "type": "Poster",
+    "year": "2024",
+    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
+    "event": "International Symposium on Plasmid Biology 2024",
+    "location": "Hamamatsu, Japan",
+    "date": "2–6 Sep 2024",
+    "link": { "label": "Website", "url": "https://smartconf.jp/content/ispb2024/" }
+  },
+  {
+    "type": "Poster",
+    "year": "2024",
+    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
+    "event": "National Institute of Genetics — progress presentation",
+    "location": "Mishima, Japan",
+    "date": "28 Aug 2024",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  }
+]

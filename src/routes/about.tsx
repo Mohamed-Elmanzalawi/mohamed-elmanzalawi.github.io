@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { scholarships, awards, affiliationLinks } from "@/lib/site-data";
+import { scholarships, awards, affiliationLinks, cvTimeline } from "@/lib/site-data";
 
 const title = "About — Mohamed Elmanzalawi | PhD Researcher in Bioinformatics";
 const description =
@@ -31,63 +31,6 @@ const interests = [
   "Data Science",
   "Machine Learning",
   "Biological Data Analysis",
-];
-
-const timeline = [
-  {
-    period: "2014–2019",
-    title: "B.Sc. in Clinical Pharmacy — Faculty of Pharmacy, Cairo University, Egypt",
-    body: "Undergraduate degree in clinical pharmacy, including early research experience with the Medical Research Society and SCOPS at Cairo University and Ain Shams University.",
-    points: [],
-  },
-  {
-    period: "2021–2023",
-    title: "Clinical Pharmacy — Egypt",
-    body: "Hospital pharmacist and pharmacy roles at Dar El Salam Cancer Hospital and Cura El Nasr Hospital.",
-    points: [
-      "Oncology",
-      "Medication safety",
-      "Clinical decision-making",
-      "Data-driven pharmacy",
-      "Statistical analysis",
-      "Healthcare workflows",
-    ],
-  },
-  {
-    period: "2021–2023",
-    title: "Professional Diploma in Bioinformatics & Research Student — Nile University, Egypt",
-    body: "Professional Diploma in Bioinformatics alongside a research student position, transitioning from clinical pharmacy into computational biology.",
-    points: [],
-  },
-  {
-    period: "2022",
-    title: "Research Intern (NIGINTERN 2022) — National Institute of Genetics, Japan",
-    body: "Research internship advised by Dr. Nakamura Yasukazu, working with genomic datasets.",
-    points: ["Python", "R", "Phylogenetic analysis", "Clustering", "Genomic data visualization"],
-  },
-  {
-    period: "2023–2025",
-    title: "M.Sc. in Genetics (Bioinformatics) — SOKENDAI / National Institute of Genetics",
-    body: 'Thesis: "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis", advised by Dr. Nakamura Yasukazu.',
-    points: ["DFAST_QC", "SAPP"],
-  },
-  {
-    period: "2026",
-    title: "Bioinformatician — Metagen Therapeutics",
-    body: "Analysis of clinical and biological datasets.",
-    points: [
-      "Parkinson's disease metagenomic data",
-      "Proteomic data",
-      "Organ-age associations",
-      "Statistical and machine-learning models",
-    ],
-  },
-  {
-    period: "2025–Present",
-    title: "PhD in Genetics (Bioinformatics) — SOKENDAI / National Institute of Genetics",
-    body: "Current research in computational genomics and biological data analysis, advised by Dr. Nakamura Yasukazu.",
-    points: [],
-  },
 ];
 
 const credibility = [
@@ -175,7 +118,7 @@ function About() {
           <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Career Journey</h2>
         </Reveal>
         <ol className="mt-10 space-y-0 border-l border-border pl-6 sm:pl-8">
-          {timeline.map((t, i) => (
+          {cvTimeline.map((t, i) => (
             <Reveal as="li" key={t.period + t.title} delay={i * 70} className="relative pb-10 last:pb-0">
               <span className="absolute -left-[31px] top-1.5 size-2.5 rounded-full border-2 border-background bg-teal sm:-left-[39px]" />
               <p className="font-mono text-xs tracking-widest text-teal">{t.period}</p>

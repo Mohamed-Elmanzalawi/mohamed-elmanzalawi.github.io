@@ -1,3 +1,9 @@
+import publicationsData from "../../content/publications.json";
+import presentationsData from "../../content/presentations.json";
+import scholarshipsData from "../../content/scholarships.json";
+import awardsData from "../../content/awards.json";
+import cvTimelineData from "../../content/cv-timeline.json";
+
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
 
@@ -204,30 +210,7 @@ export type Publication = {
   links: { label: string; url: string }[];
 };
 
-export const publications: Publication[] = [
-  {
-    year: "2025",
-    authors:
-      "Mohamed Elmanzalawi, Takatomo Fujisawa, Hiroshi Mori, Yasukazu Nakamura, Yasuhiro Tanizawa",
-    highlight: "Mohamed Elmanzalawi",
-    title: "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    venue: "BMC Bioinformatics 26, 3 (2025)",
-    links: [
-      { label: "Research article", url: "https://doi.org/10.1186/s12859-024-06030-y" },
-      { label: "Code", url: "https://github.com/nigyta/dfast_qc" },
-      { label: "Website", url: "https://dfast.ddbj.nig.ac.jp/dqc/submit/" },
-    ],
-  },
-  {
-    year: "2024",
-    authors:
-      "Adele Mazzoleni, Wireko Andrew Awuah, Vivek Sanker, Hareesha Rishab Bharadwaj, Nicholas Aderinto, Joecelyn Kirani Tan, Helen Ye Rim Huang, Jeisun Poornaselvan, Muhammad Hamza Shah, Oday Atallah, Aya Tawfik, Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi, Sama Hesham Ghozlan, Toufik Abdul-Rahman, Jeremiah Adepoju Moyondafoluwa, Athanasios Alexiou, Marios Papadakis",
-    highlight: "Mohamed Elsayed Abdelmeguid Elsayed Elmanzalawi",
-    title: "Chromosomal instability: a key driver in glioma pathogenesis and progression",
-    venue: "European Journal of Medical Research, Article number: 451 (2024)",
-    links: [{ label: "Research article", url: "https://doi.org/10.1186/s40001-024-02043-8" }],
-  },
-];
+export const publications: Publication[] = publicationsData;
 
 export type Presentation = {
   type: "Oral" | "Poster";
@@ -239,111 +222,7 @@ export type Presentation = {
   link?: { label: string; url: string };
 };
 
-export const presentations: Presentation[] = [
-  {
-    type: "Oral",
-    year: "2025",
-    title: "Ultrafast Identification of Species from Their Genomes",
-    event: "The 22nd CJK Bioinformatics Conference",
-    location: "Shanghai, China",
-    date: "6–9 Nov 2025",
-    link: { label: "Agenda", url: "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" },
-  },
-  {
-    type: "Oral",
-    year: "2025",
-    title:
-      "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis",
-    event: "National Institute of Genetics — Master's defence (D2) progress presentation",
-    location: "Mishima, Japan",
-    date: "30 Jul 2025",
-    link: { label: "Website", url: "https://www.nig.ac.jp/nig/research/seminer?id=1718" },
-  },
-  {
-    type: "Oral",
-    year: "2025",
-    title: "Identification of rare pathogenic variants in patients with primary immune deficiency",
-    event: "National Institute of Genetics — progress presentation",
-    location: "Mishima, Japan",
-    date: "27 Feb 2025",
-    link: {
-      label: "Website",
-      url: "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster",
-    },
-  },
-  {
-    type: "Oral",
-    year: "2024",
-    title: "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    event: "National Institute of Genetics — progress presentation",
-    location: "Mishima, Japan",
-    date: "28 Aug 2024",
-    link: {
-      label: "Website",
-      url: "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster",
-    },
-  },
-  {
-    type: "Poster",
-    year: "2025",
-    title: "SAPP: a flexible, scalable and reproducible pipeline for pathogenic variants detection",
-    event: "The 22nd CJK Bioinformatics Conference",
-    location: "Shanghai, China",
-    date: "6–9 Nov 2025",
-    link: { label: "Agenda", url: "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" },
-  },
-  {
-    type: "Poster",
-    year: "2025",
-    title: "Identification of rare pathogenic variants in patients with primary immune deficiency",
-    event: "National Institute of Genetics — life science retreat",
-    location: "Shizuoka, Japan",
-    date: "3–4 Jul 2025",
-    link: { label: "Agenda", url: "https://drive.google.com/file/d/1BjaKj5kg9OJLgUNAKFotRBVxzWLYNJVM/view?usp=sharing" },
-  },
-  {
-    type: "Poster",
-    year: "2025",
-    title: "Identification of rare pathogenic variants in patients with primary immune deficiency",
-    event: "National Institute of Genetics — progress presentation",
-    location: "Mishima, Japan",
-    date: "27 Feb 2025",
-    link: {
-      label: "Website",
-      url: "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster",
-    },
-  },
-  {
-    type: "Poster",
-    year: "2025",
-    title: "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    event: "National Institute of Genetics — life science retreat",
-    location: "Minamitsuru, Japan",
-    date: "16–17 Jan 2025",
-    link: { label: "Agenda", url: "https://drive.google.com/file/d/1qXbASxGIhWvta9gAlpvBmn5_mOpIQoco/view?usp=sharing" },
-  },
-  {
-    type: "Poster",
-    year: "2024",
-    title: "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    event: "International Symposium on Plasmid Biology 2024",
-    location: "Hamamatsu, Japan",
-    date: "2–6 Sep 2024",
-    link: { label: "Website", url: "https://smartconf.jp/content/ispb2024/" },
-  },
-  {
-    type: "Poster",
-    year: "2024",
-    title: "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    event: "National Institute of Genetics — progress presentation",
-    location: "Mishima, Japan",
-    date: "28 Aug 2024",
-    link: {
-      label: "Website",
-      url: "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster",
-    },
-  },
-];
+export const presentations: Presentation[] = presentationsData as Presentation[];
 
 export type Recognition = {
   title: string;
@@ -352,77 +231,18 @@ export type Recognition = {
   url?: string;
 };
 
-export const scholarships: Recognition[] = [
-  {
-    title: "Ministry of Education, Culture, Sports, Science and Technology (MEXT) Scholarship",
-    date: "Jul. 2023",
-    body: "One of 15 students out of 5,000+ (0.3%) applicants in Egypt to receive the MEXT scholarship to study in Japan.",
-    url: "https://www.mext.go.jp/en/policy/education/highered/title02/detail02/sdetail02/1373897.htm",
-  },
-  {
-    title: "NIG Global Scholar (NIG-GS) Scholarship",
-    date: "Jun. 2023",
-    body: "The only student out of 1,000+ (0.1%) applicants to receive the NIG Global Scholar scholarship to study at the National Institute of Genetics (NIG).",
-    url: "https://www.nig.ac.jp/nig/phd-program/admissions-top/admissions/nig-gs",
-  },
-  {
-    title: "Data Careers Unlocked x DataCamp Scholarship",
-    date: "Jan. 2024",
-    body: "Awarded one year of access to DataCamp's data science and analytics courses.",
-    url: "https://datacareersunlocked.org/",
-  },
-];
+export const scholarships: Recognition[] = scholarshipsData;
 
-export const awards: Recognition[] = [
-  {
-    title: "Hiroko Morishima Progress Award",
-    date: "Aug. 2024",
-    body: "Given by Dept. of Genetics (National Institute of Genetics), SOKENDAI, Japan, to students who demonstrate a strong commitment to research and outstanding performance.",
-    url: "http://www.nig.ac.jp/nig/phd-program/main-page-top/various-aids-to-students/progress-award",
-  },
-  {
-    title: "Best Intern Instructor Award",
-    date: "Jul. 2024",
-    body: "Given by Dept. of Genetics (National Institute of Genetics), SOKENDAI, Japan, to the instructor with the most outstanding guidance to their interns.",
-    url: "https://www.nig.ac.jp/nig/research/seminer?id=1592",
-  },
-  {
-    title: "NIGINTERN 2022 Research Internship Completion Award",
-    date: "Jul. 2022",
-    body: "Given by Dept. of Genetics (National Institute of Genetics), SOKENDAI, Japan, for successfully completing a prestigious research internship.",
-  },
-  {
-    title: "NIGINTERN 2022 Awardee",
-    date: "Feb. 2022",
-    body: "One of 9 students out of 1,500+ (0.6%) applicants to receive a summer research internship, admitted under the Genome Informatics Laboratory working on large genome sequences in the DNA Data Bank of Japan (DDBJ).",
-    url: "https://www.nig.ac.jp/jimu/soken/intern/2022/message/essay/essay_04.html",
-  },
-  {
-    title: "Certificate of Appreciation",
-    date: "Nov. 2022",
-    body: "Given by Dr. Reem Emad, Director of Dar Al Salam Cancer Hospital, Egypt.",
-  },
-  {
-    title: "Excellent Performance Award",
-    date: "Feb. 2018",
-    body: "Given by Dr. Omar Ahmed Taha Al Fahal, Pharmacy Manager, Madinat Zayed Hospital, UAE.",
-  },
-  {
-    title: "Excellent Execution Award, Community Pharmacy Project",
-    date: "Jun. 2017",
-    body: "Given by Prof. Dr. Samar Farid, Head of the Department of Clinical Pharmacy, Faculty of Pharmacy, Cairo University.",
-  },
-  {
-    title: "Most Passionate",
-    date: "May 2016",
-    body: "Given at the SCOPS Academy Clinical Workshop.",
-  },
-  {
-    title: "Completion Certificate Student Award",
-    date: "May 2014",
-    body: "One of the top 10 high-school students in the Western District, UAE, given by the Abdullah Ali Al Hammadi Al Gharbiya Model School director.",
-  },
-];
+export const awards: Recognition[] = awardsData;
+
+export type CvTimelineEntry = {
+  period: string;
+  title: string;
+  body: string;
+  points: string[];
+};
+
+export const cvTimeline: CvTimelineEntry[] = cvTimelineData;
 
 export const affiliationLinks = [
   { label: "ROIS – National Institute of Genetics", url: "https://www.nig.ac.jp/nig/" },

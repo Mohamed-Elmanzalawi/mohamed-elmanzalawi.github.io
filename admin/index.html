@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Content Editor — Mohamed Elmanzalawi Portfolio</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --border: #dfe3e8;
+    --text: #1c2530;
+    --muted: #5b6674;
+    --primary: #005184;
+    --primary-foreground: #ffffff;
+    --danger: #b3261e;
+    --danger-bg: #fdecea;
+    --success: #146c2e;
+    --success-bg: #e8f5e9;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header .status { font-size: 13px; color: var(--muted); }
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 14px;
+  }
+  button:hover { border-color: var(--primary); }
+  button.primary {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: var(--primary);
+  }
+  button.primary:hover { opacity: 0.92; }
+  button.danger { color: var(--danger); border-color: var(--danger-bg); }
+  button.danger:hover { border-color: var(--danger); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.small { padding: 5px 9px; font-size: 12px; }
+
+  #error-screen {
+    max-width: 640px;
+    margin: 10vh auto;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    display: none;
+  }
+  #error-screen p { color: var(--muted); line-height: 1.6; font-size: 14px; }
+
+  #app { display: none; }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 61px);
+  }
+  nav {
+    border-right: 1px solid var(--border);
+    padding: 16px 10px;
+  }
+  nav button.tab {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: transparent;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    font-size: 14px;
+  }
+  nav button.tab.active { background: #eaf2f7; color: var(--primary); font-weight: 600; }
+  nav button.tab .count {
+    color: var(--muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  nav button.tab.dirty::after {
+    content: "●";
+    color: #c98a00;
+    margin-left: 6px;
+    font-size: 9px;
+  }
+
+  main { padding: 24px 28px; max-width: 860px; }
+  main h2 { margin: 0 0 4px; font-size: 20px; }
+  main .subtitle { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .card .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card .summary { font-size: 14px; line-height: 1.5; }
+  .card .summary strong { display: block; font-size: 14.5px; }
+  .card .summary .meta { display: block; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .card .actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 5px; color: var(--muted); }
+  .field input[type="text"], .field input[type="url"], .field textarea, .field select {
+    width: 100%;
+    font: inherit;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .field .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .link-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .link-row input { flex: 1; }
+
+  .form-actions { display: flex; gap: 8px; margin-top: 18px; }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #b7ddbc;
+    display: none;
+    max-width: 360px;
+  }
+  .toast.error { background: var(--danger-bg); color: var(--danger); border-color: #f0b9b4; }
+</style>
+</head>
+<body>
+
+<div id="error-screen">
+  <h1 style="font-size:20px;margin-bottom:8px;">Couldn't load your content</h1>
+  <p id="error-message">Something went wrong.</p>
+  <p>
+    Make sure <code>npm run dev</code> is running, and that you're viewing this page via
+    <code>http://localhost:8080/admin/</code> — not by opening the file directly.
+  </p>
+  <button class="primary" onclick="location.reload()">Try again</button>
+</div>
+
+<div id="app">
+  <header>
+    <h1>Portfolio Content Editor</h1>
+    <div class="status" id="status-text">Loading…</div>
+    <div>
+      <button id="save-all-btn" class="primary" disabled>Save all changes</button>
+      <button id="reload-btn">Reload from disk</button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav id="tabs"></nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const COLLECTIONS = {
+  publications: {
+    file: "publications.json",
+    label: "Publications",
+    empty: { year: "", authors: "", highlight: "", title: "", venue: "", links: [] },
+    fields: [
+      { key: "year", label: "Year", type: "text" },
+      { key: "title", label: "Title", type: "textarea" },
+      { key: "authors", label: "Authors (comma-separated, as they should be listed)", type: "textarea" },
+      { key: "highlight", label: "Name to bold (must match text in Authors exactly)", type: "text" },
+      { key: "venue", label: "Venue / journal citation", type: "text" },
+      { key: "links", label: "Links", type: "linklist" },
+    ],
+    summary: (e) =>
+      `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.year || "")} · ${esc(e.venue || "")}</span>`,
+  },
+  presentations: {
+    file: "presentations.json",
+    label: "Presentations & Conferences",
+    empty: { type: "Oral", year: "", title: "", event: "", location: "", date: "", link: undefined },
+    fields: [
+      { key: "type", label: "Type", type: "select", options: ["Oral", "Poster"] },
+      { key: "title", label: "Title", type: "textarea" },
+      { key: "event", label: "Event / conference", type: "text" },
+      { key: "location", label: "Location", type: "text" },
+      { key: "date", label: "Date (e.g. 6–9 Nov 2025)", type: "text" },
+      { key: "year", label: "Year (for sorting/reference)", type: "text" },
+      { key: "link", label: "Link (optional)", type: "link" },
+    ],
+    summary: (e) =>
+      `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">[${esc(e.type || "")}] ${esc(e.date || "")} · ${esc(e.event || "")}</span>`,
+  },
+  "cv-timeline": {
+    file: "cv-timeline.json",
+    label: "CV Timeline",
+    empty: { period: "", title: "", body: "", points: [] },
+    fields: [
+      { key: "period", label: "Period (e.g. 2023–2025)", type: "text" },
+      { key: "title", label: "Title", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "points", label: "Tags / highlights (one per line)", type: "lines" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.period || "")}</span>`,
+  },
+  scholarships: {
+    file: "scholarships.json",
+    label: "Scholarships",
+    empty: { title: "", date: "", body: "", url: "" },
+    fields: [
+      { key: "title", label: "Title", type: "text" },
+      { key: "date", label: "Date (e.g. Jul. 2023)", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "url", label: "Link (optional)", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
+  },
+  awards: {
+    file: "awards.json",
+    label: "Awards",
+    empty: { title: "", date: "", body: "", url: "" },
+    fields: [
+      { key: "title", label: "Title", type: "text" },
+      { key: "date", label: "Date (e.g. Aug. 2024)", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "url", label: "Link (optional)", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
+  },
+};
+
+const state = {
+  data: {},
+  dirty: {},
+  activeTab: "publications",
+  editing: null, // { index: number|"new" }
+};
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function showToast(message, isError) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = "toast" + (isError ? " error" : "");
+  toast.style.display = "block";
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => (toast.style.display = "none"), 4000);
+}
+
+function showError(message) {
+  document.getElementById("error-message").textContent = message;
+  document.getElementById("error-screen").style.display = "block";
+  document.getElementById("app").style.display = "none";
+}
+
+// ---------- Load / save over the dev server's content API ----------
+
+async function loadAllCollections() {
+  for (const key of Object.keys(COLLECTIONS)) {
+    const res = await fetch(`/content/${COLLECTIONS[key].file}`);
+    if (!res.ok) throw new Error(`Failed to load content/${COLLECTIONS[key].file} (${res.status})`);
+    state.data[key] = await res.json();
+    state.dirty[key] = false;
+  }
+}
+
+async function saveCollection(key) {
+  const res = await fetch(`/__admin/save/${COLLECTIONS[key].file}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(state.data[key]),
+  });
+  const result = await res.json();
+  if (!res.ok || !result.ok) throw new Error(result.error || `Failed to save ${COLLECTIONS[key].file}`);
+  state.dirty[key] = false;
+}
+
+async function init() {
+  try {
+    await loadAllCollections();
+    document.getElementById("error-screen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    renderTabs();
+    renderMain();
+  } catch (err) {
+    showError(err.message || String(err));
+  }
+}
+
+document.getElementById("reload-btn").addEventListener("click", async () => {
+  const anyDirty = Object.values(state.dirty).some(Boolean);
+  if (anyDirty && !confirm("You have unsaved changes that will be lost. Reload from disk anyway?")) return;
+  state.editing = null;
+  await init();
+});
+
+document.getElementById("save-all-btn").addEventListener("click", async () => {
+  const dirtyKeys = Object.keys(state.dirty).filter((k) => state.dirty[k]);
+  if (dirtyKeys.length === 0) {
+    showToast("Nothing to save");
+    return;
+  }
+  try {
+    for (const key of dirtyKeys) await saveCollection(key);
+    updateStatus();
+    renderTabs();
+    showToast(`Saved ${dirtyKeys.length} file(s). Now git add, commit and push to publish.`);
+  } catch (err) {
+    showToast("Save failed: " + (err.message || err), true);
+  }
+});
+
+function updateStatus() {
+  const dirtyCount = Object.values(state.dirty).filter(Boolean).length;
+  document.getElementById("status-text").textContent =
+    dirtyCount === 0 ? "No changes" : `${dirtyCount} file(s) with unsaved changes`;
+  document.getElementById("save-all-btn").disabled = dirtyCount === 0;
+}
+
+// ---------- Rendering ----------
+
+function renderTabs() {
+  const nav = document.getElementById("tabs");
+  nav.innerHTML = "";
+  for (const key of Object.keys(COLLECTIONS)) {
+    const btn = document.createElement("button");
+    btn.className = "tab" + (key === state.activeTab ? " active" : "") + (state.dirty[key] ? " dirty" : "");
+    btn.innerHTML = `<span>${esc(COLLECTIONS[key].label)}</span><span class="count">${state.data[key].length}</span>`;
+    btn.addEventListener("click", () => {
+      state.activeTab = key;
+      state.editing = null;
+      renderTabs();
+      renderMain();
+    });
+    nav.appendChild(btn);
+  }
+  updateStatus();
+}
+
+function renderMain() {
+  const main = document.getElementById("main");
+  const key = state.activeTab;
+  const config = COLLECTIONS[key];
+  main.innerHTML = "";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = config.label;
+  main.appendChild(h2);
+
+  if (state.editing !== null) {
+    renderForm(main, key, config);
+    return;
+  }
+
+  const toolbar = document.createElement("div");
+  toolbar.className = "toolbar";
+  const addBtn = document.createElement("button");
+  addBtn.className = "primary";
+  addBtn.textContent = "+ Add new";
+  addBtn.addEventListener("click", () => {
+    state.editing = { index: "new" };
+    renderMain();
+  });
+  toolbar.appendChild(addBtn);
+  main.appendChild(toolbar);
+
+  const list = state.data[key];
+  if (list.length === 0) {
+    const p = document.createElement("p");
+    p.className = "subtitle";
+    p.textContent = "Nothing here yet.";
+    main.appendChild(p);
+  }
+
+  list.forEach((entry, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const row = document.createElement("div");
+    row.className = "row";
+    const summary = document.createElement("div");
+    summary.className = "summary";
+    summary.innerHTML = config.summary(entry);
+    row.appendChild(summary);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const upBtn = mkSmallBtn("↑", i === 0, () => moveEntry(key, i, -1));
+    const downBtn = mkSmallBtn("↓", i === list.length - 1, () => moveEntry(key, i, 1));
+    const editBtn = mkSmallBtn("Edit", false, () => {
+      state.editing = { index: i };
+      renderMain();
+    });
+    const delBtn = mkSmallBtn("Delete", false, () => {
+      if (!confirm("Delete this entry? This can't be undone (unless you re-add it).")) return;
+      list.splice(i, 1);
+      state.dirty[key] = true;
+      renderTabs();
+      renderMain();
+    });
+    delBtn.classList.add("danger");
+
+    actions.append(upBtn, downBtn, editBtn, delBtn);
+    row.appendChild(actions);
+    card.appendChild(row);
+    main.appendChild(card);
+  });
+}
+
+function mkSmallBtn(label, disabled, onClick) {
+  const b = document.createElement("button");
+  b.className = "small";
+  b.textContent = label;
+  b.disabled = disabled;
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+function moveEntry(key, i, dir) {
+  const list = state.data[key];
+  const j = i + dir;
+  if (j < 0 || j >= list.length) return;
+  [list[i], list[j]] = [list[j], list[i]];
+  state.dirty[key] = true;
+  renderTabs();
+  renderMain();
+}
+
+function renderForm(main, key, config) {
+  const list = state.data[key];
+  const isNew = state.editing.index === "new";
+  const entry = isNew ? JSON.parse(JSON.stringify(config.empty)) : JSON.parse(JSON.stringify(list[state.editing.index]));
+
+  const form = document.createElement("div");
+  const fieldRefs = {};
+
+  for (const f of config.fields) {
+    const wrap = document.createElement("div");
+    wrap.className = "field";
+    const label = document.createElement("label");
+    label.textContent = f.label;
+    wrap.appendChild(label);
+
+    if (f.type === "text" || f.type === "url") {
+      const input = document.createElement("input");
+      input.type = f.type;
+      input.value = entry[f.key] || "";
+      wrap.appendChild(input);
+      fieldRefs[f.key] = () => input.value.trim();
+    } else if (f.type === "textarea") {
+      const ta = document.createElement("textarea");
+      ta.rows = f.key === "authors" || f.key === "body" ? 4 : 2;
+      ta.value = entry[f.key] || "";
+      wrap.appendChild(ta);
+      fieldRefs[f.key] = () => ta.value.trim();
+    } else if (f.type === "select") {
+      const sel = document.createElement("select");
+      for (const opt of f.options) {
+        const o = document.createElement("option");
+        o.value = opt;
+        o.textContent = opt;
+        if (entry[f.key] === opt) o.selected = true;
+        sel.appendChild(o);
+      }
+      wrap.appendChild(sel);
+      fieldRefs[f.key] = () => sel.value;
+    } else if (f.type === "lines") {
+      const ta = document.createElement("textarea");
+      ta.rows = 4;
+      ta.value = (entry[f.key] || []).join("\n");
+      wrap.appendChild(ta);
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "One item per line. Leave empty for none.";
+      wrap.appendChild(hint);
+      fieldRefs[f.key] = () =>
+        ta.value
+          .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean);
+    } else if (f.type === "link") {
+      const rowWrap = document.createElement("div");
+      rowWrap.className = "link-row";
+      const labelInput = document.createElement("input");
+      labelInput.type = "text";
+      labelInput.placeholder = "Label (e.g. Website)";
+      labelInput.value = (entry[f.key] && entry[f.key].label) || "";
+      const urlInput = document.createElement("input");
+      urlInput.type = "url";
+      urlInput.placeholder = "https://...";
+      urlInput.value = (entry[f.key] && entry[f.key].url) || "";
+      rowWrap.append(labelInput, urlInput);
+      wrap.appendChild(rowWrap);
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "Leave both blank for no link.";
+      wrap.appendChild(hint);
+      fieldRefs[f.key] = () => {
+        const label = labelInput.value.trim();
+        const url = urlInput.value.trim();
+        return label && url ? { label, url } : undefined;
+      };
+    } else if (f.type === "linklist") {
+      const rowsContainer = document.createElement("div");
+      wrap.appendChild(rowsContainer);
+      const rows = [];
+
+      function addRow(initial) {
+        const rowWrap = document.createElement("div");
+        rowWrap.className = "link-row";
+        const labelInput = document.createElement("input");
+        labelInput.type = "text";
+        labelInput.placeholder = "Label (e.g. Research article)";
+        labelInput.value = (initial && initial.label) || "";
+        const urlInput = document.createElement("input");
+        urlInput.type = "url";
+        urlInput.placeholder = "https://...";
+        urlInput.value = (initial && initial.url) || "";
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "small";
+        removeBtn.type = "button";
+        removeBtn.textContent = "✕";
+        removeBtn.addEventListener("click", () => {
+          rowWrap.remove();
+          rows.splice(rows.indexOf(entry_), 1);
+        });
+        const entry_ = { labelInput, urlInput };
+        rows.push(entry_);
+        rowWrap.append(labelInput, urlInput, removeBtn);
+        rowsContainer.appendChild(rowWrap);
+      }
+
+      (entry[f.key] || []).forEach((l) => addRow(l));
+
+      const addLinkBtn = document.createElement("button");
+      addLinkBtn.className = "small";
+      addLinkBtn.type = "button";
+      addLinkBtn.textContent = "+ Add link";
+      addLinkBtn.addEventListener("click", () => addRow(null));
+      wrap.appendChild(addLinkBtn);
+
+      fieldRefs[f.key] = () =>
+        rows
+          .map((r) => ({ label: r.labelInput.value.trim(), url: r.urlInput.value.trim() }))
+          .filter((l) => l.label && l.url);
+    }
+
+    form.appendChild(wrap);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "form-actions";
+  const saveBtn = document.createElement("button");
+  saveBtn.className = "primary";
+  saveBtn.textContent = isNew ? "Add entry" : "Save entry";
+  saveBtn.addEventListener("click", () => {
+    const updated = {};
+    for (const f of config.fields) updated[f.key] = fieldRefs[f.key]();
+    if (isNew) list.push(updated);
+    else list[state.editing.index] = updated;
+    state.dirty[key] = true;
+    state.editing = null;
+    renderTabs();
+    renderMain();
+  });
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.addEventListener("click", () => {
+    state.editing = null;
+    renderMain();
+  });
+  actions.append(saveBtn, cancelBtn);
+  form.appendChild(actions);
+  main.appendChild(form);
+}
+
+init();
+</script>
+</body>
+</html>

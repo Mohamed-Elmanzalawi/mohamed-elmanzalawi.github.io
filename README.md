@@ -19,13 +19,38 @@ Live site: https://mohamed-elmanzalawi.github.io
 src/routes/     Pages (file-based routing — one file per route)
 src/components/ UI primitives (src/components/ui) and site-specific components (src/components/site)
 src/lib/        Shared data (site-data.ts) and utilities
-pages/          Source content (bios, CV, publications, etc.) the site copy is drawn from
+content/        Editable data: publications, presentations, CV timeline, scholarships, awards
+admin/          Local-only content editor (see "Content editor" below) — not part of the deployed site
+pages/          Original source notes the site copy was drawn from
 public/         Static assets served as-is (favicon, robots.txt)
 ```
 
 Page content (About, Projects, Publications, Skills, Contact) is authored directly in the
-route files under `src/routes/`, with structured data such as projects, publications,
-presentations, scholarships and awards centralized in [`src/lib/site-data.ts`](src/lib/site-data.ts).
+route files under `src/routes/`. The list-based content — publications, presentations, CV
+timeline entries, scholarships and awards — lives in `content/*.json` and is imported into
+[`src/lib/site-data.ts`](src/lib/site-data.ts). Projects and skills are still defined directly
+in `site-data.ts`.
+
+## Content editor
+
+`admin/index.html` is a local, code-free editor for the content in `content/*.json`: add,
+edit, delete and reorder publications, presentations & conferences, CV timeline entries,
+scholarships and awards through forms.
+
+To use it:
+
+1. `npm run dev`
+2. Open `http://localhost:8080/admin/` in any browser. It loads everything currently in
+   `content/*.json` immediately — no upload step, no folder picker.
+3. Make your changes, then click **Save all changes** — this writes straight to the JSON
+   files on disk.
+4. Review the diff (`git diff`) and commit + push as usual to publish.
+
+Under the hood, `admin/content-api-plugin.js` adds a tiny API to the dev server (only while
+`npm run dev` is running) that the editor page talks to over plain `fetch()` to read and write
+`content/*.json`. None of this — the editor page, the API, or the plugin — is part of the
+production build: `vite build` never touches anything under `admin/`, so it isn't bundled,
+uploaded, or reachable on the deployed site.
 
 ## Local development
 

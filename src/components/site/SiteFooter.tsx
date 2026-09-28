@@ -38,6 +38,12 @@ export function SiteFooter() {
           >
             Publications
           </Link>
+          <Link
+            to="/presentations"
+            className="text-muted-foreground transition-smooth hover:text-foreground"
+          >
+            Presentations
+          </Link>
           <Link to="/contact" className="text-muted-foreground transition-smooth hover:text-foreground">
             Contact
           </Link>
