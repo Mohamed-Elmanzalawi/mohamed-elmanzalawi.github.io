@@ -2,10 +2,10 @@ import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { nitro } from "nitro/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
-// Static site, prerendered at build time and deployed to GitHub Pages.
+// Plain client-side SPA build (no SSR/server), prerendered nowhere — just
+// static HTML + JS/CSS — so it can be deployed as-is to GitHub Pages.
 export default defineConfig({
   resolve: {
     alias: { "@": `${process.cwd()}/src` },
@@ -28,11 +28,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
-    tanstackStart({
-      server: { entry: "server" },
-      prerender: { enabled: true, crawlLinks: true },
-    }),
-    nitro({ preset: "github-pages" }),
+    tanstackRouter({ target: "react", autoCodeSplitting: true }),
     viteReact(),
   ],
 });

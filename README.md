@@ -7,9 +7,10 @@ Live site: https://mohamed-elmanzalawi.github.io
 
 ## Stack
 
-- [TanStack Start](https://tanstack.com/start) (React 19, file-based routing, prerendered to static HTML)
+- React 19 + [TanStack Router](https://tanstack.com/router) (file-based routing), as a plain
+  client-side single-page app — no server, no SSR
 - Tailwind CSS v4 + [shadcn/ui](https://ui.shadcn.com) components
-- Vite + [Nitro](https://nitro.build) (`github-pages` preset) for the static build
+- Vite for the build
 - Deployed to GitHub Pages via GitHub Actions
 
 ## Project structure
@@ -59,13 +60,17 @@ Without a key set, the form shows an error toast instead of silently failing.
 npm run build
 ```
 
-This prerenders every route to static HTML and outputs the deployable site to
-`.output/public`.
+This produces a plain static build (HTML/CSS/JS, no server) in `dist/`. Since the app is a
+client-side SPA, every URL is served the same `index.html` and TanStack Router takes over
+routing in the browser.
 
 ## Deployment
 
 Pushing to `master` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
-which builds the site and publishes `.output/public` to GitHub Pages.
+which builds the site and publishes `dist/` to GitHub Pages. Since this is a client-side SPA,
+the workflow also copies `index.html` to `404.html` in the build output, so GitHub Pages serves
+the app (which then renders the right route client-side) instead of a real 404 when someone
+opens a direct link like `/publications`.
 
 One-time setup: in the repository's **Settings → Pages**, set **Source** to
 **GitHub Actions**.
