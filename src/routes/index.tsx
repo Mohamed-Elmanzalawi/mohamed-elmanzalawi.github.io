@@ -39,9 +39,9 @@ function Home() {
               <img
                 src="/profile.png"
                 alt="Mohamed Elmanzalawi"
-                className="size-32 rounded-full border border-border object-cover shadow-soft sm:size-40 lg:size-44"
-                width={176}
-                height={176}
+                className="size-40 rounded-full border border-border object-cover shadow-soft sm:size-48 lg:size-56"
+                width={224}
+                height={224}
               />
             </Reveal>
             <Reveal delay={40}>
