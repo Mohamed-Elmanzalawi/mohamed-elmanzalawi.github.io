@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/Reveal";
-import { HelixVisual } from "@/components/site/HelixVisual";
-import { LINKEDIN_URL, GITHUB_URL, projects } from "@/lib/site-data";
+import { InsightPipeline } from "@/components/site/InsightPipeline";
+import { LINKEDIN_URL, GITHUB_URL, projects, homeIntro } from "@/lib/site-data";
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
 const description =
@@ -44,10 +44,10 @@ function Home() {
             />
           </Reveal>
           <Reveal delay={40}>
-            <p className="eyebrow mt-5">PhD Researcher · SOKENDAI / National Institute of Genetics</p>
+            <p className="eyebrow mt-5">{homeIntro.eyebrow}</p>
           </Reveal>
 
-          <div className="mt-5 grid items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-5 grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
               <Reveal delay={80}>
                 <h1 className="text-4xl leading-[1.08] font-semibold sm:text-5xl lg:text-6xl">
@@ -57,16 +57,11 @@ function Home() {
                 </h1>
               </Reveal>
               <Reveal delay={140}>
-                <p className="mt-5 max-w-xl text-lg text-foreground/80">
-                  Turning biological data into computational insights.
-                </p>
+                <p className="mt-5 max-w-xl text-lg text-foreground/80">{homeIntro.tagline}</p>
               </Reveal>
               <Reveal delay={200}>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-                  I'm Mohamed Elmanzalawi, a PhD researcher in Genetics (Bioinformatics) at SOKENDAI
-                  and the National Institute of Genetics, Japan. I develop computational pipelines,
-                  analyze large-scale genomic and biological datasets, and build tools that make
-                  complex biological data more useful and interpretable.
+                  {homeIntro.paragraph}
                 </p>
               </Reveal>
               <Reveal delay={260}>
@@ -110,16 +105,10 @@ function Home() {
 
             <Reveal delay={160} className="relative">
               <div className="rounded-xl border border-border bg-card/70 p-5 shadow-soft backdrop-blur-sm">
-                <div className="flex items-center justify-between font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
-                  <span>sequence → signal</span>
-                  <span>n = 34</span>
-                </div>
-                <HelixVisual className="mt-3 w-full" />
-                <div className="mt-3 grid grid-cols-3 gap-3 font-mono text-[10px] text-muted-foreground">
-                  <span>reads</span>
-                  <span className="text-center">alignment</span>
-                  <span className="text-right">insight</span>
-                </div>
+                <p className="font-mono text-[10px] tracking-widest text-muted-foreground uppercase">
+                  Biological data → insight
+                </p>
+                <InsightPipeline className="mt-4 w-full" />
               </div>
             </Reveal>
           </div>

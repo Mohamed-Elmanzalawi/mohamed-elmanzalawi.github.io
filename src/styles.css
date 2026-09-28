@@ -217,19 +217,23 @@
   transform: none;
 }
 
-@keyframes dash-flow {
-  to {
-    stroke-dashoffset: -400;
-  }
-}
-
-@keyframes float-soft {
+@keyframes node-pulse {
   0%,
   100% {
-    transform: translateY(0);
+    transform: scale(1);
+    stroke: var(--color-border);
   }
-  50% {
-    transform: translateY(-8px);
+  10% {
+    transform: scale(1.08);
+    stroke: var(--color-teal);
+  }
+  20% {
+    transform: scale(1.08);
+    stroke: var(--color-teal);
+  }
+  32% {
+    transform: scale(1);
+    stroke: var(--color-border);
   }
 }
 

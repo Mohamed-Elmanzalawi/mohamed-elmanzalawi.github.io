@@ -203,6 +203,110 @@
 "use strict";
 
 const COLLECTIONS = {
+  "home-intro": {
+    file: "home-intro.json",
+    label: "Home — Introduction",
+    isSingleton: true,
+    fields: [
+      { key: "eyebrow", label: "Eyebrow (small line above the heading)", type: "text" },
+      { key: "tagline", label: "Tagline (short, large text)", type: "text" },
+      { key: "paragraph", label: "Intro paragraph", type: "textarea", rows: 8 },
+    ],
+  },
+  "about-bio": {
+    file: "about-bio.json",
+    label: "About — Bio",
+    isSingleton: true,
+    fields: [
+      { key: "paragraphs", label: "Bio paragraphs (blank line between each)", type: "paragraphs", rows: 18 },
+    ],
+  },
+  "affiliation-card": {
+    file: "affiliation-card.json",
+    label: "Affiliation Card",
+    isSingleton: true,
+    fields: [
+      { key: "university", label: "University", type: "text" },
+      { key: "degree", label: "Degree", type: "text" },
+      { key: "period", label: "Period (e.g. 2025–2028)", type: "text" },
+      { key: "institute", label: "Institute", type: "text" },
+      { key: "location", label: "Location", type: "text" },
+    ],
+  },
+  "about-interests": {
+    file: "about-interests.json",
+    label: "About — Interests",
+    isSingleton: true,
+    fields: [{ key: "items", label: "Research interest tags (one per line)", type: "lines", rows: 14 }],
+  },
+  "cv-timeline": {
+    file: "cv-timeline.json",
+    label: "CV Timeline",
+    sortOptions: [
+      { key: "period", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
+    empty: { period: "", title: "", body: "", points: [] },
+    fields: [
+      { key: "period", label: "Period (e.g. 2023–2025)", type: "text" },
+      { key: "title", label: "Title", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "points", label: "Tags / highlights (one per line)", type: "lines" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.period || "")}</span>`,
+  },
+  "about-credibility": {
+    file: "about-credibility.json",
+    label: "About — Credentials",
+    empty: { k: "", v: "" },
+    fields: [
+      { key: "k", label: "Title", type: "text" },
+      { key: "v", label: "Description", type: "text" },
+    ],
+    summary: (e) => `<strong>${esc(e.k || "(untitled)")}</strong><span class="meta">${esc(e.v || "")}</span>`,
+  },
+  scholarships: {
+    file: "scholarships.json",
+    label: "Scholarships",
+    sortOptions: [
+      { key: "date", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
+    empty: { title: "", date: "", body: "", url: "" },
+    fields: [
+      { key: "title", label: "Title", type: "text" },
+      { key: "date", label: "Date (e.g. Jul. 2023)", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "url", label: "Link (optional)", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
+  },
+  awards: {
+    file: "awards.json",
+    label: "Awards",
+    sortOptions: [
+      { key: "date", label: "Year", type: "year" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
+    empty: { title: "", date: "", body: "", url: "" },
+    fields: [
+      { key: "title", label: "Title", type: "text" },
+      { key: "date", label: "Date (e.g. Aug. 2024)", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "url", label: "Link (optional)", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
+  },
+  affiliations: {
+    file: "affiliations.json",
+    label: "Affiliations",
+    empty: { label: "", url: "" },
+    fields: [
+      { key: "label", label: "Label (e.g. Nile University)", type: "text" },
+      { key: "url", label: "Link", type: "url" },
+    ],
+    summary: (e) => `<strong>${esc(e.label || "(untitled)")}</strong><span class="meta">${esc(e.url || "")}</span>`,
+  },
   projects: {
     file: "projects.json",
     label: "Projects",
@@ -286,76 +390,6 @@ const COLLECTIONS = {
     summary: (e) =>
       `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">[${esc(e.type || "")}] ${esc(e.date || "")} · ${esc(e.event || "")}</span>`,
   },
-  "cv-timeline": {
-    file: "cv-timeline.json",
-    label: "CV Timeline",
-    sortOptions: [
-      { key: "period", label: "Year", type: "year" },
-      { key: "title", label: "Alphabetical", type: "text" },
-    ],
-    empty: { period: "", title: "", body: "", points: [] },
-    fields: [
-      { key: "period", label: "Period (e.g. 2023–2025)", type: "text" },
-      { key: "title", label: "Title", type: "text" },
-      { key: "body", label: "Description", type: "textarea" },
-      { key: "points", label: "Tags / highlights (one per line)", type: "lines" },
-    ],
-    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.period || "")}</span>`,
-  },
-  scholarships: {
-    file: "scholarships.json",
-    label: "Scholarships",
-    sortOptions: [
-      { key: "date", label: "Year", type: "year" },
-      { key: "title", label: "Alphabetical", type: "text" },
-    ],
-    empty: { title: "", date: "", body: "", url: "" },
-    fields: [
-      { key: "title", label: "Title", type: "text" },
-      { key: "date", label: "Date (e.g. Jul. 2023)", type: "text" },
-      { key: "body", label: "Description", type: "textarea" },
-      { key: "url", label: "Link (optional)", type: "url" },
-    ],
-    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
-  },
-  awards: {
-    file: "awards.json",
-    label: "Awards",
-    sortOptions: [
-      { key: "date", label: "Year", type: "year" },
-      { key: "title", label: "Alphabetical", type: "text" },
-    ],
-    empty: { title: "", date: "", body: "", url: "" },
-    fields: [
-      { key: "title", label: "Title", type: "text" },
-      { key: "date", label: "Date (e.g. Aug. 2024)", type: "text" },
-      { key: "body", label: "Description", type: "textarea" },
-      { key: "url", label: "Link (optional)", type: "url" },
-    ],
-    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.date || "")}</span>`,
-  },
-  affiliations: {
-    file: "affiliations.json",
-    label: "Affiliations",
-    empty: { label: "", url: "" },
-    fields: [
-      { key: "label", label: "Label (e.g. Nile University)", type: "text" },
-      { key: "url", label: "Link", type: "url" },
-    ],
-    summary: (e) => `<strong>${esc(e.label || "(untitled)")}</strong><span class="meta">${esc(e.url || "")}</span>`,
-  },
-  "affiliation-card": {
-    file: "affiliation-card.json",
-    label: "Affiliation Card",
-    isSingleton: true,
-    fields: [
-      { key: "university", label: "University", type: "text" },
-      { key: "degree", label: "Degree", type: "text" },
-      { key: "period", label: "Period (e.g. 2025–2028)", type: "text" },
-      { key: "institute", label: "Institute", type: "text" },
-      { key: "location", label: "Location", type: "text" },
-    ],
-  },
 };
 
 const state = {
@@ -365,6 +399,8 @@ const state = {
   editing: null, // { index: number|"new" }
   sortDir: {}, // per-collection: "asc" | "desc"
   sortType: {}, // per-collection: the selected sortOptions key
+  pageSize: {}, // per-collection: 10 | 20 | 50 | Infinity ("All")
+  page: {}, // per-collection: current page number (1-based)
 };
 
 function esc(s) {
@@ -534,6 +570,26 @@ function renderMain() {
     toolbar.append(sortSelect, dirBtn);
   }
 
+  const pageSizeSelect = document.createElement("select");
+  [
+    [10, "Show 10"],
+    [20, "Show 20"],
+    [50, "Show 50"],
+    [Infinity, "Show all"],
+  ].forEach(([value, label]) => {
+    const o = document.createElement("option");
+    o.value = value === Infinity ? "all" : String(value);
+    o.textContent = label;
+    if ((state.pageSize[key] || 10) === value) o.selected = true;
+    pageSizeSelect.appendChild(o);
+  });
+  pageSizeSelect.addEventListener("change", () => {
+    state.pageSize[key] = pageSizeSelect.value === "all" ? Infinity : parseInt(pageSizeSelect.value, 10);
+    state.page[key] = 1;
+    renderMain();
+  });
+  toolbar.appendChild(pageSizeSelect);
+
   main.appendChild(toolbar);
 
   const list = state.data[key];
@@ -544,7 +600,16 @@ function renderMain() {
     main.appendChild(p);
   }
 
-  list.forEach((entry, i) => {
+  const pageSize = state.pageSize[key] || 10;
+  const totalPages = Math.max(1, Math.ceil(list.length / pageSize));
+  if (!state.page[key]) state.page[key] = 1;
+  if (state.page[key] > totalPages) state.page[key] = totalPages;
+  const page = state.page[key];
+  const startIdx = pageSize === Infinity ? 0 : (page - 1) * pageSize;
+  const endIdx = pageSize === Infinity ? list.length : Math.min(startIdx + pageSize, list.length);
+
+  for (let i = startIdx; i < endIdx; i++) {
+    const entry = list[i];
     const card = document.createElement("div");
     card.className = "card";
     const row = document.createElement("div");
@@ -576,7 +641,40 @@ function renderMain() {
     row.appendChild(actions);
     card.appendChild(row);
     main.appendChild(card);
-  });
+  }
+
+  if (totalPages > 1) {
+    const pager = document.createElement("div");
+    pager.className = "toolbar";
+    pager.style.marginTop = "6px";
+
+    const prevBtn = document.createElement("button");
+    prevBtn.className = "small";
+    prevBtn.textContent = "← Prev";
+    prevBtn.disabled = page <= 1;
+    prevBtn.addEventListener("click", () => {
+      state.page[key] = page - 1;
+      renderMain();
+    });
+
+    const pageLabel = document.createElement("span");
+    pageLabel.style.alignSelf = "center";
+    pageLabel.style.fontSize = "13px";
+    pageLabel.style.color = "var(--muted)";
+    pageLabel.textContent = `Page ${page} of ${totalPages}`;
+
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "small";
+    nextBtn.textContent = "Next →";
+    nextBtn.disabled = page >= totalPages;
+    nextBtn.addEventListener("click", () => {
+      state.page[key] = page + 1;
+      renderMain();
+    });
+
+    pager.append(prevBtn, pageLabel, nextBtn);
+    main.appendChild(pager);
+  }
 }
 
 function mkSmallBtn(label, disabled, onClick) {
@@ -647,7 +745,7 @@ function buildFieldsForm(config, entry) {
       fieldRefs[f.key] = () => input.value.trim();
     } else if (f.type === "textarea") {
       const ta = document.createElement("textarea");
-      ta.rows = f.key === "authors" || f.key === "body" ? 4 : 2;
+      ta.rows = f.rows || (f.key === "authors" || f.key === "body" ? 4 : 2);
       ta.value = entry[f.key] || "";
       wrap.appendChild(ta);
       fieldRefs[f.key] = () => ta.value.trim();
@@ -704,7 +802,7 @@ function buildFieldsForm(config, entry) {
       fieldRefs[f.key] = () => (sel.value === "__new__" ? customInput.value.trim() : sel.value);
     } else if (f.type === "lines") {
       const ta = document.createElement("textarea");
-      ta.rows = 4;
+      ta.rows = f.rows || 4;
       ta.value = (entry[f.key] || []).join("\n");
       wrap.appendChild(ta);
       const hint = document.createElement("div");
@@ -714,6 +812,20 @@ function buildFieldsForm(config, entry) {
       fieldRefs[f.key] = () =>
         ta.value
           .split("\n")
+          .map((s) => s.trim())
+          .filter(Boolean);
+    } else if (f.type === "paragraphs") {
+      const ta = document.createElement("textarea");
+      ta.rows = f.rows || 10;
+      ta.value = (entry[f.key] || []).join("\n\n");
+      wrap.appendChild(ta);
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "Separate paragraphs with a blank line.";
+      wrap.appendChild(hint);
+      fieldRefs[f.key] = () =>
+        ta.value
+          .split(/\n\s*\n/)
           .map((s) => s.trim())
           .filter(Boolean);
     } else if (f.type === "link") {

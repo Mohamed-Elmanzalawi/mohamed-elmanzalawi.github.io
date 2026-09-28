@@ -6,6 +6,10 @@ import awardsData from "../../content/awards.json";
 import cvTimelineData from "../../content/cv-timeline.json";
 import affiliationsData from "../../content/affiliations.json";
 import affiliationCardData from "../../content/affiliation-card.json";
+import aboutBioData from "../../content/about-bio.json";
+import aboutInterestsData from "../../content/about-interests.json";
+import aboutCredibilityData from "../../content/about-credibility.json";
+import homeIntroData from "../../content/home-intro.json";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
@@ -91,3 +95,19 @@ export type AffiliationCard = {
 };
 
 export const affiliationCard: AffiliationCard = affiliationCardData;
+
+export type AboutBio = { paragraphs: string[] };
+
+export const aboutBio: AboutBio = aboutBioData;
+
+export type AboutInterests = { items: string[] };
+
+export const aboutInterests: AboutInterests = aboutInterestsData;
+
+export type CredibilityItem = { k: string; v: string };
+
+export const aboutCredibility: CredibilityItem[] = aboutCredibilityData;
+
+export type HomeIntro = { eyebrow: string; tagline: string; paragraph: string };
+
+export const homeIntro: HomeIntro = homeIntroData;

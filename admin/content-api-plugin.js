@@ -14,6 +14,10 @@ const ALLOWED_FILES = new Set([
   "awards.json",
   "affiliations.json",
   "affiliation-card.json",
+  "about-bio.json",
+  "about-interests.json",
+  "about-credibility.json",
+  "home-intro.json",
 ]);
 
 export function contentApiPlugin() {

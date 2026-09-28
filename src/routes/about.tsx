@@ -1,7 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { scholarships, awards, affiliationLinks, affiliationCard, cvTimeline } from "@/lib/site-data";
+import {
+  scholarships,
+  awards,
+  affiliationLinks,
+  affiliationCard,
+  cvTimeline,
+  aboutBio,
+  aboutInterests,
+  aboutCredibility,
+} from "@/lib/site-data";
 
 const title = "About — Mohamed Elmanzalawi | PhD Researcher in Bioinformatics";
 const description =
@@ -19,27 +28,6 @@ export const Route = createFileRoute("/about")({
   component: About,
 });
 
-const interests = [
-  "Genomics",
-  "Bioinformatics",
-  "Computational Biology",
-  "Human Genetics",
-  "Microbial Genomics",
-  "Metagenomics",
-  "Variant Analysis",
-  "Genomic Databases",
-  "Data Science",
-  "Machine Learning",
-  "Biological Data Analysis",
-];
-
-const credibility = [
-  { k: "MEXT Scholar", v: "Japanese Government scholarship" },
-  { k: "16 professional certifications", v: "Bioinformatics, data science & programming" },
-  { k: "Research internships", v: "National Institute of Genetics, Japan" },
-  { k: "Industry experience", v: "Bioinformatics in a therapeutics company" },
-];
-
 function About() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24">
@@ -50,31 +38,11 @@ function About() {
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="space-y-5 text-[15px] leading-relaxed text-muted-foreground">
-          <Reveal delay={60}>
-            <p>
-              I am a PhD candidate in Genetics (Bioinformatics) at The Graduate University for
-              Advanced Studies (SOKENDAI), working at the National Institute of Genetics in Japan.
-              My research focuses on computational approaches for understanding biological and
-              genomic data.
-            </p>
-          </Reveal>
-          <Reveal delay={110}>
-            <p>
-              My background combines clinical pharmacy with bioinformatics and computational
-              biology. Before moving into research, I worked as a hospital pharmacist in Egypt,
-              including experience in oncology and clinical pharmacy. This background gave me an
-              appreciation for the connection between biological data, medicine, and real-world
-              healthcare problems.
-            </p>
-          </Reveal>
-          <Reveal delay={160}>
-            <p>
-              My current work involves high-throughput sequencing analysis, variant detection,
-              genomic database development, metagenomics, statistical analysis, and reproducible
-              computational workflows. I enjoy building tools and pipelines that transform complex
-              biological datasets into reliable and interpretable results.
-            </p>
-          </Reveal>
+          {aboutBio.paragraphs.map((p, i) => (
+            <Reveal key={i} delay={60 + i * 50}>
+              <p>{p}</p>
+            </Reveal>
+          ))}
         </div>
 
         <Reveal delay={120}>
@@ -97,7 +65,7 @@ function About() {
           <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Research Interests</h2>
         </Reveal>
         <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {interests.map((it, i) => (
+          {aboutInterests.items.map((it, i) => (
             <Reveal as="li" key={it} delay={i * 40}>
               <div className="group flex h-full items-center gap-3 rounded-lg border border-border bg-card px-4 py-3.5 transition-smooth hover:border-teal/60 hover:shadow-soft">
                 <span className="size-1.5 shrink-0 rounded-full bg-teal transition-smooth group-hover:scale-150" />
@@ -143,7 +111,7 @@ function About() {
           <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Credentials & Experience</h2>
         </Reveal>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {credibility.map((c, i) => (
+          {aboutCredibility.map((c, i) => (
             <Reveal key={c.k} delay={i * 60}>
               <div className="h-full rounded-xl border border-border bg-card p-5">
                 <p className="font-display text-sm font-semibold">{c.k}</p>
