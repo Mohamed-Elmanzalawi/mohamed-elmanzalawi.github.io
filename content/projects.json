@@ -4,7 +4,9 @@
     "name": "DFAST_QC",
     "title": "Quality Assessment and Taxonomic Identification of Prokaryotic Genomes",
     "year": "",
-    "category": "Microbial Genomics",
+    "category": [
+      "Microbial Genomics"
+    ],
     "categoryLabel": "Microbial Genomics / Bioinformatics",
     "summary": "A high-speed tool for evaluating prokaryotic genome quality and taxonomic identity, querying genomic data against more than 20,000 reference genomes from type strains.",
     "problem": "Assessing whether a newly assembled prokaryotic genome is complete, uncontaminated and correctly labelled taxonomically usually requires stitching together several slow, separate tools.",
@@ -42,7 +44,9 @@
     "name": "SAPP",
     "title": "Short-read Analysis Pipeline for Pathogenic Variants",
     "year": "",
-    "category": "Human Genetics",
+    "category": [
+      "Human Genetics"
+    ],
     "categoryLabel": "Human Genetics / Variant Analysis",
     "summary": "A high-performance, HPC-compatible pipeline designed for short-read sequencing analysis and pathogenic variant identification.",
     "problem": "Short-read variant analysis involves many chained tools whose behaviour and scheduling differ between compute clusters, which makes runs hard to reproduce.",
@@ -85,7 +89,9 @@
     "name": "Polar Fungi Database",
     "title": "Polar Fungi Genome Database",
     "year": "",
-    "category": "Genomics",
+    "category": [
+      "Genomics"
+    ],
     "categoryLabel": "Genomic Databases / Comparative Genomics",
     "summary": "A specialised database and comparative platform for exploring fungal genomes from polar environments.",
     "problem": "Genomic resources for polar fungi are fragmented across sources, which makes systematic exploration and cross-genome comparison difficult.",
@@ -113,7 +119,9 @@
     "name": "Parkinson's Metagenomics",
     "title": "Metagenomic Analysis of Parkinson's Disease",
     "year": "",
-    "category": "Metagenomics",
+    "category": [
+      "Metagenomics"
+    ],
     "categoryLabel": "Metagenomics / Statistical Analysis / Machine Learning",
     "summary": "Analysis of metagenomic relative-abundance data from Parkinson's disease and healthy-control cohorts using R and Python-based statistical approaches.",
     "problem": "Relative-abundance metagenomic data is compositional, sparse and high-dimensional, which makes naive comparisons between cohorts unreliable.",
@@ -142,7 +150,9 @@
     "name": "Organ Age & Proteomics",
     "title": "Proteomic Analysis of Organ Age Associations",
     "year": "",
-    "category": "Data Science",
+    "category": [
+      "Data Science"
+    ],
     "categoryLabel": "Proteomics / Data Science / Biological Aging",
     "summary": "Analysis of high-dimensional proteomic data to investigate associations between organ-age estimates and biological phenotypes.",
     "problem": "Proteomic datasets carry thousands of correlated measurements per sample, so linking organ-age estimates to phenotypes requires careful statistical handling.",
@@ -170,7 +180,9 @@
     "name": "Genomic Data Analysis",
     "title": "Genomic Data Analysis & Research Pipelines",
     "year": "",
-    "category": "Genomics",
+    "category": [
+      "Genomics"
+    ],
     "categoryLabel": "Genomics / Research Engineering",
     "summary": "A broader body of work covering the analysis pipelines and data engineering behind large-scale biological datasets.",
     "problem": "Research questions across genomics repeatedly need the same foundations: clean data handling, scalable execution and reproducible analysis.",

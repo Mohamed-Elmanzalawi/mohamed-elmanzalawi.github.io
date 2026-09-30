@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarDays, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, CalendarDays, ExternalLink, Github, GraduationCap, IdCard, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/Reveal";
 import { InsightPipeline } from "@/components/site/InsightPipeline";
 import { DestinationGlobe } from "@/components/site/DestinationGlobe";
-import { LINKEDIN_URL, GITHUB_URL, projects, homeIntro, upcomingEvent } from "@/lib/site-data";
+import { LINKEDIN_URL, GITHUB_URL, ORCID_URL, SCHOLAR_URL, projects, homeIntro, upcomingEvent } from "@/lib/site-data";
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
 const description =
@@ -35,14 +35,24 @@ function Home() {
       {upcomingEvent.visible && (
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
           <Reveal>
-            <div className="flex flex-wrap items-center gap-4 rounded-xl border border-teal/40 bg-teal/[0.08] px-5 py-4 shadow-soft sm:px-6">
-              <DestinationGlobe country={upcomingEvent.country} className="size-20 shrink-0 sm:size-24" />
+            <div className="flex flex-col gap-4 rounded-xl border border-teal/40 bg-teal/[0.08] px-5 py-4 shadow-soft sm:flex-row sm:items-center sm:px-6">
+              <div className="flex items-center gap-4">
+                <DestinationGlobe country={upcomingEvent.country} className="size-16 shrink-0 sm:size-20 md:size-24" />
+                {/* on mobile the badge + title sit next to the globe; the rest follows full-width below */}
+                <div className="min-w-0 flex-1 sm:hidden">
+                  <p className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
+                    <CalendarDays className="size-3" />
+                    Upcoming · {upcomingEvent.type}
+                  </p>
+                  <p className="mt-1 text-[15px] font-semibold leading-snug">{upcomingEvent.title}</p>
+                </div>
+              </div>
               <div className="min-w-0 flex-1">
-                <p className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
+                <p className="hidden items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase sm:flex">
                   <CalendarDays className="size-3" />
                   Upcoming · {upcomingEvent.type}
                 </p>
-                <p className="mt-1 text-[15px] font-semibold leading-snug sm:text-base">{upcomingEvent.title}</p>
+                <p className="hidden text-base font-semibold leading-snug sm:mt-1 sm:block">{upcomingEvent.title}</p>
                 {upcomingEvent.event && (
                   <p className="mt-0.5 text-sm text-foreground/80">{upcomingEvent.event}</p>
                 )}
@@ -59,7 +69,7 @@ function Home() {
                   href={upcomingEvent.link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-primary-foreground transition-smooth hover:-translate-y-0.5 hover:shadow-soft"
+                  className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-primary-foreground transition-smooth hover:-translate-y-0.5 hover:shadow-soft sm:w-auto"
                 >
                   {upcomingEvent.link.label}
                   <ExternalLink className="size-3.5" />
@@ -134,6 +144,24 @@ function Home() {
                     className="transition-smooth hover:text-foreground"
                   >
                     <Github className="size-5" />
+                  </a>
+                  <a
+                    href={ORCID_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="ORCID profile"
+                    className="transition-smooth hover:text-foreground"
+                  >
+                    <IdCard className="size-5" />
+                  </a>
+                  <a
+                    href={SCHOLAR_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Google Scholar profile"
+                    className="transition-smooth hover:text-foreground"
+                  >
+                    <GraduationCap className="size-5" />
                   </a>
                   <Link to="/contact" aria-label="Contact" className="transition-smooth hover:text-foreground">
                     <Mail className="size-5" />

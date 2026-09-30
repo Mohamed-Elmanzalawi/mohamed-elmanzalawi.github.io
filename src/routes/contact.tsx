@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, GraduationCap, IdCard, Linkedin, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Reveal } from "@/components/site/Reveal";
-import { LINKEDIN_URL, GITHUB_URL } from "@/lib/site-data";
+import { LINKEDIN_URL, GITHUB_URL, ORCID_URL, SCHOLAR_URL } from "@/lib/site-data";
 
 const title = "Contact — Mohamed Elmanzalawi | Bioinformatics Collaboration";
 const description =
@@ -150,6 +150,22 @@ function Contact() {
                   className="flex items-center gap-3 text-sm transition-smooth hover:text-primary"
                 >
                   <Github className="size-4 text-teal" /> View GitHub
+                </a>
+                <a
+                  href={ORCID_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3 text-sm transition-smooth hover:text-primary"
+                >
+                  <IdCard className="size-4 text-teal" /> ORCID Profile
+                </a>
+                <a
+                  href={SCHOLAR_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3 text-sm transition-smooth hover:text-primary"
+                >
+                  <GraduationCap className="size-4 text-teal" /> Google Scholar
                 </a>
               </div>
             </div>

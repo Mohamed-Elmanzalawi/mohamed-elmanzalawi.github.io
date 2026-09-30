@@ -14,13 +14,16 @@ import upcomingEventData from "../../content/upcoming-event.json";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
+export const ORCID_URL = "https://orcid.org/0009-0006-3840-5136";
+export const SCHOLAR_URL = "https://scholar.google.com/citations?hl=en&user=DoawAGAAAAAJ&view_op=list_works&sortby=pubdate";
 
 export type Project = {
   id: string;
   name: string;
   title: string;
   year?: string;
-  category: string;
+  // a project can belong to more than one category
+  category: string[];
   categoryLabel: string;
   summary: string;
   problem: string;
@@ -38,7 +41,7 @@ export const projects: Project[] = projectsData as Project[];
 // Filter tabs on the Projects page — derived from whatever categories the
 // projects actually use, so a new category just needs to be set on a
 // project (e.g. via the admin editor) and a tab appears for it automatically.
-export const projectFilters = ["All", ...Array.from(new Set(projects.map((p) => p.category))).sort()];
+export const projectFilters = ["All", ...Array.from(new Set(projects.flatMap((p) => p.category))).sort()];
 
 export type Publication = {
   year: string;

@@ -335,7 +335,7 @@ const COLLECTIONS = {
       name: "",
       title: "",
       year: "",
-      category: "",
+      category: [],
       categoryLabel: "",
       summary: "",
       problem: "",
@@ -348,7 +348,6 @@ const COLLECTIONS = {
       context: "",
     },
     fields: [
-      { key: "id", label: "ID (URL anchor — lowercase, no spaces, e.g. dfast-qc)", type: "text" },
       { key: "name", label: "Name (short)", type: "text" },
       { key: "title", label: "Title (full)", type: "text" },
       { key: "year", label: "Year (for sorting, e.g. 2025)", type: "text" },
@@ -723,6 +722,26 @@ function moveEntry(key, i, dir) {
   renderMain();
 }
 
+function slugify(text) {
+  return (
+    String(text || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "project"
+  );
+}
+
+// appends -2, -3, … only if the plain slug is already taken by another entry
+function uniqueSlug(text, existingIds) {
+  const base = slugify(text);
+  const taken = new Set(existingIds);
+  if (!taken.has(base)) return base;
+  let i = 2;
+  while (taken.has(`${base}-${i}`)) i++;
+  return `${base}-${i}`;
+}
+
 function extractYear(value) {
   const m = String(value ?? "").match(/\d{4}/);
   return m ? parseInt(m[0], 10) : null;
@@ -1076,45 +1095,167 @@ function buildFieldsForm(config, entry) {
       wrap.appendChild(groupWrap);
       fieldRefs[f.key] = () => checkboxes.filter(({ cb }) => cb.checked).map(({ opt }) => opt);
     } else if (f.type === "category") {
+      // a project can belong to more than one category: a closed dropdown
+      // you tick options from, with the ticked ones shown as tags below it
       const existing = Array.from(
-        new Set((state.data.projects || []).map((p) => p.category).filter(Boolean)),
+        new Set((state.data.projects || []).flatMap((p) => p.category || [])),
       ).sort();
-      const currentValue = entry[f.key] || "";
-      const isCustom = currentValue && !existing.includes(currentValue);
+      const current = Array.isArray(entry[f.key]) ? entry[f.key] : [];
+      // in case the project currently has a category no longer used elsewhere
+      const allNames = Array.from(new Set([...existing, ...current])).sort();
+      const selected = new Set(current);
+      const checkboxes = [];
 
-      const sel = document.createElement("select");
-      for (const opt of existing) {
-        const o = document.createElement("option");
-        o.value = opt;
-        o.textContent = opt;
-        sel.appendChild(o);
+      const box = document.createElement("div");
+      box.style.position = "relative";
+
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.style.width = "100%";
+      trigger.style.display = "flex";
+      trigger.style.alignItems = "center";
+      trigger.style.justifyContent = "space-between";
+      trigger.style.textAlign = "left";
+      trigger.style.padding = "8px 10px";
+      trigger.style.font = "inherit";
+
+      const triggerLabel = document.createElement("span");
+      const caret = document.createElement("span");
+      caret.textContent = "▾";
+      caret.style.marginLeft = "8px";
+      caret.style.color = "var(--muted)";
+      trigger.append(triggerLabel, caret);
+
+      const tagsRow = document.createElement("div");
+      tagsRow.style.display = "flex";
+      tagsRow.style.flexWrap = "wrap";
+      tagsRow.style.gap = "6px";
+      tagsRow.style.marginTop = "8px";
+
+      const dropdown = document.createElement("div");
+      dropdown.style.position = "absolute";
+      dropdown.style.top = "calc(100% + 2px)";
+      dropdown.style.left = "0";
+      dropdown.style.right = "0";
+      dropdown.style.maxHeight = "230px";
+      dropdown.style.overflowY = "auto";
+      dropdown.style.background = "var(--surface)";
+      dropdown.style.border = "1px solid var(--border)";
+      dropdown.style.borderRadius = "8px";
+      dropdown.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.15)";
+      dropdown.style.zIndex = "30";
+      dropdown.style.display = "none";
+      dropdown.style.padding = "6px";
+
+      function renderTags() {
+        triggerLabel.textContent = selected.size ? `${selected.size} selected` : "Select categories…";
+        triggerLabel.style.color = selected.size ? "" : "var(--muted)";
+        tagsRow.innerHTML = "";
+        Array.from(selected)
+          .sort()
+          .forEach((name) => {
+            const tag = document.createElement("span");
+            tag.style.display = "inline-flex";
+            tag.style.alignItems = "center";
+            tag.style.gap = "6px";
+            tag.style.padding = "3px 10px";
+            tag.style.borderRadius = "999px";
+            tag.style.border = "1px solid var(--border)";
+            tag.style.background = "var(--bg)";
+            tag.style.fontSize = "13px";
+            const text = document.createElement("span");
+            text.textContent = name;
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.textContent = "×";
+            remove.title = `Remove ${name}`;
+            remove.style.border = "none";
+            remove.style.background = "none";
+            remove.style.padding = "0";
+            remove.style.cursor = "pointer";
+            remove.style.fontSize = "15px";
+            remove.style.lineHeight = "1";
+            remove.style.color = "var(--muted)";
+            remove.addEventListener("click", () => {
+              selected.delete(name);
+              const found = checkboxes.find((c) => c.name === name);
+              if (found) found.cb.checked = false;
+              renderTags();
+            });
+            tag.append(text, remove);
+            tagsRow.appendChild(tag);
+          });
       }
-      const newOpt = document.createElement("option");
-      newOpt.value = "__new__";
-      newOpt.textContent = "+ Add new category…";
-      sel.appendChild(newOpt);
 
-      const customInput = document.createElement("input");
-      customInput.type = "text";
-      customInput.placeholder = "New category name";
-      customInput.style.marginTop = "8px";
-
-      if (isCustom || existing.length === 0) {
-        sel.value = "__new__";
-        customInput.value = currentValue;
-        customInput.style.display = "block";
-      } else {
-        sel.value = currentValue || existing[0];
-        customInput.style.display = "none";
+      function addCategoryCheckbox(name, checked) {
+        const optLabel = document.createElement("label");
+        optLabel.style.display = "flex";
+        optLabel.style.alignItems = "center";
+        optLabel.style.gap = "8px";
+        optLabel.style.padding = "6px 8px";
+        optLabel.style.borderRadius = "6px";
+        optLabel.style.cursor = "pointer";
+        optLabel.style.fontSize = "14px";
+        optLabel.addEventListener("mouseenter", () => (optLabel.style.background = "var(--bg)"));
+        optLabel.addEventListener("mouseleave", () => (optLabel.style.background = "transparent"));
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = checked;
+        if (checked) selected.add(name);
+        cb.addEventListener("change", () => {
+          if (cb.checked) selected.add(name);
+          else selected.delete(name);
+          renderTags();
+        });
+        const text = document.createElement("span");
+        text.textContent = name;
+        optLabel.append(cb, text);
+        dropdown.appendChild(optLabel);
+        checkboxes.push({ name, cb });
       }
 
-      sel.addEventListener("change", () => {
-        customInput.style.display = sel.value === "__new__" ? "block" : "none";
-        if (sel.value === "__new__") customInput.focus();
+      allNames.forEach((name) => addCategoryCheckbox(name, current.includes(name)));
+
+      const addRow = document.createElement("div");
+      addRow.style.display = "flex";
+      addRow.style.gap = "8px";
+      addRow.style.padding = "8px";
+      addRow.style.marginTop = "4px";
+      addRow.style.borderTop = "1px solid var(--border)";
+      const newCategoryInput = document.createElement("input");
+      newCategoryInput.type = "text";
+      newCategoryInput.placeholder = "New category name";
+      newCategoryInput.style.flex = "1";
+      const addCategoryBtn = document.createElement("button");
+      addCategoryBtn.type = "button";
+      addCategoryBtn.className = "small";
+      addCategoryBtn.textContent = "+ Add";
+      addCategoryBtn.addEventListener("click", () => {
+        const name = newCategoryInput.value.trim();
+        if (!name || checkboxes.some((c) => c.name.toLowerCase() === name.toLowerCase())) return;
+        addCategoryCheckbox(name, true);
+        renderTags();
+        newCategoryInput.value = "";
+      });
+      addRow.append(newCategoryInput, addCategoryBtn);
+      dropdown.appendChild(addRow);
+
+      trigger.addEventListener("click", () => {
+        dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+      });
+      // focusout bubbles from any child (a checkbox, the add-category input…),
+      // so this fires whenever focus is about to leave the dropdown; by the
+      // time the timeout runs, activeElement tells us whether it actually left
+      box.addEventListener("focusout", () => {
+        setTimeout(() => {
+          if (!box.contains(document.activeElement)) dropdown.style.display = "none";
+        }, 100);
       });
 
-      wrap.append(sel, customInput);
-      fieldRefs[f.key] = () => (sel.value === "__new__" ? customInput.value.trim() : sel.value);
+      box.append(trigger, dropdown);
+      wrap.append(box, tagsRow);
+      renderTags();
+      fieldRefs[f.key] = () => Array.from(selected).sort();
     } else if (f.type === "lines") {
       const ta = document.createElement("textarea");
       ta.rows = f.rows || 4;
@@ -1380,6 +1521,12 @@ function renderForm(main, key, config) {
       const value = fieldRefs[f.key]();
       if (f.type === "daterange" || f.type === "citycountry") Object.assign(updated, value);
       else updated[f.key] = value;
+    }
+    if (key === "projects") {
+      // the id is the project's URL anchor (/projects#id) — derived from the
+      // name automatically instead of being typed in, and kept stable once
+      // set so existing links to it don't break when the name is edited later
+      updated.id = isNew ? uniqueSlug(updated.name, list.map((p) => p.id)) : entry.id;
     }
     if (isNew) {
       list.unshift(updated);

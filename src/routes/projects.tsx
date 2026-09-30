@@ -96,7 +96,7 @@ function Projects() {
   const [filter, setFilter] = useState<string>("All");
   const [openId, setOpenId] = useState<string | null>(projects[0]?.id ?? null);
 
-  const visible = projects.filter((p) => filter === "All" || p.category === filter);
+  const visible = projects.filter((p) => filter === "All" || p.category.includes(filter));
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24">

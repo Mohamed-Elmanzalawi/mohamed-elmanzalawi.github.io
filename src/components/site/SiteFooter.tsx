@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { LINKEDIN_URL, GITHUB_URL } from "@/lib/site-data";
+import { LINKEDIN_URL, GITHUB_URL, ORCID_URL, SCHOLAR_URL } from "@/lib/site-data";
 
 export function SiteFooter() {
   return (
@@ -32,18 +32,22 @@ export function SiteFooter() {
           >
             GitHub
           </a>
-          <Link
-            to="/publications"
+          <a
+            href={ORCID_URL}
+            target="_blank"
+            rel="noreferrer"
             className="text-muted-foreground transition-smooth hover:text-foreground"
           >
-            Publications
-          </Link>
-          <Link
-            to="/presentations"
+            ORCID
+          </a>
+          <a
+            href={SCHOLAR_URL}
+            target="_blank"
+            rel="noreferrer"
             className="text-muted-foreground transition-smooth hover:text-foreground"
           >
-            Presentations
-          </Link>
+            Google Scholar
+          </a>
           <Link to="/contact" className="text-muted-foreground transition-smooth hover:text-foreground">
             Contact
           </Link>
