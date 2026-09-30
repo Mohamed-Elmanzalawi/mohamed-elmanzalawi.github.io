@@ -130,7 +130,7 @@ function About() {
         <div className="mt-8 grid gap-8 lg:grid-cols-2">
           <div>
             <p className="font-display text-sm font-semibold">Scholarships</p>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 max-h-[700px] space-y-3 overflow-y-auto pr-1">
               {scholarships.map((s, i) => (
                 <Reveal key={s.title} delay={i * 60}>
                   <div className="rounded-xl border border-border bg-card p-5">
@@ -156,7 +156,7 @@ function About() {
           </div>
           <div>
             <p className="font-display text-sm font-semibold">Awards</p>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 max-h-[700px] space-y-3 overflow-y-auto pr-1">
               {awards.map((a, i) => (
                 <Reveal key={a.title} delay={i * 40}>
                   <div className="rounded-xl border border-border bg-card p-5">

@@ -214,7 +214,7 @@ const COLLECTIONS = {
       { key: "type", label: "Type", type: "select", options: ["Presenting", "Poster", "Attending", "Speaking"] },
       { key: "title", label: "Title / talk name", type: "text" },
       { key: "event", label: "Event / conference name", type: "text" },
-      { key: "location", label: "Location", type: "text" },
+      { key: "cityCountry", label: "Location", type: "citycountry" },
       { key: "date", label: "Date (e.g. 6–9 Nov 2026)", type: "text" },
       { key: "link", label: "Link (optional)", type: "link" },
     ],
@@ -399,6 +399,8 @@ const COLLECTIONS = {
       title: "",
       event: "",
       location: "",
+      city: "",
+      country: "",
       date: "",
       startDate: "",
       endDate: "",
@@ -408,7 +410,7 @@ const COLLECTIONS = {
       { key: "type", label: "Type (can be both)", type: "checkboxgroup", options: ["Oral", "Poster"] },
       { key: "title", label: "Title", type: "textarea" },
       { key: "event", label: "Event / conference", type: "text" },
-      { key: "location", label: "Location", type: "text" },
+      { key: "cityCountry", label: "Location", type: "citycountry" },
       { key: "dateRange", label: "Date", type: "daterange" },
       { key: "link", label: "Link (optional)", type: "link" },
     ],
@@ -742,6 +744,221 @@ function parseDateKey(value) {
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+// Must match DestinationGlobe.tsx's COUNTRY_COORDS keys exactly (case-insensitive) —
+// the globe on the homepage resolves its position from whichever of these is picked.
+const COUNTRY_LIST = [
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Antigua and Barbuda",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Cape Verde",
+  "Central African Republic",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo",
+  "Costa Rica",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czech Republic",
+  "DR Congo",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Equatorial Guinea",
+  "Eritrea",
+  "Estonia",
+  "Eswatini",
+  "Ethiopia",
+  "Fiji",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Grenada",
+  "Guatemala",
+  "Guinea",
+  "Guinea-Bissau",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hong Kong",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Ivory Coast",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Kosovo",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Marshall Islands",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Micronesia",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Korea",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Palestine",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "South Sudan",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Suriname",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Timor-Leste",
+  "Togo",
+  "Tonga",
+  "Trinidad and Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Vatican City",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
+];
+
+// Typed country names don't have to match exactly — snap to the closest
+// entry in COUNTRY_LIST so the value always resolves to a real country
+// (and therefore a real spot on the homepage globe).
+// Only a real, exact (case-insensitive) entry from COUNTRY_LIST is ever
+// allowed through — anything else (typos, partial text left unselected)
+// resolves to "" rather than saving bad data.
+function exactCountryMatch(typed) {
+  const value = String(typed || "").trim().toLowerCase();
+  if (!value) return "";
+  return COUNTRY_LIST.find((c) => c.toLowerCase() === value) || "";
+}
+
 // Turns two ISO (yyyy-mm-dd) dates from the calendar pickers into the site's
 // display format, e.g. "6–9 Nov 2025" or "27 Feb 2025" for a single day.
 function formatDateRange(startISO, endISO) {
@@ -971,6 +1188,107 @@ function buildFieldsForm(config, entry) {
           year: startDate ? String(new Date(startDate + "T00:00:00").getFullYear()) : "",
         };
       };
+    } else if (f.type === "citycountry") {
+      const cityRow = document.createElement("div");
+      cityRow.style.display = "flex";
+      cityRow.style.gap = "10px";
+      cityRow.style.flexWrap = "wrap";
+
+      const cityWrap = document.createElement("div");
+      cityWrap.style.flex = "1";
+      cityWrap.style.minWidth = "140px";
+      const cityHint = document.createElement("div");
+      cityHint.className = "hint";
+      cityHint.style.marginTop = "0";
+      cityHint.style.marginBottom = "4px";
+      cityHint.textContent = "City";
+      const cityInput = document.createElement("input");
+      cityInput.type = "text";
+      cityInput.value = entry.city || "";
+      cityWrap.append(cityHint, cityInput);
+
+      const countryWrap = document.createElement("div");
+      countryWrap.style.flex = "1";
+      countryWrap.style.minWidth = "140px";
+      const countryHint = document.createElement("div");
+      countryHint.className = "hint";
+      countryHint.style.marginTop = "0";
+      countryHint.style.marginBottom = "4px";
+      countryHint.textContent = "Country (start typing and choose from the list)";
+
+      const countryBox = document.createElement("div");
+      countryBox.style.position = "relative";
+
+      const countryInput = document.createElement("input");
+      countryInput.type = "text";
+      countryInput.autocomplete = "off";
+      countryInput.placeholder = "e.g. Japan";
+      countryInput.value = entry.country || "";
+
+      const countryDropdown = document.createElement("div");
+      countryDropdown.style.position = "absolute";
+      countryDropdown.style.top = "calc(100% + 2px)";
+      countryDropdown.style.left = "0";
+      countryDropdown.style.right = "0";
+      countryDropdown.style.maxHeight = "190px";
+      countryDropdown.style.overflowY = "auto";
+      countryDropdown.style.background = "var(--surface)";
+      countryDropdown.style.border = "1px solid var(--border)";
+      countryDropdown.style.borderRadius = "8px";
+      countryDropdown.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.15)";
+      countryDropdown.style.zIndex = "30";
+      countryDropdown.style.display = "none";
+
+      function renderCountryMatches() {
+        const query = countryInput.value.trim().toLowerCase();
+        const matches = query ? COUNTRY_LIST.filter((c) => c.toLowerCase().includes(query)) : COUNTRY_LIST;
+        countryDropdown.innerHTML = "";
+        if (matches.length === 0) {
+          countryDropdown.style.display = "none";
+          return;
+        }
+        matches.forEach((c) => {
+          const item = document.createElement("div");
+          item.textContent = c;
+          item.style.padding = "7px 12px";
+          item.style.fontSize = "13px";
+          item.style.cursor = "pointer";
+          item.addEventListener("mouseenter", () => (item.style.background = "var(--bg)"));
+          item.addEventListener("mouseleave", () => (item.style.background = "transparent"));
+          // mousedown (not click) fires before the input's blur, so the pick
+          // registers before the dropdown gets hidden/validated away
+          item.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            countryInput.value = c;
+            countryDropdown.style.display = "none";
+          });
+          countryDropdown.appendChild(item);
+        });
+        countryDropdown.style.display = "block";
+      }
+
+      countryInput.addEventListener("input", renderCountryMatches);
+      countryInput.addEventListener("focus", renderCountryMatches);
+      countryInput.addEventListener("blur", () => {
+        setTimeout(() => {
+          countryDropdown.style.display = "none";
+          // only a real country from the list is allowed through
+          countryInput.value = exactCountryMatch(countryInput.value);
+        }, 120);
+      });
+
+      countryBox.append(countryInput, countryDropdown);
+      countryWrap.append(countryHint, countryBox);
+
+      cityRow.append(cityWrap, countryWrap);
+      wrap.appendChild(cityRow);
+
+      fieldRefs[f.key] = () => {
+        const city = cityInput.value.trim();
+        const country = exactCountryMatch(countryInput.value);
+        const location = [city, country].filter(Boolean).join(", ");
+        return { city, country, location };
+      };
     } else if (f.type === "link") {
       const rowWrap = document.createElement("div");
       rowWrap.className = "link-row";
@@ -1060,7 +1378,7 @@ function renderForm(main, key, config) {
     const updated = {};
     for (const f of config.fields) {
       const value = fieldRefs[f.key]();
-      if (f.type === "daterange") Object.assign(updated, value);
+      if (f.type === "daterange" || f.type === "citycountry") Object.assign(updated, value);
       else updated[f.key] = value;
     }
     if (isNew) {
@@ -1096,44 +1414,62 @@ function buildPresentationImportBox(key) {
   label.textContent = "Fill this in from an existing presentation instead of typing it again:";
   box.appendChild(label);
 
-  const row = document.createElement("div");
-  row.style.display = "flex";
-  row.style.gap = "8px";
-  row.style.flexWrap = "wrap";
+  let selected = null; // { p, i } once something's been picked from the list
 
-  const select = document.createElement("select");
-  select.className = "control";
-  // native <select> popups already scroll once they have more options than
-  // fit on screen — nothing extra needed for that.
-  const blank = document.createElement("option");
-  blank.value = "";
-  blank.textContent = "— Select a presentation —";
-  select.appendChild(blank);
+  const details = document.createElement("details");
+  const summary = document.createElement("summary");
+  summary.className = "control";
+  summary.style.cursor = "pointer";
+  summary.textContent = "— Select a presentation —";
+  details.appendChild(summary);
+
+  const list = document.createElement("div");
+  list.style.maxHeight = "190px"; // ~5 rows, then scroll
+  list.style.overflowY = "auto";
+  list.style.marginTop = "6px";
+  list.style.border = "1px solid var(--border)";
+  list.style.borderRadius = "8px";
+  details.appendChild(list);
+
   // newest first, so the presentation you probably want is at the top
   state.data.presentations
     .map((p, i) => ({ p, i }))
     .sort((a, b) => parseDateKey(b.p.date) - parseDateKey(a.p.date))
     .forEach(({ p, i }) => {
-      const o = document.createElement("option");
-      o.value = String(i);
-      o.textContent = `[${(p.type || []).join("+")}] ${p.title} — ${p.event}`;
-      select.appendChild(o);
+      const optionLabel = `[${(p.type || []).join("+")}] ${p.title} — ${p.event}`;
+      const item = document.createElement("div");
+      item.textContent = optionLabel;
+      item.style.padding = "8px 12px";
+      item.style.fontSize = "13px";
+      item.style.cursor = "pointer";
+      item.style.borderBottom = "1px solid var(--border)";
+      item.addEventListener("mouseenter", () => (item.style.background = "var(--bg)"));
+      item.addEventListener("mouseleave", () => (item.style.background = "transparent"));
+      item.addEventListener("click", () => {
+        selected = { p, i };
+        summary.textContent = optionLabel;
+        details.open = false;
+        importBtn.disabled = false;
+      });
+      list.appendChild(item);
     });
-  select.style.flex = "1";
-  select.style.minWidth = "220px";
 
   const importBtn = document.createElement("button");
   importBtn.className = "primary small";
   importBtn.textContent = "Import";
+  importBtn.disabled = true;
+  importBtn.style.marginTop = "10px";
   importBtn.addEventListener("click", () => {
-    if (select.value === "") return;
-    const p = state.data.presentations[parseInt(select.value, 10)];
+    if (!selected) return;
+    const { p } = selected;
     state.data[key] = {
       ...state.data[key],
       type: p.type && p.type.includes("Oral") ? "Presenting" : "Poster",
       title: p.title,
       event: p.event,
       location: p.location,
+      city: p.city,
+      country: p.country,
       date: p.date,
       link: p.link,
     };
@@ -1143,8 +1479,7 @@ function buildPresentationImportBox(key) {
     showToast("Imported. Review the fields below, then Save.");
   });
 
-  row.append(select, importBtn);
-  box.appendChild(row);
+  box.append(details, importBtn);
   return box;
 }
 
@@ -1163,7 +1498,11 @@ function renderSingletonForm(main, key, config) {
   saveBtn.textContent = "Save";
   saveBtn.addEventListener("click", () => {
     const updated = {};
-    for (const f of config.fields) updated[f.key] = fieldRefs[f.key]();
+    for (const f of config.fields) {
+      const value = fieldRefs[f.key]();
+      if (f.type === "daterange" || f.type === "citycountry") Object.assign(updated, value);
+      else updated[f.key] = value;
+    }
     state.data[key] = updated;
     state.dirty[key] = true;
     renderTabs();

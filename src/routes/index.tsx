@@ -3,6 +3,7 @@ import { ArrowRight, CalendarDays, ExternalLink, Github, Linkedin, Mail } from "
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/Reveal";
 import { InsightPipeline } from "@/components/site/InsightPipeline";
+import { DestinationGlobe } from "@/components/site/DestinationGlobe";
 import { LINKEDIN_URL, GITHUB_URL, projects, homeIntro, upcomingEvent } from "@/lib/site-data";
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
@@ -35,11 +36,10 @@ function Home() {
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
           <Reveal>
             <div className="flex flex-wrap items-center gap-4 rounded-xl border border-teal/40 bg-teal/[0.08] px-5 py-4 shadow-soft sm:px-6">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-teal text-teal-foreground">
-                <CalendarDays className="size-5" />
-              </span>
+              <DestinationGlobe country={upcomingEvent.country} className="size-20 shrink-0 sm:size-24" />
               <div className="min-w-0 flex-1">
-                <p className="font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
+                <p className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
+                  <CalendarDays className="size-3" />
                   Upcoming · {upcomingEvent.type}
                 </p>
                 <p className="mt-1 text-[15px] font-semibold leading-snug sm:text-base">{upcomingEvent.title}</p>

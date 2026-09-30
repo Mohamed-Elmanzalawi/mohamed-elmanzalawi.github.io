@@ -57,7 +57,11 @@ export type Presentation = {
   year: string;
   title: string;
   event: string;
+  // `location` is derived ("City, Country") from `city`/`country` below,
+  // which the admin's dropdown-backed picker stores as the source of truth.
   location: string;
+  city?: string;
+  country?: string;
   date: string;
   // ISO (yyyy-mm-dd) source dates the admin's calendar picker stores;
   // `date` above is the formatted display string derived from these.
@@ -124,6 +128,8 @@ export type UpcomingEvent = {
   title: string;
   event: string;
   location: string;
+  city?: string;
+  country?: string;
   date: string;
   link?: { label: string; url: string };
 };
