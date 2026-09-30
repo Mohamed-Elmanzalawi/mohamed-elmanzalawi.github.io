@@ -10,6 +10,7 @@ import aboutBioData from "../../content/about-bio.json";
 import aboutInterestsData from "../../content/about-interests.json";
 import aboutCredibilityData from "../../content/about-credibility.json";
 import homeIntroData from "../../content/home-intro.json";
+import upcomingEventData from "../../content/upcoming-event.json";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
@@ -51,12 +52,17 @@ export type Publication = {
 export const publications: Publication[] = publicationsData;
 
 export type Presentation = {
-  type: "Oral" | "Poster";
+  // a single talk can be both an oral presentation and a poster
+  type: ("Oral" | "Poster")[];
   year: string;
   title: string;
   event: string;
   location: string;
   date: string;
+  // ISO (yyyy-mm-dd) source dates the admin's calendar picker stores;
+  // `date` above is the formatted display string derived from these.
+  startDate?: string;
+  endDate?: string;
   link?: { label: string; url: string };
 };
 
@@ -111,3 +117,15 @@ export const aboutCredibility: CredibilityItem[] = aboutCredibilityData;
 export type HomeIntro = { eyebrow: string; tagline: string; paragraph: string };
 
 export const homeIntro: HomeIntro = homeIntroData;
+
+export type UpcomingEvent = {
+  visible: boolean;
+  type: string;
+  title: string;
+  event: string;
+  location: string;
+  date: string;
+  link?: { label: string; url: string };
+};
+
+export const upcomingEvent: UpcomingEvent = upcomingEventData as UpcomingEvent;

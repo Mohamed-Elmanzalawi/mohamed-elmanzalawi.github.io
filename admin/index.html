@@ -124,7 +124,8 @@
   .card .actions { display: flex; gap: 6px; flex-shrink: 0; }
 
   .toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .toolbar select {
+  .toolbar select,
+  select.control {
     font: inherit;
     cursor: pointer;
     border-radius: 8px;
@@ -133,11 +134,12 @@
     color: var(--text);
     padding: 8px 14px;
   }
-  .toolbar select:hover { border-color: var(--primary); }
+  .toolbar select:hover,
+  select.control:hover { border-color: var(--primary); }
 
   .field { margin-bottom: 14px; }
   .field label { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 5px; color: var(--muted); }
-  .field input[type="text"], .field input[type="url"], .field textarea, .field select {
+  .field input[type="text"], .field input[type="url"], .field input[type="date"], .field textarea, .field select {
     width: 100%;
     font: inherit;
     padding: 8px 10px;
@@ -203,6 +205,20 @@
 "use strict";
 
 const COLLECTIONS = {
+  "upcoming-event": {
+    file: "upcoming-event.json",
+    label: "Upcoming Event",
+    isSingleton: true,
+    fields: [
+      { key: "visible", label: "Show on homepage?", type: "boolean" },
+      { key: "type", label: "Type", type: "select", options: ["Presenting", "Poster", "Attending", "Speaking"] },
+      { key: "title", label: "Title / talk name", type: "text" },
+      { key: "event", label: "Event / conference name", type: "text" },
+      { key: "location", label: "Location", type: "text" },
+      { key: "date", label: "Date (e.g. 6–9 Nov 2026)", type: "text" },
+      { key: "link", label: "Link (optional)", type: "link" },
+    ],
+  },
   "home-intro": {
     file: "home-intro.json",
     label: "Home — Introduction",
@@ -377,25 +393,34 @@ const COLLECTIONS = {
       { key: "year", label: "Year", type: "year" },
       { key: "title", label: "Alphabetical", type: "text" },
     ],
-    empty: { type: "Oral", year: "", title: "", event: "", location: "", date: "", link: undefined },
+    empty: {
+      type: [],
+      year: "",
+      title: "",
+      event: "",
+      location: "",
+      date: "",
+      startDate: "",
+      endDate: "",
+      link: undefined,
+    },
     fields: [
-      { key: "type", label: "Type", type: "select", options: ["Oral", "Poster"] },
+      { key: "type", label: "Type (can be both)", type: "checkboxgroup", options: ["Oral", "Poster"] },
       { key: "title", label: "Title", type: "textarea" },
       { key: "event", label: "Event / conference", type: "text" },
       { key: "location", label: "Location", type: "text" },
-      { key: "date", label: "Date (e.g. 6–9 Nov 2025)", type: "text" },
-      { key: "year", label: "Year (for sorting/reference)", type: "text" },
+      { key: "dateRange", label: "Date", type: "daterange" },
       { key: "link", label: "Link (optional)", type: "link" },
     ],
     summary: (e) =>
-      `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">[${esc(e.type || "")}] ${esc(e.date || "")} · ${esc(e.event || "")}</span>`,
+      `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">[${esc((e.type || []).join(" + "))}] ${esc(e.date || "")} · ${esc(e.event || "")}</span>`,
   },
 };
 
 const state = {
   data: {},
   dirty: {},
-  activeTab: "publications",
+  activeTab: "upcoming-event",
   editing: null, // { index: number|"new" }
   sortDir: {}, // per-collection: "asc" | "desc"
   sortType: {}, // per-collection: the selected sortOptions key
@@ -701,6 +726,34 @@ function extractYear(value) {
   return m ? parseInt(m[0], 10) : null;
 }
 
+const MONTH_ABBREVIATIONS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+// Best-effort chronological key from a loose date string like "6–9 Nov 2025"
+// or "27 Feb 2025" — year, then month (if a name is found), then day (the
+// first standalone 1-2 digit number, i.e. the start of a date range).
+function parseDateKey(value) {
+  const s = String(value ?? "").toLowerCase();
+  const year = extractYear(s) || 0;
+  const month = MONTH_ABBREVIATIONS.findIndex((m) => s.includes(m)) + 1;
+  const dayMatch = s.match(/\b\d{1,2}\b/);
+  const day = dayMatch ? parseInt(dayMatch[0], 10) : 0;
+  return year * 10000 + month * 100 + day;
+}
+
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// Turns two ISO (yyyy-mm-dd) dates from the calendar pickers into the site's
+// display format, e.g. "6–9 Nov 2025" or "27 Feb 2025" for a single day.
+function formatDateRange(startISO, endISO) {
+  if (!startISO) return "";
+  const [sy, sm, sd] = startISO.split("-").map(Number);
+  if (!endISO || endISO === startISO) return `${sd} ${MONTH_NAMES[sm - 1]} ${sy}`;
+  const [ey, em, ed] = endISO.split("-").map(Number);
+  if (sy === ey && sm === em) return `${sd}–${ed} ${MONTH_NAMES[sm - 1]} ${sy}`;
+  if (sy === ey) return `${sd} ${MONTH_NAMES[sm - 1]}–${ed} ${MONTH_NAMES[em - 1]} ${sy}`;
+  return `${sd} ${MONTH_NAMES[sm - 1]} ${sy}–${ed} ${MONTH_NAMES[em - 1]} ${ey}`;
+}
+
 function sortList(key) {
   const config = COLLECTIONS[key];
   const optKey = state.sortType[key];
@@ -760,6 +813,51 @@ function buildFieldsForm(config, entry) {
       }
       wrap.appendChild(sel);
       fieldRefs[f.key] = () => sel.value;
+    } else if (f.type === "boolean") {
+      const toggleWrap = document.createElement("label");
+      toggleWrap.style.display = "flex";
+      toggleWrap.style.alignItems = "center";
+      toggleWrap.style.gap = "8px";
+      toggleWrap.style.cursor = "pointer";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.style.width = "18px";
+      checkbox.style.height = "18px";
+      checkbox.checked = !!entry[f.key];
+      const checkboxText = document.createElement("span");
+      checkboxText.style.fontSize = "14px";
+      checkboxText.textContent = checkbox.checked ? "Yes" : "No";
+      checkbox.addEventListener("change", () => {
+        checkboxText.textContent = checkbox.checked ? "Yes" : "No";
+      });
+      toggleWrap.append(checkbox, checkboxText);
+      wrap.appendChild(toggleWrap);
+      fieldRefs[f.key] = () => checkbox.checked;
+    } else if (f.type === "checkboxgroup") {
+      // stores an array — lets an entry belong to more than one option at once
+      const groupWrap = document.createElement("div");
+      groupWrap.style.display = "flex";
+      groupWrap.style.gap = "16px";
+      groupWrap.style.flexWrap = "wrap";
+      const current = Array.isArray(entry[f.key]) ? entry[f.key] : [];
+      const checkboxes = f.options.map((opt) => {
+        const optLabel = document.createElement("label");
+        optLabel.style.display = "flex";
+        optLabel.style.alignItems = "center";
+        optLabel.style.gap = "6px";
+        optLabel.style.cursor = "pointer";
+        optLabel.style.fontSize = "14px";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = current.includes(opt);
+        const text = document.createElement("span");
+        text.textContent = opt;
+        optLabel.append(cb, text);
+        groupWrap.appendChild(optLabel);
+        return { opt, cb };
+      });
+      wrap.appendChild(groupWrap);
+      fieldRefs[f.key] = () => checkboxes.filter(({ cb }) => cb.checked).map(({ opt }) => opt);
     } else if (f.type === "category") {
       const existing = Array.from(
         new Set((state.data.projects || []).map((p) => p.category).filter(Boolean)),
@@ -828,6 +926,51 @@ function buildFieldsForm(config, entry) {
           .split(/\n\s*\n/)
           .map((s) => s.trim())
           .filter(Boolean);
+    } else if (f.type === "daterange") {
+      const dateRow = document.createElement("div");
+      dateRow.style.display = "flex";
+      dateRow.style.gap = "10px";
+      dateRow.style.flexWrap = "wrap";
+
+      const startWrap = document.createElement("div");
+      startWrap.style.flex = "1";
+      startWrap.style.minWidth = "140px";
+      const startHint = document.createElement("div");
+      startHint.className = "hint";
+      startHint.style.marginTop = "0";
+      startHint.style.marginBottom = "4px";
+      startHint.textContent = "Start date";
+      const startInput = document.createElement("input");
+      startInput.type = "date";
+      startInput.value = entry.startDate || "";
+      startWrap.append(startHint, startInput);
+
+      const endWrap = document.createElement("div");
+      endWrap.style.flex = "1";
+      endWrap.style.minWidth = "140px";
+      const endHint = document.createElement("div");
+      endHint.className = "hint";
+      endHint.style.marginTop = "0";
+      endHint.style.marginBottom = "4px";
+      endHint.textContent = "End date (optional, multi-day events)";
+      const endInput = document.createElement("input");
+      endInput.type = "date";
+      endInput.value = entry.endDate || "";
+      endWrap.append(endHint, endInput);
+
+      dateRow.append(startWrap, endWrap);
+      wrap.appendChild(dateRow);
+
+      fieldRefs[f.key] = () => {
+        const startDate = startInput.value;
+        const endDate = endInput.value;
+        return {
+          startDate,
+          endDate,
+          date: formatDateRange(startDate, endDate),
+          year: startDate ? String(new Date(startDate + "T00:00:00").getFullYear()) : "",
+        };
+      };
     } else if (f.type === "link") {
       const rowWrap = document.createElement("div");
       rowWrap.className = "link-row";
@@ -915,9 +1058,17 @@ function renderForm(main, key, config) {
   saveBtn.textContent = isNew ? "Add entry" : "Save entry";
   saveBtn.addEventListener("click", () => {
     const updated = {};
-    for (const f of config.fields) updated[f.key] = fieldRefs[f.key]();
-    if (isNew) list.push(updated);
-    else list[state.editing.index] = updated;
+    for (const f of config.fields) {
+      const value = fieldRefs[f.key]();
+      if (f.type === "daterange") Object.assign(updated, value);
+      else updated[f.key] = value;
+    }
+    if (isNew) {
+      list.unshift(updated);
+      state.page[key] = 1; // jump back to page 1 so the new entry is visible
+    } else {
+      list[state.editing.index] = updated;
+    }
     state.dirty[key] = true;
     state.editing = null;
     renderTabs();
@@ -934,7 +1085,74 @@ function renderForm(main, key, config) {
   main.appendChild(form);
 }
 
+function buildPresentationImportBox(key) {
+  const box = document.createElement("div");
+  box.className = "card";
+  box.style.marginBottom = "18px";
+
+  const label = document.createElement("p");
+  label.className = "hint";
+  label.style.marginBottom = "8px";
+  label.textContent = "Fill this in from an existing presentation instead of typing it again:";
+  box.appendChild(label);
+
+  const row = document.createElement("div");
+  row.style.display = "flex";
+  row.style.gap = "8px";
+  row.style.flexWrap = "wrap";
+
+  const select = document.createElement("select");
+  select.className = "control";
+  // native <select> popups already scroll once they have more options than
+  // fit on screen — nothing extra needed for that.
+  const blank = document.createElement("option");
+  blank.value = "";
+  blank.textContent = "— Select a presentation —";
+  select.appendChild(blank);
+  // newest first, so the presentation you probably want is at the top
+  state.data.presentations
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => parseDateKey(b.p.date) - parseDateKey(a.p.date))
+    .forEach(({ p, i }) => {
+      const o = document.createElement("option");
+      o.value = String(i);
+      o.textContent = `[${(p.type || []).join("+")}] ${p.title} — ${p.event}`;
+      select.appendChild(o);
+    });
+  select.style.flex = "1";
+  select.style.minWidth = "220px";
+
+  const importBtn = document.createElement("button");
+  importBtn.className = "primary small";
+  importBtn.textContent = "Import";
+  importBtn.addEventListener("click", () => {
+    if (select.value === "") return;
+    const p = state.data.presentations[parseInt(select.value, 10)];
+    state.data[key] = {
+      ...state.data[key],
+      type: p.type && p.type.includes("Oral") ? "Presenting" : "Poster",
+      title: p.title,
+      event: p.event,
+      location: p.location,
+      date: p.date,
+      link: p.link,
+    };
+    state.dirty[key] = true;
+    renderTabs();
+    renderMain();
+    showToast("Imported. Review the fields below, then Save.");
+  });
+
+  row.append(select, importBtn);
+  box.appendChild(row);
+  return box;
+}
+
 function renderSingletonForm(main, key, config) {
+  if (key === "upcoming-event" && state.data.presentations && state.data.presentations.length > 0) {
+    main.appendChild(buildPresentationImportBox(key));
+  }
+
   const entry = JSON.parse(JSON.stringify(state.data[key]));
   const { form, fieldRefs } = buildFieldsForm(config, entry);
 

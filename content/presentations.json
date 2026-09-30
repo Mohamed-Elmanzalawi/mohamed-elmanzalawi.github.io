@@ -1,101 +1,181 @@
 [
   {
-    "type": "Oral",
-    "year": "2025",
+    "type": [
+      "Poster"
+    ],
+    "title": "PoMiD: The First Dedicated Database for the Analysis of Polar Microbial",
+    "event": "The 23rd Korea-China-Japan Bioinformatics Symposium",
+    "location": "Seoul, Korea",
+    "startDate": "2026-10-17",
+    "endDate": "2026-10-18",
+    "date": "17–18 Oct 2026",
+    "year": "2026",
+    "link": {
+      "label": "Agenda",
+      "url": "https://cjk-bioinfo.org/2026/"
+    }
+  },
+  {
+    "type": [
+      "Oral",
+      "Poster"
+    ],
     "title": "Ultrafast Identification of Species from Their Genomes",
     "event": "The 22nd CJK Bioinformatics Conference",
     "location": "Shanghai, China",
+    "startDate": "2025-11-06",
+    "endDate": "2025-11-09",
     "date": "6–9 Nov 2025",
-    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" }
+    "year": "2025",
+    "link": {
+      "label": "Agenda",
+      "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing"
+    }
   },
   {
-    "type": "Oral",
-    "year": "2025",
+    "type": [
+      "Oral"
+    ],
     "title": "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis",
     "event": "National Institute of Genetics — Master's defence (D2) progress presentation",
     "location": "Mishima, Japan",
+    "startDate": "2025-07-30",
+    "endDate": "",
     "date": "30 Jul 2025",
-    "link": { "label": "Website", "url": "https://www.nig.ac.jp/nig/research/seminer?id=1718" }
+    "year": "2025",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/research/seminer?id=1718"
+    }
   },
   {
-    "type": "Oral",
-    "year": "2025",
+    "type": [
+      "Oral",
+      "Poster"
+    ],
     "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
     "event": "National Institute of Genetics — progress presentation",
     "location": "Mishima, Japan",
+    "startDate": "2025-02-27",
+    "endDate": "",
     "date": "27 Feb 2025",
-    "link": {
-      "label": "Website",
-      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
-    }
-  },
-  {
-    "type": "Oral",
-    "year": "2024",
-    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    "event": "National Institute of Genetics — progress presentation",
-    "location": "Mishima, Japan",
-    "date": "28 Aug 2024",
-    "link": {
-      "label": "Website",
-      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
-    }
-  },
-  {
-    "type": "Poster",
     "year": "2025",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  },
+  {
+    "type": [
+      "Oral",
+      "Poster"
+    ],
     "title": "SAPP: a flexible, scalable and reproducible pipeline for pathogenic variants detection",
     "event": "The 22nd CJK Bioinformatics Conference",
     "location": "Shanghai, China",
+    "startDate": "2025-11-06",
+    "endDate": "2025-11-09",
     "date": "6–9 Nov 2025",
-    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing" }
+    "year": "2025",
+    "link": {
+      "label": "Agenda",
+      "url": "https://drive.google.com/file/d/1qv94u12fT0BSETyWow9DwABxHEqSvzZM/view?usp=sharing"
+    }
   },
   {
-    "type": "Poster",
-    "year": "2025",
+    "type": [
+      "Poster"
+    ],
     "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
     "event": "National Institute of Genetics — life science retreat",
     "location": "Shizuoka, Japan",
+    "startDate": "2025-07-03",
+    "endDate": "2025-07-04",
     "date": "3–4 Jul 2025",
-    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1BjaKj5kg9OJLgUNAKFotRBVxzWLYNJVM/view?usp=sharing" }
+    "year": "2025",
+    "link": {
+      "label": "Agenda",
+      "url": "https://drive.google.com/file/d/1BjaKj5kg9OJLgUNAKFotRBVxzWLYNJVM/view?usp=sharing"
+    }
   },
   {
-    "type": "Poster",
-    "year": "2025",
+    "type": [
+      "Oral",
+      "Poster"
+    ],
     "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
     "event": "National Institute of Genetics — progress presentation",
     "location": "Mishima, Japan",
+    "startDate": "2025-02-27",
+    "endDate": "",
     "date": "27 Feb 2025",
+    "year": "2025",
     "link": {
       "label": "Website",
       "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
     }
   },
   {
-    "type": "Poster",
-    "year": "2025",
+    "type": [
+      "Poster"
+    ],
     "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
     "event": "National Institute of Genetics — life science retreat",
     "location": "Minamitsuru, Japan",
+    "startDate": "2025-01-16",
+    "endDate": "2025-01-17",
     "date": "16–17 Jan 2025",
-    "link": { "label": "Agenda", "url": "https://drive.google.com/file/d/1qXbASxGIhWvta9gAlpvBmn5_mOpIQoco/view?usp=sharing" }
+    "year": "2025",
+    "link": {
+      "label": "Agenda",
+      "url": "https://drive.google.com/file/d/1qXbASxGIhWvta9gAlpvBmn5_mOpIQoco/view?usp=sharing"
+    }
   },
   {
-    "type": "Poster",
+    "type": [
+      "Oral",
+      "Poster"
+    ],
+    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
+    "event": "National Institute of Genetics — progress presentation",
+    "location": "Mishima, Japan",
+    "startDate": "2024-08-28",
+    "endDate": "",
+    "date": "28 Aug 2024",
+    "year": "2024",
+    "link": {
+      "label": "Website",
+      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
+    }
+  },
+  {
+    "type": [
+      "Poster"
+    ],
     "year": "2024",
     "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
     "event": "International Symposium on Plasmid Biology 2024",
     "location": "Hamamatsu, Japan",
     "date": "2–6 Sep 2024",
-    "link": { "label": "Website", "url": "https://smartconf.jp/content/ispb2024/" }
+    "startDate": "2024-09-02",
+    "endDate": "2024-09-06",
+    "link": {
+      "label": "Website",
+      "url": "https://smartconf.jp/content/ispb2024/"
+    }
   },
   {
-    "type": "Poster",
-    "year": "2024",
+    "type": [
+      "Oral",
+      "Poster"
+    ],
     "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
     "event": "National Institute of Genetics — progress presentation",
     "location": "Mishima, Japan",
+    "startDate": "2024-08-28",
+    "endDate": "",
     "date": "28 Aug 2024",
+    "year": "2024",
     "link": {
       "label": "Website",
       "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"

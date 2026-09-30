@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, CalendarDays, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/site/Reveal";
 import { InsightPipeline } from "@/components/site/InsightPipeline";
-import { LINKEDIN_URL, GITHUB_URL, projects, homeIntro } from "@/lib/site-data";
+import { LINKEDIN_URL, GITHUB_URL, projects, homeIntro, upcomingEvent } from "@/lib/site-data";
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
 const description =
@@ -31,6 +31,45 @@ const stats = [
 function Home() {
   return (
     <div>
+      {upcomingEvent.visible && (
+        <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
+          <Reveal>
+            <div className="flex flex-wrap items-center gap-4 rounded-xl border border-teal/40 bg-teal/[0.08] px-5 py-4 shadow-soft sm:px-6">
+              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-teal text-teal-foreground">
+                <CalendarDays className="size-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
+                  Upcoming · {upcomingEvent.type}
+                </p>
+                <p className="mt-1 text-[15px] font-semibold leading-snug sm:text-base">{upcomingEvent.title}</p>
+                {upcomingEvent.event && (
+                  <p className="mt-0.5 text-sm text-foreground/80">{upcomingEvent.event}</p>
+                )}
+                {(upcomingEvent.location || upcomingEvent.date) && (
+                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                    {upcomingEvent.location}
+                    {upcomingEvent.location && upcomingEvent.date && " · "}
+                    {upcomingEvent.date}
+                  </p>
+                )}
+              </div>
+              {upcomingEvent.link && (
+                <a
+                  href={upcomingEvent.link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-primary-foreground transition-smooth hover:-translate-y-0.5 hover:shadow-soft"
+                >
+                  {upcomingEvent.link.label}
+                  <ExternalLink className="size-3.5" />
+                </a>
+              )}
+            </div>
+          </Reveal>
+        </div>
+      )}
+
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 grid-bg opacity-60" aria-hidden />
         <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 lg:pb-28 lg:pt-24">
