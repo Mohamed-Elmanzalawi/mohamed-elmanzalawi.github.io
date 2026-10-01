@@ -1,10 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CalendarDays, ExternalLink, Github, GraduationCap, IdCard, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/site/Reveal";
 import { InsightPipeline } from "@/components/site/InsightPipeline";
 import { DestinationGlobe } from "@/components/site/DestinationGlobe";
-import { LINKEDIN_URL, GITHUB_URL, ORCID_URL, SCHOLAR_URL, projects, homeIntro, upcomingEvent } from "@/lib/site-data";
+import {
+  LINKEDIN_URL,
+  GITHUB_URL,
+  ORCID_URL,
+  SCHOLAR_URL,
+  projects,
+  homeIntro,
+  upcomingEvent,
+  upcomingEventVisible,
+} from "@/lib/site-data";
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
 const description =
@@ -29,28 +39,56 @@ const stats = [
   { k: "Data Science", v: "Python, R & machine learning" },
 ];
 
+const isPublishedPaper = upcomingEvent.type === "Published Paper";
+const eyebrowText = isPublishedPaper ? "New Publication" : `Upcoming · ${upcomingEvent.type}`;
+// a paper announcement gets its own badge/card color (primary blue) so it
+// reads as distinct from a travel/conference update (teal, to match the
+// globe) — but the link button keeps the same look either way
+const bannerBadgeColor = isPublishedPaper ? "text-primary" : "text-teal";
+const bannerLinkBg = "bg-primary";
+
 function Home() {
   return (
     <div>
-      {upcomingEvent.visible && (
+      {upcomingEventVisible && (
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
           <Reveal>
-            <div className="flex flex-col gap-5 rounded-xl border border-teal/40 bg-teal/[0.08] px-6 py-5 shadow-soft sm:flex-row sm:items-center sm:px-8 sm:py-6">
+            <div
+              className={cn(
+                "flex flex-col gap-5 rounded-xl border px-6 py-5 shadow-soft sm:flex-row sm:items-center sm:px-8 sm:py-6",
+                isPublishedPaper ? "border-primary/40 bg-primary/[0.08]" : "border-teal/40 bg-teal/[0.08]",
+              )}
+            >
               <div className="flex items-center gap-4">
-                <DestinationGlobe country={upcomingEvent.country} className="size-28 shrink-0 sm:size-36 md:size-40" />
+                {!isPublishedPaper && (
+                  <DestinationGlobe
+                    country={upcomingEvent.country}
+                    className="size-28 shrink-0 sm:size-36 md:size-40"
+                  />
+                )}
                 {/* on mobile the badge + title sit next to the globe; the rest follows full-width below */}
                 <div className="min-w-0 flex-1 sm:hidden">
-                  <p className="flex items-center gap-1 whitespace-nowrap font-mono text-xs font-semibold tracking-wide text-teal uppercase">
+                  <p
+                    className={cn(
+                      "flex items-center gap-1 whitespace-nowrap font-mono text-xs font-semibold tracking-wide uppercase",
+                      bannerBadgeColor,
+                    )}
+                  >
                     <CalendarDays className="size-3.5 shrink-0" />
-                    Upcoming · {upcomingEvent.type}
+                    {eyebrowText}
                   </p>
                   <p className="mt-2 text-xl font-semibold leading-snug">{upcomingEvent.title}</p>
                 </div>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="hidden items-center gap-1.5 font-mono text-sm font-semibold tracking-widest text-teal uppercase sm:flex">
+                <p
+                  className={cn(
+                    "hidden items-center gap-1.5 font-mono text-sm font-semibold tracking-widest uppercase sm:flex",
+                    bannerBadgeColor,
+                  )}
+                >
                   <CalendarDays className="size-4" />
-                  Upcoming · {upcomingEvent.type}
+                  {eyebrowText}
                 </p>
                 <p className="hidden text-2xl font-semibold leading-snug sm:mt-2 sm:block">{upcomingEvent.title}</p>
                 {upcomingEvent.event && (
@@ -69,7 +107,10 @@ function Home() {
                   href={upcomingEvent.link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-lg font-semibold text-primary-foreground shadow-soft transition-smooth hover:-translate-y-0.5 hover:shadow-lift sm:w-auto"
+                  className={cn(
+                    "inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full px-6 py-3 text-lg font-semibold text-primary-foreground shadow-soft transition-smooth hover:-translate-y-0.5 hover:shadow-lift sm:w-auto",
+                    bannerLinkBg,
+                  )}
                 >
                   {upcomingEvent.link.label}
                   <ExternalLink className="size-5" />

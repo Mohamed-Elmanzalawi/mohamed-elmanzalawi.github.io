@@ -1,6 +1,6 @@
 {
   "visible": true,
-  "type": "Poster",
+  "type": "Poster Presentation",
   "title": "PoMiD: The First Dedicated Database for the Analysis of Polar Microbial",
   "event": "The 23rd Korea-China-Japan Bioinformatics Symposium",
   "city": "Seoul",
@@ -10,5 +10,6 @@
   "link": {
     "label": "Agenda",
     "url": "https://cjk-bioinfo.org/2026/"
-  }
+  },
+  "expiresAt": "2026-11-19"
 }

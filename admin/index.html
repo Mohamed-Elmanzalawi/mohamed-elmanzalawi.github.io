@@ -211,12 +211,23 @@ const COLLECTIONS = {
     isSingleton: true,
     fields: [
       { key: "visible", label: "Show on homepage?", type: "boolean" },
-      { key: "type", label: "Type", type: "select", options: ["Presenting", "Poster", "Attending", "Speaking"] },
-      { key: "title", label: "Title / talk name", type: "text" },
-      { key: "event", label: "Event / conference name", type: "text" },
-      { key: "cityCountry", label: "Location", type: "citycountry" },
+      {
+        key: "type",
+        label: "Type",
+        type: "select",
+        options: ["Oral Presentation", "Poster Presentation", "Attending", "Published Paper"],
+      },
+      { key: "title", label: "Title / talk / paper name", type: "text" },
+      { key: "event", label: "Event / conference / journal name", type: "text" },
+      { key: "cityCountry", label: "Location (optional, e.g. not applicable for a paper)", type: "citycountry" },
       { key: "date", label: "Date (e.g. 6–9 Nov 2026)", type: "text" },
       { key: "link", label: "Link (optional)", type: "link" },
+      {
+        key: "expiresAt",
+        label: "Hide after this date",
+        type: "date",
+        hint: "Leave blank to keep showing it indefinitely. Once this date passes, the banner stops appearing on the homepage automatically.",
+      },
     ],
   },
   "home-intro": {
@@ -379,7 +390,7 @@ const COLLECTIONS = {
       { key: "title", label: "Title", type: "textarea" },
       { key: "authors", label: "Authors (comma-separated, as they should be listed)", type: "textarea" },
       { key: "highlight", label: "Name to bold (must match text in Authors exactly)", type: "text" },
-      { key: "venue", label: "Venue / journal citation", type: "text" },
+      { key: "venue", label: "Journal citation", type: "text" },
       { key: "links", label: "Links", type: "linklist" },
     ],
     summary: (e) =>
@@ -1018,10 +1029,19 @@ function sortList(key) {
 function buildFieldsForm(config, entry) {
   const form = document.createElement("div");
   const fieldRefs = {};
+  // resets a field's own input(s) back to blank — used when switching the
+  // "type" select to "Published Paper" (see wiring below)
+  const fieldClearers = {};
+  // tracked so the "type" select can hide the location field when it's set
+  // to "Published Paper" (a paper has no venue city/country), and blank the
+  // rest of the form so stale data from whatever this entry was isn't kept
+  let typeSelectEl = null;
+  let cityCountryWrap = null;
 
   for (const f of config.fields) {
     const wrap = document.createElement("div");
     wrap.className = "field";
+    if (f.key === "cityCountry") cityCountryWrap = wrap;
     const label = document.createElement("label");
     label.textContent = f.label;
     wrap.appendChild(label);
@@ -1032,6 +1052,20 @@ function buildFieldsForm(config, entry) {
       input.value = entry[f.key] || "";
       wrap.appendChild(input);
       fieldRefs[f.key] = () => input.value.trim();
+      fieldClearers[f.key] = () => (input.value = "");
+    } else if (f.type === "date") {
+      const input = document.createElement("input");
+      input.type = "date";
+      input.value = entry[f.key] || "";
+      wrap.appendChild(input);
+      if (f.hint) {
+        const hint = document.createElement("div");
+        hint.className = "hint";
+        hint.textContent = f.hint;
+        wrap.appendChild(hint);
+      }
+      fieldRefs[f.key] = () => input.value;
+      fieldClearers[f.key] = () => (input.value = "");
     } else if (f.type === "textarea") {
       const ta = document.createElement("textarea");
       ta.rows = f.rows || (f.key === "authors" || f.key === "body" ? 4 : 2);
@@ -1047,28 +1081,23 @@ function buildFieldsForm(config, entry) {
         if (entry[f.key] === opt) o.selected = true;
         sel.appendChild(o);
       }
+      if (f.key === "type") typeSelectEl = sel;
       wrap.appendChild(sel);
       fieldRefs[f.key] = () => sel.value;
     } else if (f.type === "boolean") {
-      const toggleWrap = document.createElement("label");
-      toggleWrap.style.display = "flex";
-      toggleWrap.style.alignItems = "center";
-      toggleWrap.style.gap = "8px";
-      toggleWrap.style.cursor = "pointer";
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.style.width = "18px";
-      checkbox.style.height = "18px";
-      checkbox.checked = !!entry[f.key];
-      const checkboxText = document.createElement("span");
-      checkboxText.style.fontSize = "14px";
-      checkboxText.textContent = checkbox.checked ? "Yes" : "No";
-      checkbox.addEventListener("change", () => {
-        checkboxText.textContent = checkbox.checked ? "Yes" : "No";
+      const sel = document.createElement("select");
+      [
+        { value: "yes", text: "Yes" },
+        { value: "no", text: "No" },
+      ].forEach(({ value, text }) => {
+        const o = document.createElement("option");
+        o.value = value;
+        o.textContent = text;
+        if ((value === "yes") === !!entry[f.key]) o.selected = true;
+        sel.appendChild(o);
       });
-      toggleWrap.append(checkbox, checkboxText);
-      wrap.appendChild(toggleWrap);
-      fieldRefs[f.key] = () => checkbox.checked;
+      wrap.appendChild(sel);
+      fieldRefs[f.key] = () => sel.value === "yes";
     } else if (f.type === "checkboxgroup") {
       // stores an array — lets an entry belong to more than one option at once
       const groupWrap = document.createElement("div");
@@ -1430,6 +1459,10 @@ function buildFieldsForm(config, entry) {
         const location = [city, country].filter(Boolean).join(", ");
         return { city, country, location };
       };
+      fieldClearers[f.key] = () => {
+        cityInput.value = "";
+        countryInput.value = "";
+      };
     } else if (f.type === "link") {
       const rowWrap = document.createElement("div");
       rowWrap.className = "link-row";
@@ -1451,6 +1484,10 @@ function buildFieldsForm(config, entry) {
         const label = labelInput.value.trim();
         const url = urlInput.value.trim();
         return label && url ? { label, url } : undefined;
+      };
+      fieldClearers[f.key] = () => {
+        labelInput.value = "";
+        urlInput.value = "";
       };
     } else if (f.type === "linklist") {
       const rowsContainer = document.createElement("div");
@@ -1498,6 +1535,27 @@ function buildFieldsForm(config, entry) {
     }
 
     form.appendChild(wrap);
+  }
+
+  if (typeSelectEl) {
+    if (cityCountryWrap) {
+      const updateLocationVisibility = () => {
+        cityCountryWrap.style.display = typeSelectEl.value === "Published Paper" ? "none" : "";
+      };
+      typeSelectEl.addEventListener("change", updateLocationVisibility);
+      updateLocationVisibility();
+    }
+
+    // switching to "Published Paper" starts the rest of the form blank, so
+    // stale data from whatever this entry was before isn't kept — use the
+    // import box above instead to carry details over from an existing paper
+    let previousTypeValue = typeSelectEl.value;
+    typeSelectEl.addEventListener("change", () => {
+      if (typeSelectEl.value === "Published Paper" && previousTypeValue !== "Published Paper") {
+        ["title", "event", "cityCountry", "date", "link", "expiresAt"].forEach((key) => fieldClearers[key]?.());
+      }
+      previousTypeValue = typeSelectEl.value;
+    });
   }
 
   return { form, fieldRefs };
@@ -1550,7 +1608,22 @@ function renderForm(main, key, config) {
   main.appendChild(form);
 }
 
-function buildPresentationImportBox(key) {
+function labelForPresentation(p) {
+  return `[${(p.type || []).join("+")}] ${p.title} — ${p.event}`;
+}
+
+function labelForPublication(p) {
+  return `${p.title} — ${p.venue}`;
+}
+
+// prefers the actual article link over e.g. "Code" or "Website" entries
+function pickPublicationLink(p) {
+  if (!p.links || p.links.length === 0) return undefined;
+  const preferred = p.links.find((l) => /research article|^article$|^paper$/i.test(l.label || ""));
+  return preferred || p.links[0];
+}
+
+function buildImportBox(key) {
   const box = document.createElement("div");
   box.className = "card";
   box.style.marginBottom = "18px";
@@ -1558,16 +1631,30 @@ function buildPresentationImportBox(key) {
   const label = document.createElement("p");
   label.className = "hint";
   label.style.marginBottom = "8px";
-  label.textContent = "Fill this in from an existing presentation instead of typing it again:";
+  label.textContent = "Fill this in from an existing presentation or publication instead of typing it again:";
   box.appendChild(label);
 
-  let selected = null; // { p, i } once something's been picked from the list
+  const sourceSelect = document.createElement("select");
+  sourceSelect.className = "control";
+  sourceSelect.style.marginBottom = "8px";
+  sourceSelect.style.width = "100%";
+  [
+    { value: "presentations", text: "Presentations & Conferences" },
+    { value: "publications", text: "Publications" },
+  ].forEach(({ value, text }) => {
+    const o = document.createElement("option");
+    o.value = value;
+    o.textContent = text;
+    sourceSelect.appendChild(o);
+  });
+  box.appendChild(sourceSelect);
+
+  let selected = null; // { source, item } once something's been picked from the list
 
   const details = document.createElement("details");
   const summary = document.createElement("summary");
   summary.className = "control";
   summary.style.cursor = "pointer";
-  summary.textContent = "— Select a presentation —";
   details.appendChild(summary);
 
   const list = document.createElement("div");
@@ -1578,48 +1665,88 @@ function buildPresentationImportBox(key) {
   list.style.borderRadius = "8px";
   details.appendChild(list);
 
-  // newest first, so the presentation you probably want is at the top
-  state.data.presentations
-    .map((p, i) => ({ p, i }))
-    .sort((a, b) => parseDateKey(b.p.date) - parseDateKey(a.p.date))
-    .forEach(({ p, i }) => {
-      const optionLabel = `[${(p.type || []).join("+")}] ${p.title} — ${p.event}`;
-      const item = document.createElement("div");
-      item.textContent = optionLabel;
-      item.style.padding = "8px 12px";
-      item.style.fontSize = "13px";
-      item.style.cursor = "pointer";
-      item.style.borderBottom = "1px solid var(--border)";
-      item.addEventListener("mouseenter", () => (item.style.background = "var(--bg)"));
-      item.addEventListener("mouseleave", () => (item.style.background = "transparent"));
-      item.addEventListener("click", () => {
-        selected = { p, i };
-        summary.textContent = optionLabel;
-        details.open = false;
-        importBtn.disabled = false;
-      });
-      list.appendChild(item);
-    });
-
   const importBtn = document.createElement("button");
   importBtn.className = "primary small";
   importBtn.textContent = "Import";
   importBtn.disabled = true;
   importBtn.style.marginTop = "10px";
+
+  // newest first, so the entry you probably want is at the top
+  function renderList() {
+    selected = null;
+    importBtn.disabled = true;
+    list.innerHTML = "";
+    const source = sourceSelect.value;
+    const isPresentations = source === "presentations";
+    summary.textContent = isPresentations ? "— Select a presentation —" : "— Select a publication —";
+
+    const entries = isPresentations
+      ? state.data.presentations.map((p) => ({ item: p, sortKey: parseDateKey(p.date) }))
+      : (state.data.publications || []).map((p) => ({ item: p, sortKey: Number(p.year) || 0 }));
+    entries.sort((a, b) => b.sortKey - a.sortKey);
+
+    if (entries.length === 0) {
+      const empty = document.createElement("div");
+      empty.style.padding = "8px 12px";
+      empty.style.fontSize = "13px";
+      empty.style.color = "var(--muted)";
+      empty.textContent = isPresentations ? "No presentations yet." : "No publications yet.";
+      list.appendChild(empty);
+      return;
+    }
+
+    entries.forEach(({ item: p }) => {
+      const optionLabel = isPresentations ? labelForPresentation(p) : labelForPublication(p);
+      const el = document.createElement("div");
+      el.textContent = optionLabel;
+      el.style.padding = "8px 12px";
+      el.style.fontSize = "13px";
+      el.style.cursor = "pointer";
+      el.style.borderBottom = "1px solid var(--border)";
+      el.addEventListener("mouseenter", () => (el.style.background = "var(--bg)"));
+      el.addEventListener("mouseleave", () => (el.style.background = "transparent"));
+      el.addEventListener("click", () => {
+        selected = { source, item: p };
+        summary.textContent = optionLabel;
+        details.open = false;
+        importBtn.disabled = false;
+      });
+      list.appendChild(el);
+    });
+  }
+
+  sourceSelect.addEventListener("change", renderList);
+  renderList();
+
   importBtn.addEventListener("click", () => {
     if (!selected) return;
-    const { p } = selected;
-    state.data[key] = {
-      ...state.data[key],
-      type: p.type && p.type.includes("Oral") ? "Presenting" : "Poster",
-      title: p.title,
-      event: p.event,
-      location: p.location,
-      city: p.city,
-      country: p.country,
-      date: p.date,
-      link: p.link,
-    };
+    const { source, item: p } = selected;
+    state.data[key] =
+      source === "presentations"
+        ? {
+            ...state.data[key],
+            type: p.type && p.type.includes("Oral") ? "Oral Presentation" : "Poster Presentation",
+            title: p.title,
+            event: p.event,
+            location: p.location,
+            city: p.city,
+            country: p.country,
+            date: p.date,
+            link: p.link,
+            expiresAt: "",
+          }
+        : {
+            ...state.data[key],
+            type: "Published Paper",
+            title: p.title,
+            event: p.venue,
+            location: "",
+            city: "",
+            country: "",
+            date: p.year || "",
+            link: pickPublicationLink(p),
+            expiresAt: "",
+          };
     state.dirty[key] = true;
     renderTabs();
     renderMain();
@@ -1631,8 +1758,11 @@ function buildPresentationImportBox(key) {
 }
 
 function renderSingletonForm(main, key, config) {
-  if (key === "upcoming-event" && state.data.presentations && state.data.presentations.length > 0) {
-    main.appendChild(buildPresentationImportBox(key));
+  const hasImportSource =
+    (state.data.presentations && state.data.presentations.length > 0) ||
+    (state.data.publications && state.data.publications.length > 0);
+  if (key === "upcoming-event" && hasImportSource) {
+    main.appendChild(buildImportBox(key));
   }
 
   const entry = JSON.parse(JSON.stringify(state.data[key]));

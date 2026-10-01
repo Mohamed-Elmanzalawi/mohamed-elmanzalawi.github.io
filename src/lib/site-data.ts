@@ -135,6 +135,13 @@ export type UpcomingEvent = {
   country?: string;
   date: string;
   link?: { label: string; url: string };
+  expiresAt?: string;
 };
 
 export const upcomingEvent: UpcomingEvent = upcomingEventData as UpcomingEvent;
+
+// the banner stays up forever unless an expiry date was set in the admin,
+// in which case it stops showing the day after that date passes
+export const upcomingEventVisible =
+  upcomingEvent.visible &&
+  (!upcomingEvent.expiresAt || new Date().toISOString().slice(0, 10) <= upcomingEvent.expiresAt);
