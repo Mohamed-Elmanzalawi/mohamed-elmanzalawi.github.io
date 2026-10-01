@@ -445,6 +445,28 @@ const COLLECTIONS = {
     summary: (e) =>
       `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">[${esc((e.type || []).join(" + "))}] ${esc(e.date || "")} · ${esc(e.event || "")}</span>`,
   },
+  "skill-groups": {
+    file: "skill-groups.json",
+    label: "Skills — Groups",
+    sortOptions: [{ key: "label", label: "Alphabetical", type: "text" }],
+    empty: { label: "", items: [] },
+    fields: [
+      { key: "label", label: "Group name (e.g. Programming)", type: "text" },
+      { key: "items", label: "Skills (one per line)", type: "lines" },
+    ],
+    summary: (e) =>
+      `<strong>${esc(e.label || "(untitled)")}</strong><span class="meta">${(e.items || []).length} skill${(e.items || []).length === 1 ? "" : "s"}</span>`,
+  },
+  "skill-steps": {
+    file: "skill-steps.json",
+    label: "Skills — How I Work",
+    empty: { title: "", body: "" },
+    fields: [
+      { key: "title", label: "Step title", type: "text" },
+      { key: "body", label: "Step description", type: "textarea" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.body || "")}</span>`,
+  },
 };
 
 const state = {

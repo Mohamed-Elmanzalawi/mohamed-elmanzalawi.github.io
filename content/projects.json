@@ -85,7 +85,6 @@
     "context": ""
   },
   {
-    "id": "polar-fungi",
     "name": "Polar Fungi Database",
     "title": "Polar Fungi Genome Database",
     "year": "",
@@ -111,8 +110,14 @@
       "Data visualization"
     ],
     "workflow": [],
-    "links": [],
-    "context": ""
+    "links": [
+      {
+        "label": "Database",
+        "url": "https://polar-microbe.annotation.jp/"
+      }
+    ],
+    "context": "",
+    "id": "polar-fungi"
   },
   {
     "id": "parkinsons-metagenomics",
@@ -170,39 +175,6 @@
       "Statistical modeling",
       "Proteomics",
       "Machine learning"
-    ],
-    "workflow": [],
-    "links": [],
-    "context": ""
-  },
-  {
-    "id": "genomic-pipelines",
-    "name": "Genomic Data Analysis",
-    "title": "Genomic Data Analysis & Research Pipelines",
-    "year": "",
-    "category": [
-      "Genomics"
-    ],
-    "categoryLabel": "Genomics / Research Engineering",
-    "summary": "A broader body of work covering the analysis pipelines and data engineering behind large-scale biological datasets.",
-    "problem": "Research questions across genomics repeatedly need the same foundations: clean data handling, scalable execution and reproducible analysis.",
-    "approach": "Reusable pipeline components for sequencing analysis, variant workflows, phylogenetics and clustering, applied across microbial and human datasets.",
-    "outcome": "A consistent computational toolkit that shortens the path from raw sequencing data to interpretable results.",
-    "capabilities": [
-      "High-throughput sequencing",
-      "Variant analysis",
-      "Microbial genomics",
-      "Genomic databases",
-      "Phylogenetics",
-      "Clustering",
-      "Large-scale biological datasets"
-    ],
-    "tech": [
-      "Python",
-      "R",
-      "Bash",
-      "Linux",
-      "HPC"
     ],
     "workflow": [],
     "links": [],

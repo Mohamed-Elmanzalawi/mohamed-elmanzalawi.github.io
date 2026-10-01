@@ -71,6 +71,19 @@ function Home() {
                 isPublishedPaper ? "border-primary/40 bg-primary/[0.08]" : "border-teal/40 bg-teal/[0.08]",
               )}
             >
+              {/* mobile-only: the badge gets the full card width so longer
+                  type names (e.g. "Poster Presentation") fit on one line —
+                  the cramped column next to the globe was too narrow for it */}
+              <p
+                className={cn(
+                  "flex items-center gap-1.5 font-mono text-xs font-semibold tracking-wide uppercase sm:hidden",
+                  bannerBadgeColor,
+                )}
+              >
+                <CalendarDays className="size-3.5 shrink-0" />
+                {eyebrowText}
+              </p>
+
               <div className="flex items-center gap-4">
                 {!isPublishedPaper && (
                   <DestinationGlobe
@@ -78,19 +91,10 @@ function Home() {
                     className="size-28 shrink-0 sm:size-36 md:size-40"
                   />
                 )}
-                {/* on mobile the badge + title sit next to the globe; the rest follows full-width below */}
-                <div className="min-w-0 flex-1 sm:hidden">
-                  <p
-                    className={cn(
-                      "flex items-center gap-1 whitespace-nowrap font-mono text-xs font-semibold tracking-wide uppercase",
-                      bannerBadgeColor,
-                    )}
-                  >
-                    <CalendarDays className="size-3.5 shrink-0" />
-                    {eyebrowText}
-                  </p>
-                  <p className="mt-2 text-xl font-semibold leading-snug">{upcomingEvent.title}</p>
-                </div>
+                {/* on mobile the title sits next to the globe; the rest follows full-width below */}
+                <p className="min-w-0 flex-1 text-xl font-semibold leading-snug sm:hidden">
+                  {upcomingEvent.title}
+                </p>
               </div>
               <div className="min-w-0 flex-1">
                 <p

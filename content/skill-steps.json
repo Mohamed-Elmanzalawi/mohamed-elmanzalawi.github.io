@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Understand the biological question",
+    "body": "Translate biological problems into computationally tractable questions."
+  },
+  {
+    "title": "Build the workflow",
+    "body": "Design reproducible pipelines and analysis strategies."
+  },
+  {
+    "title": "Analyze the data",
+    "body": "Apply statistical, computational, and machine-learning approaches."
+  },
+  {
+    "title": "Communicate the result",
+    "body": "Turn complex biological datasets into interpretable scientific insights."
+  }
+]

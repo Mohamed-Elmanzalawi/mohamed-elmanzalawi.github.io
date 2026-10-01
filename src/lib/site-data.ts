@@ -12,6 +12,8 @@ import aboutCredibilityData from "../../content/about-credibility.json";
 import homeIntroData from "../../content/home-intro.json";
 import upcomingEventData from "../../content/upcoming-event.json";
 import newsData from "../../content/news.json";
+import skillGroupsData from "../../content/skill-groups.json";
+import skillStepsData from "../../content/skill-steps.json";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
@@ -158,3 +160,9 @@ const news: NewsItem[] = newsData as NewsItem[];
 
 // newest first, capped so the homepage shows a short, current-feeling feed
 export const latestNews: NewsItem[] = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+
+export type SkillGroup = { label: string; items: string[] };
+export type SkillStep = { title: string; body: string };
+
+export const skillGroups: SkillGroup[] = skillGroupsData;
+export const skillSteps: SkillStep[] = skillStepsData;

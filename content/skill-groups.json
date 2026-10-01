@@ -1,0 +1,31 @@
+[
+  { "label": "Programming", "items": ["Python", "R", "Bash", "SQL"] },
+  {
+    "label": "Bioinformatics",
+    "items": [
+      "Next-generation sequencing",
+      "Variant analysis",
+      "Genomic annotation",
+      "Genome quality assessment",
+      "Microbial genomics",
+      "Human genetics",
+      "Metagenomics",
+      "Comparative genomics",
+      "Phylogenetics"
+    ]
+  },
+  {
+    "label": "Data Science",
+    "items": [
+      "Statistical analysis",
+      "Machine learning",
+      "Data visualization",
+      "High-dimensional biological data",
+      "Predictive modeling"
+    ]
+  },
+  {
+    "label": "Infrastructure",
+    "items": ["HPC", "Slurm", "Sun Grid Engine (SGE)", "Linux", "Reproducible workflows"]
+  }
+]

@@ -20,6 +20,8 @@ const ALLOWED_FILES = new Set([
   "home-intro.json",
   "upcoming-event.json",
   "news.json",
+  "skill-groups.json",
+  "skill-steps.json",
 ]);
 
 export function contentApiPlugin() {
