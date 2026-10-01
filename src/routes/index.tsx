@@ -36,12 +36,12 @@ function Home() {
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
           <Reveal>
             <div className="flex flex-col gap-5 rounded-xl border border-teal/40 bg-teal/[0.08] px-6 py-5 shadow-soft sm:flex-row sm:items-center sm:px-8 sm:py-6">
-              <div className="flex items-center gap-5">
-                <DestinationGlobe country={upcomingEvent.country} className="size-32 shrink-0 sm:size-36 md:size-40" />
+              <div className="flex items-center gap-4">
+                <DestinationGlobe country={upcomingEvent.country} className="size-28 shrink-0 sm:size-36 md:size-40" />
                 {/* on mobile the badge + title sit next to the globe; the rest follows full-width below */}
                 <div className="min-w-0 flex-1 sm:hidden">
-                  <p className="flex items-center gap-1.5 font-mono text-sm font-semibold tracking-widest text-teal uppercase">
-                    <CalendarDays className="size-4" />
+                  <p className="flex items-center gap-1 whitespace-nowrap font-mono text-xs font-semibold tracking-wide text-teal uppercase">
+                    <CalendarDays className="size-3.5 shrink-0" />
                     Upcoming · {upcomingEvent.type}
                   </p>
                   <p className="mt-2 text-xl font-semibold leading-snug">{upcomingEvent.title}</p>
