@@ -230,6 +230,24 @@ const COLLECTIONS = {
       },
     ],
   },
+  news: {
+    file: "news.json",
+    label: "Latest News",
+    sortOptions: [{ key: "date", label: "Date", type: "text" }],
+    empty: { date: "", title: "", links: [] },
+    fields: [
+      { key: "date", label: "Date", type: "date", today: true },
+      {
+        key: "title",
+        label: "What happened (short, e.g. \"Published a new paper in BMC Bioinformatics\")",
+        type: "textarea",
+        rows: 10,
+      },
+      { key: "links", label: "Links (optional)", type: "linklist" },
+    ],
+    summary: (e) =>
+      `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(formatDateRange(e.date, e.date))}</span>`,
+  },
   "home-intro": {
     file: "home-intro.json",
     label: "Home — Introduction",
@@ -1056,7 +1074,8 @@ function buildFieldsForm(config, entry) {
     } else if (f.type === "date") {
       const input = document.createElement("input");
       input.type = "date";
-      input.value = entry[f.key] || "";
+      // `today: true` defaults a blank (i.e. brand-new) entry to today's date
+      input.value = entry[f.key] || (f.today ? new Date().toISOString().slice(0, 10) : "");
       wrap.appendChild(input);
       if (f.hint) {
         const hint = document.createElement("div");

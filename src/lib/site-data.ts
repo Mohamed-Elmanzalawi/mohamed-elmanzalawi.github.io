@@ -11,6 +11,7 @@ import aboutInterestsData from "../../content/about-interests.json";
 import aboutCredibilityData from "../../content/about-credibility.json";
 import homeIntroData from "../../content/home-intro.json";
 import upcomingEventData from "../../content/upcoming-event.json";
+import newsData from "../../content/news.json";
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-elmanzalawi/";
 export const GITHUB_URL = "https://github.com/Mohamed-Elmanzalawi";
@@ -145,3 +146,15 @@ export const upcomingEvent: UpcomingEvent = upcomingEventData as UpcomingEvent;
 export const upcomingEventVisible =
   upcomingEvent.visible &&
   (!upcomingEvent.expiresAt || new Date().toISOString().slice(0, 10) <= upcomingEvent.expiresAt);
+
+export type NewsItem = {
+  // ISO (yyyy-mm-dd) from the admin's calendar picker
+  date: string;
+  title: string;
+  links: { label: string; url: string }[];
+};
+
+const news: NewsItem[] = newsData as NewsItem[];
+
+// newest first, capped so the homepage shows a short, current-feeling feed
+export const latestNews: NewsItem[] = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);

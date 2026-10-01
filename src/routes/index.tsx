@@ -14,7 +14,19 @@ import {
   homeIntro,
   upcomingEvent,
   upcomingEventVisible,
+  latestNews,
 } from "@/lib/site-data";
+
+// ISO (yyyy-mm-dd) -> "15 Oct 2026", matching the display format used
+// elsewhere on the site (e.g. presentation dates)
+function formatNewsDate(iso: string) {
+  if (!iso) return "";
+  return new Date(`${iso}T00:00:00`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 const title = "Mohamed Elmanzalawi — Bioinformatics, Genetics & Data Science";
 const description =
@@ -233,6 +245,43 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {latestNews.length > 0 && (
+        <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+          <Reveal>
+            <p className="eyebrow">Latest</p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">News & Updates</h2>
+          </Reveal>
+          <div className="mt-10 space-y-3">
+            {latestNews.map((n, i) => (
+              <Reveal key={`${n.date}-${n.title}`} delay={i * 60}>
+                <div className="flex flex-col gap-2 rounded-xl border border-border bg-card px-5 py-4 sm:flex-row sm:items-center sm:gap-5">
+                  <span className="shrink-0 font-mono text-xs text-muted-foreground sm:w-28">
+                    {formatNewsDate(n.date)}
+                  </span>
+                  <p className="flex-1 text-sm leading-relaxed">{n.title}</p>
+                  {n.links.length > 0 && (
+                    <div className="flex shrink-0 flex-wrap gap-2">
+                      {n.links.map((l) => (
+                        <a
+                          key={l.url}
+                          href={l.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium transition-smooth hover:-translate-y-0.5 hover:border-teal/60 hover:bg-card hover:shadow-soft"
+                        >
+                          {l.label}
+                          <ExternalLink className="size-3.5 text-muted-foreground transition-smooth group-hover:text-teal" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
         <Reveal>
