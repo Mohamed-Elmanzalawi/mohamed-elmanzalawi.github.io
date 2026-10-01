@@ -293,9 +293,8 @@ export function DestinationGlobe({
         <path d={graticulePath} fill="none" stroke="white" strokeWidth="0.4" opacity="0.25" />
         <path d={landPath} fill="var(--color-globe-land)" stroke="var(--color-globe-land)" strokeWidth="0.3" />
 
-        {/* rim shading + a soft gloss highlight, for a rounded rather than flat look */}
+        {/* rim shading, for a rounded rather than flat look */}
         <circle cx={CX} cy={CY} r={R} fill={`url(#${shadeGradId})`} />
-        <ellipse cx={CX - 12} cy={CY - 14} rx="14" ry="9" fill="white" opacity="0.15" />
       </g>
 
       <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--color-border)" strokeWidth="0.8" />
