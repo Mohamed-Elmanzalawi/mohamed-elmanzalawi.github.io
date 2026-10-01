@@ -264,22 +264,23 @@ export function DestinationGlobe({
           <circle cx={CX} cy={CY} r={R} />
         </clipPath>
 
-        {/* ocean base: a lit sphere, lighter toward the upper-left "sun" */}
+        {/* ocean base: a lit sphere, lighter toward the upper-left "sun" — fully
+            opaque so it reads as a solid globe rather than a tinted wash */}
         <radialGradient id={oceanGradId} cx="35%" cy="30%" r="75%">
-          <stop offset="0%" stopColor="var(--color-teal)" stopOpacity="0.28" />
-          <stop offset="55%" stopColor="var(--color-primary)" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.55" />
+          <stop offset="0%" stopColor="var(--color-globe-ocean-light)" />
+          <stop offset="55%" stopColor="var(--color-globe-ocean)" />
+          <stop offset="100%" stopColor="var(--color-globe-ocean-deep)" />
         </radialGradient>
 
         {/* rim shading overlay for a rounded, 3D feel */}
         <radialGradient id={shadeGradId} cx="35%" cy="30%" r="75%">
           <stop offset="55%" stopColor="black" stopOpacity="0" />
-          <stop offset="100%" stopColor="black" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="black" stopOpacity="0.4" />
         </radialGradient>
 
         <radialGradient id={glowId} cx="50%" cy="50%" r="50%">
-          <stop offset="70%" stopColor="var(--color-teal)" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="var(--color-teal)" stopOpacity="0" />
+          <stop offset="65%" stopColor="var(--color-globe-ocean)" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="var(--color-globe-ocean)" stopOpacity="0" />
         </radialGradient>
       </defs>
 
@@ -289,33 +290,34 @@ export function DestinationGlobe({
       <circle cx={CX} cy={CY} r={R} fill={`url(#${oceanGradId})`} stroke="var(--color-border)" strokeWidth="0.8" />
 
       <g clipPath={`url(#${clipId})`}>
-        <path d={graticulePath} fill="none" stroke="var(--color-card)" strokeWidth="0.4" opacity="0.3" />
-        <path d={landPath} fill="var(--color-teal)" fillOpacity="0.65" stroke="var(--color-teal)" strokeWidth="0.25" strokeOpacity="0.7" />
+        <path d={graticulePath} fill="none" stroke="white" strokeWidth="0.4" opacity="0.25" />
+        <path d={landPath} fill="var(--color-globe-land)" stroke="var(--color-globe-land)" strokeWidth="0.3" />
 
         {/* rim shading + a soft gloss highlight, for a rounded rather than flat look */}
         <circle cx={CX} cy={CY} r={R} fill={`url(#${shadeGradId})`} />
-        <ellipse cx={CX - 12} cy={CY - 14} rx="14" ry="9" fill="white" opacity="0.12" />
+        <ellipse cx={CX - 12} cy={CY - 14} rx="14" ry="9" fill="white" opacity="0.15" />
       </g>
 
       <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--color-border)" strokeWidth="0.8" />
 
       {/* the destination is always centered by construction (we rotated the
-          globe to face it), so the pin sits dead-center */}
+          globe to face it), so the pin sits dead-center — a vivid, high-
+          contrast color against both the blue ocean and green land */}
       <circle
         cx={CX}
         cy={CY}
-        r="6"
-        fill="var(--color-teal)"
-        opacity="0.35"
+        r="8"
+        fill="var(--color-globe-pin)"
+        opacity="0.45"
         style={{ transformBox: "fill-box", transformOrigin: "center", animation: "globe-ping 2.4s ease-out infinite" }}
       />
       <circle
         cx={CX}
         cy={CY}
-        r="2.8"
-        fill="var(--color-teal)"
-        stroke="var(--color-card)"
-        strokeWidth="1"
+        r="4.2"
+        fill="var(--color-globe-pin)"
+        stroke="white"
+        strokeWidth="1.2"
         style={{ animation: "globe-dot-blink 2.4s ease-in-out infinite" }}
       />
     </svg>

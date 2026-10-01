@@ -35,29 +35,29 @@ function Home() {
       {upcomingEvent.visible && (
         <div className="mx-auto max-w-6xl px-5 pt-6 sm:px-8">
           <Reveal>
-            <div className="flex flex-col gap-4 rounded-xl border border-teal/40 bg-teal/[0.08] px-5 py-4 shadow-soft sm:flex-row sm:items-center sm:px-6">
-              <div className="flex items-center gap-4">
-                <DestinationGlobe country={upcomingEvent.country} className="size-16 shrink-0 sm:size-20 md:size-24" />
+            <div className="flex flex-col gap-5 rounded-xl border border-teal/40 bg-teal/[0.08] px-6 py-5 shadow-soft sm:flex-row sm:items-center sm:px-8 sm:py-6">
+              <div className="flex items-center gap-5">
+                <DestinationGlobe country={upcomingEvent.country} className="size-32 shrink-0 sm:size-36 md:size-40" />
                 {/* on mobile the badge + title sit next to the globe; the rest follows full-width below */}
                 <div className="min-w-0 flex-1 sm:hidden">
-                  <p className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase">
-                    <CalendarDays className="size-3" />
+                  <p className="flex items-center gap-1.5 font-mono text-sm font-semibold tracking-widest text-teal uppercase">
+                    <CalendarDays className="size-4" />
                     Upcoming · {upcomingEvent.type}
                   </p>
-                  <p className="mt-1 text-[15px] font-semibold leading-snug">{upcomingEvent.title}</p>
+                  <p className="mt-2 text-xl font-semibold leading-snug">{upcomingEvent.title}</p>
                 </div>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="hidden items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-teal uppercase sm:flex">
-                  <CalendarDays className="size-3" />
+                <p className="hidden items-center gap-1.5 font-mono text-sm font-semibold tracking-widest text-teal uppercase sm:flex">
+                  <CalendarDays className="size-4" />
                   Upcoming · {upcomingEvent.type}
                 </p>
-                <p className="hidden text-base font-semibold leading-snug sm:mt-1 sm:block">{upcomingEvent.title}</p>
+                <p className="hidden text-2xl font-semibold leading-snug sm:mt-2 sm:block">{upcomingEvent.title}</p>
                 {upcomingEvent.event && (
-                  <p className="mt-0.5 text-sm text-foreground/80">{upcomingEvent.event}</p>
+                  <p className="mt-1.5 text-lg text-foreground/80">{upcomingEvent.event}</p>
                 )}
                 {(upcomingEvent.location || upcomingEvent.date) && (
-                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                  <p className="mt-1.5 font-mono text-sm text-muted-foreground">
                     {upcomingEvent.location}
                     {upcomingEvent.location && upcomingEvent.date && " · "}
                     {upcomingEvent.date}
@@ -69,10 +69,10 @@ function Home() {
                   href={upcomingEvent.link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-primary-foreground transition-smooth hover:-translate-y-0.5 hover:shadow-soft sm:w-auto"
+                  className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-lg font-semibold text-primary-foreground shadow-soft transition-smooth hover:-translate-y-0.5 hover:shadow-lift sm:w-auto"
                 >
                   {upcomingEvent.link.label}
-                  <ExternalLink className="size-3.5" />
+                  <ExternalLink className="size-5" />
                 </a>
               )}
             </div>
