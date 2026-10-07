@@ -807,6 +807,10 @@ function moveEntry(key, i, dir) {
   renderMain();
 }
 
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function slugify(text) {
   return (
     String(text || "")
@@ -1169,7 +1173,7 @@ function buildFieldsForm(config, entry) {
       const input = document.createElement("input");
       input.type = "date";
       // `today: true` defaults a blank (i.e. brand-new) entry to today's date
-      input.value = entry[f.key] || (f.today ? new Date().toISOString().slice(0, 10) : "");
+      input.value = entry[f.key] || (f.today ? todayISO() : "");
       wrap.appendChild(input);
       if (f.hint) {
         const hint = document.createElement("div");
@@ -1989,7 +1993,15 @@ function renderSingletonForm(main, key, config) {
     main.appendChild(buildImportBox(key));
   }
 
-  const entry = JSON.parse(JSON.stringify(state.data[key]));
+  let entry = JSON.parse(JSON.stringify(state.data[key]));
+
+  // once the event's "hide after this date" has passed, treat the form as
+  // blank — the old event is no longer relevant, and this avoids having to
+  // manually clear every field before typing in the next one
+  if (key === "upcoming-event" && entry.expiresAt && entry.expiresAt < todayISO()) {
+    entry = { visible: false, type: "", title: "", event: "", city: "", country: "", location: "", date: "", link: undefined, expiresAt: "" };
+  }
+
   const { form, fieldRefs } = buildFieldsForm(config, entry);
 
   const actions = document.createElement("div");
