@@ -6,11 +6,64 @@ import {
   awards,
   affiliationLinks,
   affiliationCard,
-  cvTimeline,
+  cvEducation,
+  cvProfessional,
   aboutBio,
   aboutInterests,
   aboutCredibility,
+  type CvTimelineEntry,
 } from "@/lib/site-data";
+
+const MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function monthLabel(m: string | undefined): string {
+  if (!m) return "";
+  return MONTH_ABBR[Number(m) - 1] ?? "";
+}
+
+// `period` (e.g. "2023–2025", "2025–Present") is always shown; the optional
+// start/end months just sharpen it to "Oct 2023 – Oct 2025" when they're set
+function formatCvPeriod(t: CvTimelineEntry): string {
+  if (!t.startMonth && !t.endMonth) return t.period;
+
+  const [rawStart, rawEnd] = t.period.split("–").map((s) => s.trim());
+  const startMonth = monthLabel(t.startMonth);
+  const endMonth = monthLabel(t.endMonth);
+  const startLabel = startMonth ? `${startMonth} ${rawStart}` : rawStart;
+
+  if (!rawEnd) {
+    return startMonth && endMonth && startMonth !== endMonth ? `${startMonth}–${endMonth} ${rawStart}` : startLabel;
+  }
+  if (rawEnd === "Present") return `${startLabel} – Present`;
+  return `${startLabel} – ${endMonth ? `${endMonth} ${rawEnd}` : rawEnd}`;
+}
+
+function TimelineList({ entries }: { entries: CvTimelineEntry[] }) {
+  return (
+    <ol className="mt-10 space-y-0 border-l border-border pl-6 sm:pl-8">
+      {entries.map((t, i) => (
+        <Reveal as="li" key={t.period + t.title} delay={i * 70} className="relative pb-10 last:pb-0">
+          <span className="absolute -left-[31px] top-1.5 size-2.5 rounded-full border-2 border-background bg-teal sm:-left-[39px]" />
+          <p className="font-mono text-xs tracking-widest text-teal">{formatCvPeriod(t)}</p>
+          <h3 className="mt-2 text-lg font-semibold">{t.title}</h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
+          {t.points.length > 0 && (
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {t.points.map((p) => (
+                <li
+                  key={p}
+                  className="rounded-full border border-border bg-surface px-3 py-1 font-mono text-[11px] text-muted-foreground"
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Reveal>
+      ))}
+    </ol>
+  );
+}
 
 const title = "About — Mohamed Elmanzalawi | PhD Researcher in Bioinformatics";
 const description =
@@ -79,30 +132,17 @@ function About() {
       <section className="mt-20">
         <Reveal>
           <p className="eyebrow">Timeline</p>
-          <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Career Journey</h2>
+          <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Academic Background</h2>
         </Reveal>
-        <ol className="mt-10 space-y-0 border-l border-border pl-6 sm:pl-8">
-          {cvTimeline.map((t, i) => (
-            <Reveal as="li" key={t.period + t.title} delay={i * 70} className="relative pb-10 last:pb-0">
-              <span className="absolute -left-[31px] top-1.5 size-2.5 rounded-full border-2 border-background bg-teal sm:-left-[39px]" />
-              <p className="font-mono text-xs tracking-widest text-teal">{t.period}</p>
-              <h3 className="mt-2 text-lg font-semibold">{t.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              {t.points.length > 0 && (
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {t.points.map((p) => (
-                    <li
-                      key={p}
-                      className="rounded-full border border-border bg-surface px-3 py-1 font-mono text-[11px] text-muted-foreground"
-                    >
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Reveal>
-          ))}
-        </ol>
+        <TimelineList entries={cvEducation} />
+      </section>
+
+      <section className="mt-20">
+        <Reveal>
+          <p className="eyebrow">Timeline</p>
+          <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">Professional Experience</h2>
+        </Reveal>
+        <TimelineList entries={cvProfessional} />
       </section>
 
       <section className="mt-20">

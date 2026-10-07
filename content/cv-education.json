@@ -1,0 +1,34 @@
+[
+  {
+    "period": "2014–2019",
+    "startMonth": "05",
+    "endMonth": "09",
+    "title": "B.Sc. in Clinical Pharmacy — Faculty of Pharmacy, Cairo University, Egypt",
+    "body": "Undergraduate degree in clinical pharmacy, including early research experience with the Medical Research Society and SCOPS at Cairo University and Ain Shams University.",
+    "points": []
+  },
+  {
+    "period": "2021–2022",
+    "startMonth": "09",
+    "endMonth": "02",
+    "title": "Professional Diploma in Bioinformatics — Nile University, Egypt",
+    "body": "Professional Diploma in Bioinformatics, transitioning from clinical pharmacy into computational biology.",
+    "points": []
+  },
+  {
+    "period": "2023–2025",
+    "startMonth": "10",
+    "endMonth": "10",
+    "title": "M.Sc. in Genetics (Bioinformatics) — SOKENDAI / National Institute of Genetics",
+    "body": "Thesis: \"User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis\", advised by Dr. Nakamura Yasukazu.",
+    "points": ["DFAST_QC", "SAPP"]
+  },
+  {
+    "period": "2025–Present",
+    "startMonth": "10",
+    "endMonth": "",
+    "title": "PhD in Genetics (Bioinformatics) — SOKENDAI / National Institute of Genetics",
+    "body": "Current research in computational genomics and biological data analysis, advised by Dr. Nakamura Yasukazu.",
+    "points": []
+  }
+]

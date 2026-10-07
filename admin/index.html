@@ -284,21 +284,39 @@ const COLLECTIONS = {
     isSingleton: true,
     fields: [{ key: "items", label: "Research interest tags (one per line)", type: "lines", rows: 14 }],
   },
-  "cv-timeline": {
-    file: "cv-timeline.json",
-    label: "CV Timeline",
+  "cv-education": {
+    file: "cv-education.json",
+    label: "CV — Education",
     sortOptions: [
-      { key: "period", label: "Year", type: "year" },
+      { key: "period", monthKey: "startMonth", label: "Year", type: "yearmonth" },
       { key: "title", label: "Alphabetical", type: "text" },
     ],
-    empty: { period: "", title: "", body: "", points: [] },
+    empty: { period: "", startMonth: "", endMonth: "", title: "", body: "", points: [] },
     fields: [
-      { key: "period", label: "Period (e.g. 2023–2025)", type: "text" },
+      { key: "periodRange", label: "Period", type: "yearrange" },
+      { key: "monthRange", label: "Start / end month (optional — improves sorting when set)", type: "monthrange" },
       { key: "title", label: "Title", type: "text" },
       { key: "body", label: "Description", type: "textarea" },
       { key: "points", label: "Tags / highlights (one per line)", type: "lines" },
     ],
-    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(e.period || "")}</span>`,
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(formatCvPeriod(e))}</span>`,
+  },
+  "cv-professional": {
+    file: "cv-professional.json",
+    label: "CV — Professional",
+    sortOptions: [
+      { key: "period", monthKey: "startMonth", label: "Year", type: "yearmonth" },
+      { key: "title", label: "Alphabetical", type: "text" },
+    ],
+    empty: { period: "", startMonth: "", endMonth: "", title: "", body: "", points: [] },
+    fields: [
+      { key: "periodRange", label: "Period", type: "yearrange" },
+      { key: "monthRange", label: "Start / end month (optional — improves sorting when set)", type: "monthrange" },
+      { key: "title", label: "Title", type: "text" },
+      { key: "body", label: "Description", type: "textarea" },
+      { key: "points", label: "Tags / highlights (one per line)", type: "lines" },
+    ],
+    summary: (e) => `<strong>${esc(e.title || "(untitled)")}</strong><span class="meta">${esc(formatCvPeriod(e))}</span>`,
   },
   "about-credibility": {
     file: "about-credibility.json",
@@ -314,13 +332,14 @@ const COLLECTIONS = {
     file: "scholarships.json",
     label: "Scholarships",
     sortOptions: [
-      { key: "date", label: "Year", type: "year" },
+      { key: "date", monthKey: "month", label: "Year", type: "yearmonth" },
       { key: "title", label: "Alphabetical", type: "text" },
     ],
-    empty: { title: "", date: "", body: "", url: "" },
+    empty: { title: "", date: "", month: "", body: "", url: "" },
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "date", label: "Date (e.g. Jul. 2023)", type: "text" },
+      { key: "month", label: "Month (optional — improves sorting when set)", type: "month" },
       { key: "body", label: "Description", type: "textarea" },
       { key: "url", label: "Link (optional)", type: "url" },
     ],
@@ -330,13 +349,14 @@ const COLLECTIONS = {
     file: "awards.json",
     label: "Awards",
     sortOptions: [
-      { key: "date", label: "Year", type: "year" },
+      { key: "date", monthKey: "month", label: "Year", type: "yearmonth" },
       { key: "title", label: "Alphabetical", type: "text" },
     ],
-    empty: { title: "", date: "", body: "", url: "" },
+    empty: { title: "", date: "", month: "", body: "", url: "" },
     fields: [
       { key: "title", label: "Title", type: "text" },
       { key: "date", label: "Date (e.g. Aug. 2024)", type: "text" },
+      { key: "month", label: "Month (optional — improves sorting when set)", type: "month" },
       { key: "body", label: "Description", type: "textarea" },
       { key: "url", label: "Link (optional)", type: "url" },
     ],
@@ -399,12 +419,13 @@ const COLLECTIONS = {
     file: "publications.json",
     label: "Publications",
     sortOptions: [
-      { key: "year", label: "Year", type: "year" },
+      { key: "year", monthKey: "month", label: "Year", type: "yearmonth" },
       { key: "title", label: "Alphabetical", type: "text" },
     ],
-    empty: { year: "", authors: "", highlight: "", title: "", venue: "", links: [] },
+    empty: { year: "", month: "", authors: "", highlight: "", title: "", venue: "", links: [] },
     fields: [
       { key: "year", label: "Year", type: "text" },
+      { key: "month", label: "Month (optional — improves sorting when set)", type: "month" },
       { key: "title", label: "Title", type: "textarea" },
       { key: "authors", label: "Authors (comma-separated, as they should be listed)", type: "textarea" },
       { key: "highlight", label: "Name to bold (must match text in Authors exactly)", type: "text" },
@@ -705,6 +726,19 @@ function renderMain() {
       state.editing = { index: i };
       renderMain();
     });
+    const dupBtn = mkSmallBtn("Duplicate", false, () => {
+      const copy = JSON.parse(JSON.stringify(entry));
+      // a project's id is its URL anchor — the clone needs its own, not the
+      // original's, or they'd collide (same /projects#id for two cards)
+      if (key === "projects" && copy.id) {
+        copy.id = uniqueSlug(copy.name || copy.title || "project", list.map((p) => p.id));
+      }
+      list.splice(i + 1, 0, copy);
+      state.dirty[key] = true;
+      renderTabs();
+      renderMain();
+      showToast("Duplicated — edit the copy below, then Save all changes.");
+    });
     const delBtn = mkSmallBtn("Delete", false, () => {
       if (!confirm("Delete this entry? This can't be undone (unless you re-add it).")) return;
       list.splice(i, 1);
@@ -714,7 +748,7 @@ function renderMain() {
     });
     delBtn.classList.add("danger");
 
-    actions.append(upBtn, downBtn, editBtn, delBtn);
+    actions.append(upBtn, downBtn, editBtn, dupBtn, delBtn);
     row.appendChild(actions);
     card.appendChild(row);
     main.appendChild(card);
@@ -813,6 +847,26 @@ function parseDateKey(value) {
 }
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// a <select> of months (value "01".."12") plus a "not set" option, used by
+// both the "month" and "monthrange" field types
+function buildMonthSelect(current) {
+  const sel = document.createElement("select");
+  const blankOpt = document.createElement("option");
+  blankOpt.value = "";
+  blankOpt.textContent = "— not set —";
+  if (!current) blankOpt.selected = true;
+  sel.appendChild(blankOpt);
+  MONTH_NAMES.forEach((name, i) => {
+    const value = String(i + 1).padStart(2, "0");
+    const o = document.createElement("option");
+    o.value = value;
+    o.textContent = name;
+    if (current === value) o.selected = true;
+    sel.appendChild(o);
+  });
+  return sel;
+}
 
 // Must match DestinationGlobe.tsx's COUNTRY_COORDS keys exactly (case-insensitive) —
 // the globe on the homepage resolves its position from whichever of these is picked.
@@ -1041,6 +1095,20 @@ function formatDateRange(startISO, endISO) {
   return `${sd} ${MONTH_NAMES[sm - 1]} ${sy}–${ed} ${MONTH_NAMES[em - 1]} ${ey}`;
 }
 
+// mirrors the display formatting used on the About page, so the CV Timeline
+// list here shows "Oct 2023 – Oct 2025" instead of just "2023–2025" once
+// start/end months are set
+function formatCvPeriod(e) {
+  if (!e.startMonth && !e.endMonth) return e.period || "";
+  const [rawStart, rawEnd] = String(e.period || "").split("–").map((s) => s.trim());
+  const sm = e.startMonth ? MONTH_NAMES[Number(e.startMonth) - 1] : "";
+  const em = e.endMonth ? MONTH_NAMES[Number(e.endMonth) - 1] : "";
+  const startLabel = sm ? `${sm} ${rawStart}` : rawStart;
+  if (!rawEnd) return sm && em && sm !== em ? `${sm}–${em} ${rawStart}` : startLabel;
+  if (rawEnd === "Present") return `${startLabel} – Present`;
+  return `${startLabel} – ${em ? `${em} ${rawEnd}` : rawEnd}`;
+}
+
 function sortList(key) {
   const config = COLLECTIONS[key];
   const optKey = state.sortType[key];
@@ -1049,11 +1117,15 @@ function sortList(key) {
   const list = state.data[key];
 
   list.sort((a, b) => {
-    if (option.type === "year") {
+    if (option.type === "year" || option.type === "yearmonth") {
       const ya = extractYear(a[option.key]);
       const yb = extractYear(b[option.key]);
-      const va = ya === null ? -Infinity : ya;
-      const vb = yb === null ? -Infinity : yb;
+      // the month is optional — when it's not set, treat it as the start
+      // of the year so it still sorts sensibly against dated siblings
+      const ma = option.type === "yearmonth" ? Number(a[option.monthKey]) || 0 : 0;
+      const mb = option.type === "yearmonth" ? Number(b[option.monthKey]) || 0 : 0;
+      const va = ya === null ? -Infinity : ya * 12 + ma;
+      const vb = yb === null ? -Infinity : yb * 12 + mb;
       return dir === "asc" ? va - vb : vb - va;
     }
     const ta = String(a[option.key] ?? "");
@@ -1107,6 +1179,116 @@ function buildFieldsForm(config, entry) {
       }
       fieldRefs[f.key] = () => input.value;
       fieldClearers[f.key] = () => (input.value = "");
+    } else if (f.type === "month") {
+      // optional — stored as "01".."12" so sorting can factor it in when
+      // it's set, but the year-only display text (e.g. "Jul. 2023") is
+      // typed separately and untouched by this
+      const sel = buildMonthSelect(entry[f.key] || "");
+      wrap.appendChild(sel);
+      fieldRefs[f.key] = () => sel.value;
+    } else if (f.type === "yearrange") {
+      // stores a single `period` string (e.g. "2023–2025", "2025–Present",
+      // or just "2022" with no end) as two side-by-side year fields instead
+      // of one free-text field
+      const row = document.createElement("div");
+      row.style.display = "flex";
+      row.style.gap = "10px";
+      row.style.flexWrap = "wrap";
+
+      const [rawStart, rawEnd] = String(entry.period || "").split("–").map((s) => s.trim());
+
+      const startWrap = document.createElement("div");
+      startWrap.style.flex = "1";
+      startWrap.style.minWidth = "120px";
+      const startHint = document.createElement("div");
+      startHint.className = "hint";
+      startHint.style.marginTop = "0";
+      startHint.style.marginBottom = "4px";
+      startHint.textContent = "Start year";
+      const startInput = document.createElement("input");
+      startInput.type = "text";
+      startInput.placeholder = "e.g. 2023";
+      startInput.value = rawStart || "";
+      startWrap.append(startHint, startInput);
+
+      const endWrap = document.createElement("div");
+      endWrap.style.flex = "1";
+      endWrap.style.minWidth = "160px";
+      const endHint = document.createElement("div");
+      endHint.className = "hint";
+      endHint.style.marginTop = "0";
+      endHint.style.marginBottom = "4px";
+      endHint.textContent = "End year (optional)";
+      const endInput = document.createElement("input");
+      endInput.type = "text";
+      endInput.placeholder = "e.g. 2025";
+      const isPresent = rawEnd === "Present";
+      endInput.value = isPresent ? "" : rawEnd || "";
+      endInput.disabled = isPresent;
+      endWrap.appendChild(endHint);
+      endWrap.appendChild(endInput);
+
+      const presentLabel = document.createElement("label");
+      presentLabel.style.display = "flex";
+      presentLabel.style.alignItems = "center";
+      presentLabel.style.gap = "6px";
+      presentLabel.style.marginTop = "6px";
+      presentLabel.style.fontSize = "13px";
+      presentLabel.style.cursor = "pointer";
+      const presentCb = document.createElement("input");
+      presentCb.type = "checkbox";
+      presentCb.checked = isPresent;
+      presentCb.addEventListener("change", () => {
+        endInput.disabled = presentCb.checked;
+        if (presentCb.checked) endInput.value = "";
+      });
+      const presentText = document.createElement("span");
+      presentText.textContent = "Ongoing (shows as “Present”)";
+      presentLabel.append(presentCb, presentText);
+      endWrap.appendChild(presentLabel);
+
+      row.append(startWrap, endWrap);
+      wrap.appendChild(row);
+
+      fieldRefs[f.key] = () => {
+        const start = startInput.value.trim();
+        const end = presentCb.checked ? "Present" : endInput.value.trim();
+        return { period: end ? `${start}–${end}` : start };
+      };
+    } else if (f.type === "monthrange") {
+      // like "month" above, but for a period with both a start and an end
+      // (e.g. a degree or job) — both optional, shown side by side
+      const row = document.createElement("div");
+      row.style.display = "flex";
+      row.style.gap = "10px";
+      row.style.flexWrap = "wrap";
+
+      const startWrap = document.createElement("div");
+      startWrap.style.flex = "1";
+      startWrap.style.minWidth = "140px";
+      const startHint = document.createElement("div");
+      startHint.className = "hint";
+      startHint.style.marginTop = "0";
+      startHint.style.marginBottom = "4px";
+      startHint.textContent = "Start month";
+      const startSel = buildMonthSelect(entry.startMonth || "");
+      startWrap.append(startHint, startSel);
+
+      const endWrap = document.createElement("div");
+      endWrap.style.flex = "1";
+      endWrap.style.minWidth = "140px";
+      const endHint = document.createElement("div");
+      endHint.className = "hint";
+      endHint.style.marginTop = "0";
+      endHint.style.marginBottom = "4px";
+      endHint.textContent = "End month";
+      const endSel = buildMonthSelect(entry.endMonth || "");
+      endWrap.append(endHint, endSel);
+
+      row.append(startWrap, endWrap);
+      wrap.appendChild(row);
+
+      fieldRefs[f.key] = () => ({ startMonth: startSel.value, endMonth: endSel.value });
     } else if (f.type === "textarea") {
       const ta = document.createElement("textarea");
       ta.rows = f.rows || (f.key === "authors" || f.key === "body" ? 4 : 2);
@@ -1618,7 +1800,8 @@ function renderForm(main, key, config) {
     const updated = {};
     for (const f of config.fields) {
       const value = fieldRefs[f.key]();
-      if (f.type === "daterange" || f.type === "citycountry") Object.assign(updated, value);
+      if (f.type === "daterange" || f.type === "citycountry" || f.type === "monthrange" || f.type === "yearrange")
+        Object.assign(updated, value);
       else updated[f.key] = value;
     }
     if (key === "projects") {
@@ -1818,7 +2001,8 @@ function renderSingletonForm(main, key, config) {
     const updated = {};
     for (const f of config.fields) {
       const value = fieldRefs[f.key]();
-      if (f.type === "daterange" || f.type === "citycountry") Object.assign(updated, value);
+      if (f.type === "daterange" || f.type === "citycountry" || f.type === "monthrange" || f.type === "yearrange")
+        Object.assign(updated, value);
       else updated[f.key] = value;
     }
     state.data[key] = updated;

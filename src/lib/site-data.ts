@@ -3,7 +3,8 @@ import publicationsData from "../../content/publications.json";
 import presentationsData from "../../content/presentations.json";
 import scholarshipsData from "../../content/scholarships.json";
 import awardsData from "../../content/awards.json";
-import cvTimelineData from "../../content/cv-timeline.json";
+import cvEducationData from "../../content/cv-education.json";
+import cvProfessionalData from "../../content/cv-professional.json";
 import affiliationsData from "../../content/affiliations.json";
 import affiliationCardData from "../../content/affiliation-card.json";
 import aboutBioData from "../../content/about-bio.json";
@@ -91,12 +92,17 @@ export const awards: Recognition[] = awardsData;
 
 export type CvTimelineEntry = {
   period: string;
+  // optional "01".."12" from the admin's month pickers — only used to show
+  // a more precise date than `period` alone when they're actually set
+  startMonth?: string;
+  endMonth?: string;
   title: string;
   body: string;
   points: string[];
 };
 
-export const cvTimeline: CvTimelineEntry[] = cvTimelineData;
+export const cvEducation: CvTimelineEntry[] = cvEducationData;
+export const cvProfessional: CvTimelineEntry[] = cvProfessionalData;
 
 export type Affiliation = { label: string; url: string };
 

@@ -1,0 +1,53 @@
+[
+  {
+    "period": "2021–2023",
+    "startMonth": "01",
+    "endMonth": "08",
+    "title": "Hospital pharmacist — Cura El Nasr Hospital",
+    "body": "",
+    "points": [
+      "Data-driven pharmacy",
+      "Statistical analysis",
+      "Healthcare workflows"
+    ]
+  },
+  {
+    "period": "2021–2023",
+    "startMonth": "08",
+    "endMonth": "08",
+    "title": "Hospital pharmacist — Dar El Salam Cancer Hospital",
+    "body": "",
+    "points": [
+      "Oncology",
+      "Medication safety",
+      "Clinical decision-making"
+    ]
+  },
+  {
+    "period": "2022",
+    "startMonth": "06",
+    "endMonth": "07",
+    "title": "Research Intern (NIGINTERN 2022) — National Institute of Genetics, Japan",
+    "body": "Research internship advised by Dr. Nakamura Yasukazu, working with genomic datasets.",
+    "points": [
+      "Python",
+      "R",
+      "Phylogenetic analysis",
+      "Clustering",
+      "Genomic data visualization"
+    ]
+  },
+  {
+    "period": "2026",
+    "startMonth": "07",
+    "endMonth": "08",
+    "title": "Bioinformatician — Metagen Therapeutics",
+    "body": "Analysis of clinical and biological datasets.",
+    "points": [
+      "Parkinson's disease metagenomic data",
+      "Proteomic data",
+      "Organ-age associations",
+      "Statistical and machine-learning models"
+    ]
+  }
+]
