@@ -9,7 +9,7 @@
     ],
     "categoryLabel": "Microbial Genomics / Bioinformatics",
     "summary": "A high-speed tool for evaluating prokaryotic genome quality and taxonomic identity, querying genomic data against more than 20,000 reference genomes from type strains.",
-    "problem": "Assessing whether a newly assembled prokaryotic genome is complete, uncontaminated and correctly labelled taxonomically usually requires stitching together several slow, separate tools.",
+    "problem": "Assessing whether a newly assembled prokaryotic genome is complete, uncontaminated and correctly labeled taxonomically usually requires stitching together several slow, separate tools.",
     "approach": "A single automated workflow that runs completeness and contamination checks and compares the query genome against a curated type-strain reference collection, exposed through both a command-line interface and a web interface.",
     "outcome": "Genome assessment and taxonomic identification happen in one reproducible step, making routine quality control practical for large batches of microbial genomes.",
     "capabilities": [
@@ -49,9 +49,9 @@
     ],
     "categoryLabel": "Human Genetics / Variant Analysis",
     "summary": "A high-performance, HPC-compatible pipeline designed for short-read sequencing analysis and pathogenic variant identification.",
-    "problem": "Short-read variant analysis involves many chained tools whose behaviour and scheduling differ between compute clusters, which makes runs hard to reproduce.",
+    "problem": "Short-read variant analysis involves many chained tools whose behavior and scheduling differ between compute clusters, which makes runs hard to reproduce.",
     "approach": "An end-to-end pipeline covering QC through annotation, written to run identically under different HPC schedulers with reproducible configuration.",
-    "outcome": "Validated and optimised for both Sun Grid Engine (SGE) and Slurm environments, so the same analysis scales from a single sample to cluster-scale cohorts.",
+    "outcome": "Validated and optimized for both Sun Grid Engine (SGE) and Slurm environments, so the same analysis scales from a single sample to cluster-scale cohorts.",
     "capabilities": [
       "Short-read sequencing analysis",
       "Variant detection",
@@ -92,7 +92,7 @@
       "Genomics"
     ],
     "categoryLabel": "Genomic Databases / Comparative Genomics",
-    "summary": "A specialised database and comparative platform for exploring fungal genomes from polar environments.",
+    "summary": "A specialized database and comparative platform for exploring fungal genomes from polar environments.",
     "problem": "Genomic resources for polar fungi are fragmented across sources, which makes systematic exploration and cross-genome comparison difficult.",
     "approach": "An integrated database with a comparison interface that places genomes side by side and surfaces shared genomic features and annotations.",
     "outcome": "A single environment for genome exploration and comparative genomics of polar fungal genomes.",
@@ -130,7 +130,7 @@
     "categoryLabel": "Metagenomics / Statistical Analysis / Machine Learning",
     "summary": "Analysis of metagenomic relative-abundance data from Parkinson's disease and healthy-control cohorts using R and Python-based statistical approaches.",
     "problem": "Relative-abundance metagenomic data is compositional, sparse and high-dimensional, which makes naive comparisons between cohorts unreliable.",
-    "approach": "Statistical modelling of microbial abundance profiles combined with machine-learning approaches and dedicated visualisations of cohort differences.",
+    "approach": "Statistical modeling of microbial abundance profiles combined with machine-learning approaches and dedicated visualizations of cohort differences.",
     "outcome": "A reproducible analysis framework for comparing microbial community profiles between disease and control cohorts.",
     "capabilities": [
       "Microbial abundance analysis",
@@ -161,7 +161,7 @@
     "categoryLabel": "Proteomics / Data Science / Biological Aging",
     "summary": "Analysis of high-dimensional proteomic data to investigate associations between organ-age estimates and biological phenotypes.",
     "problem": "Proteomic datasets carry thousands of correlated measurements per sample, so linking organ-age estimates to phenotypes requires careful statistical handling.",
-    "approach": "Statistical modelling and computational analysis of high-dimensional proteomic measurements alongside organ-age estimates.",
+    "approach": "Statistical modeling and computational analysis of high-dimensional proteomic measurements alongside organ-age estimates.",
     "outcome": "A structured analytical workflow for exploring organ-age and phenotype relationships in proteomic data.",
     "capabilities": [
       "High-dimensional data analysis",

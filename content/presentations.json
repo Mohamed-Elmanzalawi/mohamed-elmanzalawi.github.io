@@ -3,7 +3,7 @@
     "type": [
       "Poster"
     ],
-    "title": "PoMiD: The First Dedicated Database for the Analysis of Polar Microbial",
+    "title": "PoMiD: The First Dedicated Database for the Analysis of Polar Microbial Genomes",
     "event": "The 23rd Korea-China-Japan Bioinformatics Symposium",
     "city": "Seoul",
     "country": "South Korea",
@@ -41,7 +41,7 @@
       "Oral"
     ],
     "title": "User-oriented bioinformatics pipelines for microbial genome assessment and pathogenic variant analysis",
-    "event": "National Institute of Genetics — Master's defence (D2) progress presentation",
+    "event": "National Institute of Genetics — Master's defense (D2) progress presentation",
     "location": "Mishima, Japan",
     "city": "Mishima",
     "country": "Japan",
@@ -112,25 +112,6 @@
   },
   {
     "type": [
-      "Oral",
-      "Poster"
-    ],
-    "title": "Identification of rare pathogenic variants in patients with primary immune deficiency",
-    "event": "National Institute of Genetics — progress presentation",
-    "location": "Mishima, Japan",
-    "city": "Mishima",
-    "country": "Japan",
-    "startDate": "2025-02-27",
-    "endDate": "",
-    "date": "27 Feb 2025",
-    "year": "2025",
-    "link": {
-      "label": "Website",
-      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
-    }
-  },
-  {
-    "type": [
       "Poster"
     ],
     "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
@@ -182,25 +163,6 @@
     "link": {
       "label": "Website",
       "url": "https://smartconf.jp/content/ispb2024/"
-    }
-  },
-  {
-    "type": [
-      "Oral",
-      "Poster"
-    ],
-    "title": "DFAST_QC: quality assessment and taxonomic identification tool for prokaryotic genomes",
-    "event": "National Institute of Genetics — progress presentation",
-    "location": "Mishima, Japan",
-    "city": "Mishima",
-    "country": "Japan",
-    "startDate": "2024-08-28",
-    "endDate": "",
-    "date": "28 Aug 2024",
-    "year": "2024",
-    "link": {
-      "label": "Website",
-      "url": "https://www.nig.ac.jp/nig/phd-program/courses-top/courses-at-the-department-of-genetics/poster"
     }
   }
 ]
